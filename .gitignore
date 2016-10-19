@@ -11,11 +11,11 @@
 *.war
 *.ear
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-AYHAY_SIGMOD_Demo/ayhay_sigmod.blg
-AYHAY_SIGMOD_Demo/ayhay_sigmod.log
-*.out
-AYHAY_SIGMOD_Demo/ayhay_sigmod.synctex.gz
-AYHAY_SIGMOD_Demo/ayhay_sigmod.aux
-*.bbl
+*.dat
+*.class
+*.prefs
+*.classpath
+*.project
+/bin/
+/Metadata/
+
