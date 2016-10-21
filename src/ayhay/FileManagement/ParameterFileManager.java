@@ -27,7 +27,7 @@ public class ParameterFileManager {
 		System.out.println("Working Directory = " + System.getProperty("user.dir"));
 		File f = new File(fileName);
 		if(!f.exists()){
-			throw new FileNotFoundException("Parameter file not found");
+			throw new FileNotFoundException("Parameter file " + fileName + "not found");
 		}
 		this.fileName = fileName;
 	}
@@ -80,7 +80,7 @@ public class ParameterFileManager {
 				File f = new File(labelsFile);
 				if(!f.exists()){
 					br.close();
-					throw new FileNotFoundException("Labels directory/file not found");
+					throw new FileNotFoundException("Labels directory file not found");
 				}
 			}
 			catch(FileNotFoundException e){
