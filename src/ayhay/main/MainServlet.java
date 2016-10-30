@@ -51,8 +51,6 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("** GET **");
-		
 		if(!queryManager.initialized)
 			queryManager.initializeDataset(TDBDirectory);
 		String[] inputs = request.getParameterValues("myInputs[]");
@@ -61,12 +59,6 @@ public class MainServlet extends HttpServlet {
         	query += inputs[i++] + " " + inputs[i++] + " " + inputs[i++] + ".";
         }
         query += "}";
-        // If this query is the same as last call, ignore. Commented because it is done in the frontend now.
-        /*if(query.compareTo(lastQuery) == 0){
-        	System.out.println("Same as last query. Ignore!");
-        	return;
-        }
-        lastQuery = query;*/
         	
         int id = (int) Math.random() * 100;
 		queryManager.executeQuery(id, query);
@@ -84,18 +76,10 @@ public class MainServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("** POST 2 **");
 		
 		if(!queryManager.initialized)
 			queryManager.initializeDataset(TDBDirectory);
 		String[] inputs = request.getParameterValues("myInputs[]");
-		//int numberOfVariables=inputs[0].trim().split("\\?").length;
-		for (int i=0;i<inputs.length;i++){
-			System.out.println(i+" check = "+inputs[i]);
-		}
-		
-		System.out.println(" inputSize = "+inputs.length);
-		System.out.println(" myInterest = "+inputs[inputs.length - 1]);
 		
         String query = "";
         if (inputs[inputs.length - 1].equalsIgnoreCase("count"))

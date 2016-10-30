@@ -1,3 +1,3 @@
-TDBDirectory=/media/92845BE9845BCDFB/Users/aelroby/Work/Datasets/DBpedia_Latest/2016/DB
-Labels=/u4/aelroby/Work/Programs/Metadata/literals_refined
-Predicates=/u4/aelroby/Work/Programs/Metadata/predicates_refined
+TDBDirectory=/media/ahmed/TOSHIBA-HD/Work/Datasets/DBpedia_Latest/2016/DB
+Labels=/home/ahmed/work/workspace/Data/Metadata/refinedLabels.dat
+Predicates=/home/ahmed/work/workspace/Data/Metadata/refinedPredicates.dat

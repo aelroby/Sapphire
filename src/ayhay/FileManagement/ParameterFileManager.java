@@ -59,7 +59,7 @@ public class ParameterFileManager {
 				File f = new File(TDBDirectory);
 				if(!f.exists()){
 					br.close();
-					throw new FileNotFoundException("TDB Directory not found");
+					throw new FileNotFoundException("TDB Directory " + TDBDirectory + " not found");
 				}
 			}
 			catch(FileNotFoundException e){
@@ -80,7 +80,7 @@ public class ParameterFileManager {
 				File f = new File(labelsFile);
 				if(!f.exists()){
 					br.close();
-					throw new FileNotFoundException("Labels directory file not found");
+					throw new FileNotFoundException("Labels directory " + labelsFile + " file not found");
 				}
 			}
 			catch(FileNotFoundException e){
@@ -101,7 +101,7 @@ public class ParameterFileManager {
 				File f = new File(predicatesFile);
 				if(!f.exists()){
 					br.close();
-					throw new FileNotFoundException("Input Links file not found");
+					throw new FileNotFoundException("predicates file " + predicatesFile + " file not found");
 				}
 			}
 			catch(FileNotFoundException e){

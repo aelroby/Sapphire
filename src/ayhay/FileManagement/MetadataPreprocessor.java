@@ -13,6 +13,7 @@ import org.apache.jena.query.ResultSet;
 
 import ayhay.dataStructures.LiteralStat;
 import ayhay.query.QueryManager;
+import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 
 public class MetadataPreprocessor {
@@ -45,8 +46,7 @@ public class MetadataPreprocessor {
 		// Reading and setting up predicates
 		startTimeRoutine = System.currentTimeMillis();
 		System.out.println("Reading predicate file...");
-		FileManager fManagerPredicates = new FileManager();
-		predicatesList = fManagerPredicates.readFileLineByLine(predicatesFile);
+		predicatesList = FileManager.readFileLineByLine(predicatesFile);
 		System.out.println("Predicates file has been read!");
 		System.out.println("Setting up predicates for lookup...");
 		setPredicates();
@@ -81,10 +81,9 @@ public class MetadataPreprocessor {
 		File[] listOfFiles = folder.listFiles();
 		
 		startTimeRoutine = System.currentTimeMillis();
-		FileManager fManagerLabels = new FileManager();
 		for(int i = 0; i < listOfFiles.length; ++i){
 			System.out.println("Reading label file: " + labelsDirectory + listOfFiles[i].getName());
-			labelsLines = fManagerLabels.readFileLineByLine(labelsDirectory + listOfFiles[i].getName());
+			labelsLines = FileManager.readFileLineByLine(labelsDirectory + listOfFiles[i].getName());
 			System.out.println("Labels file " + labelsDirectory + listOfFiles[i].getName() + " has been read!");
 			int fileNum = i+1;
 			System.out.println("Setting up labels for lookup (" + fileNum + " of " + listOfFiles.length + ")...");

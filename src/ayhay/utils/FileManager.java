@@ -1,15 +1,17 @@
-package ayhay.FileManagement;
+package ayhay.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class FileManager {
 	
 	
-	public ArrayList<String> readFileLineByLine(String fileName){
+	public static ArrayList<String> readFileLineByLine(String fileName){
 		ArrayList<String> lines = new ArrayList<String>();
 		String line;
 		try {
@@ -27,6 +29,18 @@ public class FileManager {
 			e.printStackTrace();
 		}
 		return lines;
+	}
+	
+	public static void writeToFile(String filePath, String contents) {
+		BufferedWriter writer;
+		try {
+			writer = new BufferedWriter( new FileWriter(filePath));
+			writer.write(contents);
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

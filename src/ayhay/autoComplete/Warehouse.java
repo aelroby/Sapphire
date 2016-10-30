@@ -1,48 +1,99 @@
 package ayhay.autoComplete;
 
-//import java.io.File;
 import java.util.ArrayList;
-//import java.util.HashSet;
-//import java.util.Iterator;
-//import java.util.Set;
 
 import org.json.simple.JSONArray;
 
-import ayhay.FileManagement.FileManager;
 import ayhay.dataStructures.StringScore;
+import ayhay.utils.FileManager;
 import ayhay.utils.StringScoreComparator;
+import ayhay.utils.Timer;
 import info.debatty.java.stringsimilarity.JaroWinkler;
 
 
-//import ayhay.FileManagement.FileManager;
-//import ayhay.utils.LengthComparator;
 
 public class Warehouse {
 
 	private ArrayList<String> predicatesList;
 	private ArrayList<String> literalsList;
-	JaroWinkler jw;
-//	private Set<String> labels;
-//	private ArrayList<String> labelsList;
-//	private ArrayList<String> labelsLines;
+	private ArrayList<Integer> indexes;
+	private ArrayList<Integer> lengths;
+	private JaroWinkler jw; 
 	
+	public Warehouse() {
+		indexes = new ArrayList<Integer>();
+		lengths = new ArrayList<Integer>();
+	}
+	
+	public ArrayList<String> getPredicatesList() {
+		return predicatesList;
+	}
+
+	public void setPredicatesList(ArrayList<String> predicatesList) {
+		this.predicatesList = predicatesList;
+	}
+
+	public ArrayList<String> getLiteralsList() {
+		return literalsList;
+	}
+
+	public void setLiteralsList(ArrayList<String> literalsList) {
+		this.literalsList = literalsList;
+	}
+
+	
+	private void analyzeLiterals() {
+		
+		int lastLength = 0;
+		
+		for(int i = 0; i < literalsList.size(); ++i) {
+			
+			if(lastLength != literalsList.get(i).length() - 5) {
+				indexes.add(i);
+				lengths.add(literalsList.get(i).length() - 5); // -5 for ""@en
+			}
+			lastLength = literalsList.get(i).length() - 5;
+		}
+		
+	}
 	
 	public void initializeWarehouse(String literalsFile, String predicatesFile){
 		
-		long startTime = System.currentTimeMillis();
+		Timer.start();
 		System.out.println("Reading literals file...");
-		FileManager fManagerPredicates = new FileManager();
-		literalsList = fManagerPredicates.readFileLineByLine(literalsFile);
+		literalsList = FileManager.readFileLineByLine(literalsFile);
 		System.out.println("Reading literals file finished!");
 		System.out.println("Reading predicates file...");
-		predicatesList = fManagerPredicates.readFileLineByLine(predicatesFile);
+		predicatesList = FileManager.readFileLineByLine(predicatesFile);
 		System.out.println("Reading predicates file finished!");
 		jw = new JaroWinkler();
-		long stopTime = System.currentTimeMillis();
-		double elapsedTime = stopTime - startTime;
-		elapsedTime = elapsedTime / 60000;
-		System.out.println("Warehouse initialization took: " + elapsedTime + " minutes");
+		System.out.println("Analyzing literals...");
+		analyzeLiterals();
+		Timer.stop();
+		System.out.println("Warehouse initialization took: " + Timer.getTime());
 		
+	}
+	
+	public void writeLengthHistogram(String fileName) {
+		String contents = "Length,Frequency\n";
+		int literalLength = 0;
+		int frequency = 0;
+		for(String literal : literalsList) {
+			if(!literal.startsWith("\""))
+				continue;
+			literal = literal.substring(literal.indexOf("\"")+1, literal.lastIndexOf("\""));
+			
+			if(literal.length() == literalLength) {
+				frequency++;
+			}
+			else {
+				contents += Integer.toString(literalLength) + "," + 
+							Integer.toString(frequency) + "\n";
+				frequency = 1;
+				literalLength = literal.length();
+			}
+		}
+		FileManager.writeToFile(fileName, contents);
 	}
 	
 	public ArrayList<String> findSimilarStringsPredicates(String s){
@@ -109,7 +160,9 @@ public class Warehouse {
 	
 	@SuppressWarnings("unchecked")
 	public JSONArray findMatches(String query){
+		Timer.start();
 		JSONArray arrayObj = new JSONArray();
+		
 		// Search in predicates
 		for(int i = 0; i < predicatesList.size(); ++i){
 			if(predicatesList.get(i).toLowerCase().contains(query.toLowerCase())){
@@ -118,14 +171,38 @@ public class Warehouse {
 		}
 		
 		// Search in labels
-		for(int i = 0; i < literalsList.size(); ++i){
+		
+		// Choose bins according to length
+		int minLength = query.length();
+		int maxLength = query.length() + 10;
+		
+		int minIndex = Integer.MAX_VALUE;
+		int maxIndex = -1;
+		
+		for(int i = 0; i < lengths.size(); ++i){
+			if(lengths.get(i) > maxLength) {
+				maxIndex = indexes.get(i);
+				break;
+			}
+			if(minLength >= lengths.get(i)) {
+				minIndex = indexes.get(i);
+			}
+		}
+		
+		System.out.println("Searching between indexes: " + minIndex + 
+				" corresponding to length " + (literalsList.get(minIndex).length()-5) +
+				" and " + maxIndex + " corresponding to length " + 
+				(literalsList.get(maxIndex).length()-5));
+		for(int i = minIndex; i < maxIndex; ++i){
 			if(literalsList.get(i).toLowerCase().contains(query.toLowerCase())){
+				System.out.println("Found a match in index" + i);
 				arrayObj.add(literalsList.get(i));
 				if(arrayObj.size() >= 20)
 					break;
 			}
 		}
-		
+		Timer.stop();
+		System.out.println("Time: " + Timer.getTime());
 		return arrayObj;
 	}
 }
