@@ -19,6 +19,7 @@ public class QueryManager {
 	private String queryString;
 	private Query query;
 	private Dataset dataset;
+	private QueryRelaxer queryRelaxer;
 	private Model model;
 	private QueryExecution qexec;
 	public boolean initialized = false;
@@ -53,6 +54,7 @@ public class QueryManager {
 		model = dataset.getDefaultModel();
 		initialized = true;
 		resultSetMap = new HashMap<Integer, ResultSet>();
+		queryRelaxer = new QueryRelaxer();
 	}
 	
 	public synchronized int getNumberOfResults(int id){
@@ -67,8 +69,8 @@ public class QueryManager {
 	
 	public synchronized ResultSet executeQuery(int id, String queryString){
 		this.queryString = queryString;
-		this.query = QueryFactory.create(queryString);
-		qexec = QueryExecutionFactory.create(queryString, model);
+		query = QueryFactory.create(queryString);
+		qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
 		ResultSet results = qexec.execSelect();
 		resultSetMap.put(id, results);
 		return results;

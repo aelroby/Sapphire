@@ -43,12 +43,6 @@ public class AlternativeQueryFinder extends HttpServlet {
         	query += inputs[i++] + " " + inputs[i++] + " " + inputs[i++] + ".";
         }
         query += "}";
-        // If this query is the same as last call, ignore. Commented because it is done in the frontend now.
-        /*if(query.compareTo(lastQuery) == 0){
-        	System.out.println("Same as last query. Ignore!");
-        	return;
-        }
-        lastQuery = query;*/
 		
 		// Check the query syntax
 		for(int i = 2; i < inputs.length -1 ; i += 3){

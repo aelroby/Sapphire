@@ -21,7 +21,6 @@ public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String TDBDirectory;
     public static QueryManager queryManager;
-//    private String lastQuery;
     
     
     
@@ -37,7 +36,6 @@ public class MainServlet extends HttpServlet {
 		}
         queryManager = new QueryManager();
     	queryManager.initializeDataset(TDBDirectory);
-//    	lastQuery = "";
     }
     /**
      * Default constructor. 
@@ -87,17 +85,11 @@ public class MainServlet extends HttpServlet {
         else
         	query = "SELECT " + inputs[0] + " WHERE{ ";
 
-        
         for(int i = 1; i < inputs.length -1; ){
         	query += inputs[i++] + " " + inputs[i++] + " " + inputs[i++] + ".";
         }
+
         query += "}";
-        // If this query is the same as last call, ignore. Commented because it is done in the frontend now.
-        /*if(query.compareTo(lastQuery) == 0){
-        	System.out.println("Same as last query. Ignore!");
-        	return;
-        }
-        lastQuery = query;*/
         
         // Check the query syntax
  		for(int i = 2; i < inputs.length; i += 3){

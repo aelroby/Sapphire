@@ -67,18 +67,33 @@ function validateQuery(){
 	
 	var allInputs = document.getElementsByTagName("input");
 	
-	console.log("current input collected, old length = "+lastSubmitInput.length);
+	console.log("current input collected, old length = " + lastSubmitInput.length);
 	
+	// If all are variables --> Don't run query (This will take forever)
+	var allVariables = true;
+	for(var itr = 0; itr < allInputs.length; ++itr) {
+		if(allInputs[itr].value.substring(0,1) != "?") {
+			allVariables = false;
+			break;
+		}
+	}
+	if(allVariables) {
+		return false;
+	}
+	console.log("allVariables = " + allVariables);
+	
+	// If length is different --> different query
 	if(lastSubmitInput.length != allInputs.length){
 		lastSubmitInput = copyArray(lastSubmitInput, allInputs);
 		console.log("last Submit Input updated-1");
-		return true;		
+		return true;
 	}
 	
+	// Length can be the same but different values
 	var differentValues = false;
 	for(var x=0; x<allInputs.length; x++){
-		console.log("checking "+lastSubmitInput[x] +" ? "+allInputs[x].value);
-		if(lastSubmitInput[x]!=allInputs[x].value)
+		console.log("checking " + lastSubmitInput[x] +" ? " + allInputs[x].value);
+		if(lastSubmitInput[x] != allInputs[x].value)
 			differentValues = true;
 	}
 
@@ -159,19 +174,13 @@ function UpdateTriple(f,t,s,p,o,newV){
 }
 
 function validate(f,id){
-	//return true;
 	var valid = true;
-	var mySubject = "subject-"+id
-	//alert(document.getElementById(mySubject).value);
-	if( document.getElementById(mySubject).value == '' 	|| document.getElementById(mySubject).value == 'Subject'	||
+	if( document.getElementById("subject-"+id).value == '' 	|| document.getElementById("subject-"+id).value == 'Subject'	||
 		document.getElementById("predicate-"+id).value == '' || document.getElementById("predicate-"+id).value == 'Predicate' ||
 		document.getElementById("object-"+id).value == '' || document.getElementById("object-"+id).value == 'Object')
 	{
-		//Document.getElementById("object-"+id).value = ''
 		valid = false;
-//        alert(Document.getElementById(mySubject).value)s;
 	}
-
 	return valid;
 }
 
@@ -179,10 +188,6 @@ function validate(f,id){
 
 function callQuery(){
 
-	// check if the input values are correct for the query
-	// This could be enhanced later on by mentioning what is wrong with the query
-	//if (!validateQuery())
-	//	return;
 
 	var header = "<thead><tr><th>Query Results:</th></tr></thead>";
 	var findingSuggestionsRow = "<tbody><tr><td><i>Please wait, we are trying to find relevant results!</i></td></tr></tbody>"
