@@ -142,21 +142,7 @@ public class AlternativeQueryFinder extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		doGet(request, response);
-/*		
-		String result = "{ \"results\": { "+
-		    "\"suggestions\": [ " +
-		    "{ \"predicate\":\"P1\", \"oldValue\":\"OV1\", \"newValue\":\"NV1\", \"resultCount\":\"10\"} ,"+
-		    "{ \"predicate\":\"P2\", \"oldValue\":\"OV2\", \"newValue\":\"NV2\", \"resultCount\":\"20\"} ,"+
-		    "{ \"predicate\":\"P3\", \"oldValue\":\"OV3\", \"newValue\":\"NV3\", \"resultCount\":\"30\"} ,"+
-		    "]}}";
 
-		
-		System.out.println(result);
-        response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
-        response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
-        response.getWriter().write(result);
-
-        System.out.println(response);*/
 	}
 	
 

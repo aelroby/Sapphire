@@ -1,6 +1,7 @@
 package ayhay.query;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.jena.query.Dataset;
@@ -13,13 +14,14 @@ import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.tdb.TDBFactory;
 
+import ayhay.dataStructures.SPARQLQuery;
+
 
 
 public class QueryManager {
 	private String queryString;
 	private Query query;
 	private Dataset dataset;
-	private QueryRelaxer queryRelaxer;
 	private Model model;
 	private QueryExecution qexec;
 	public boolean initialized = false;
@@ -54,7 +56,6 @@ public class QueryManager {
 		model = dataset.getDefaultModel();
 		initialized = true;
 		resultSetMap = new HashMap<Integer, ResultSet>();
-		queryRelaxer = new QueryRelaxer();
 	}
 	
 	public synchronized int getNumberOfResults(int id){
@@ -65,6 +66,16 @@ public class QueryManager {
 			results.next();
 		}
 		return n;
+	}
+	
+	private ArrayList<String> relaxQuery(SPARQLQuery query) {
+		ArrayList<String> relaxedQueries = new ArrayList<String>();
+		
+		return relaxedQueries;
+	}
+	
+	public synchronized ResultSet executeUserQuery(int id, SPARQLQuery sparqlQuery){
+		return executeQuery(id, sparqlQuery.getQueryString());
 	}
 	
 	public synchronized ResultSet executeQuery(int id, String queryString){
