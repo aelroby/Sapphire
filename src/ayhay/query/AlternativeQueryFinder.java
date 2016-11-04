@@ -26,6 +26,7 @@ public class AlternativeQueryFinder extends HttpServlet {
      */
     public AlternativeQueryFinder() {
         super();
+        altQueryGenerator = new AlternativeQueryGenerator();
     }
 
 	/**

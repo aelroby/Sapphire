@@ -129,7 +129,8 @@ public class SPARQLQuery {
  			return;
 		
 		// First element is the select clause
-		select = new ArrayList<String> (Arrays.asList(query[0].split(" ")));
+ 		// There's a whitespace at the beginning from the client. It is removed
+		select = new ArrayList<String> (Arrays.asList(query[0].substring(1).split("\\s+")));
 		queryString = "SELECT " + query[0] + " WHERE{ ";
 		
 		where = new ArrayList<ArrayList<String>>();
