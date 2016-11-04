@@ -71,7 +71,7 @@ public class MainServlet extends HttpServlet {
         
         
         System.out.println("Answering Query: " + query);
-        int id = (int) Math.random() * 100;
+        int id = (int) Math.random() * 10000;
 		queryManager.executeUserQuery(id, sparqlQuery);
         String answers = queryManager.getResultsAsJSON(id);
         queryManager.closeQuery(id);

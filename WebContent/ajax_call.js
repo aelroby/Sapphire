@@ -319,15 +319,7 @@ function getSuggestions(){
     		var myObject = bodyTuples[i]['object'];
     		var myNewValue = bodyTuples[i]['newValue'];
     		var myCount = bodyTuples[i]['resultCount'];
-
- /*  For Debugging! 		
-    		console.log("========================================")
-    		console.log(myPredicate)
-    		console.log(myPredicate.indexOf("<"))
-    		console.log(myPredicate.replace("<","+<"))
-    		console.log(myPredicate.replace("<","\\<"))
-    		console.log(myPredicate.replace("<","\\<").replace(">","\\>"))
-   */ 		
+	
     		record += "In triple: <code>"+mySubject+"&nbsp;&nbsp;"+
     			myPredicate.replace("<","&lt;").replace(">","&gt;")+
     			"&nbsp;&nbsp;"+myObject+"</code>:<br>"+

@@ -3,6 +3,7 @@ package ayhay.query;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.Query;
@@ -26,7 +27,6 @@ public class QueryManager {
 	private QueryExecution qexec;
 	public boolean initialized = false;
 	private HashMap<Integer, ResultSet> resultSetMap;
-	
 	
 	
 	public void test(){
@@ -66,12 +66,6 @@ public class QueryManager {
 			results.next();
 		}
 		return n;
-	}
-	
-	private ArrayList<String> relaxQuery(SPARQLQuery query) {
-		ArrayList<String> relaxedQueries = new ArrayList<String>();
-		
-		return relaxedQueries;
 	}
 	
 	public synchronized ResultSet executeUserQuery(int id, SPARQLQuery sparqlQuery){
