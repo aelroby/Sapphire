@@ -8,8 +8,51 @@ public class SPARQLQuery {
 	private ArrayList<ArrayList<String>> where;
 	private ArrayList<String> modifiers;
 	private boolean isValid;
-	
 	private String queryString;
+	
+	public SPARQLQuery copyObject() {
+		SPARQLQuery newObject = new SPARQLQuery();
+		
+		// Copy select
+		ArrayList<String> newSelect = new ArrayList<String>();
+		for(String s : select) {
+			newSelect.add(s);
+		}
+		newObject.setSelect(newSelect);
+		
+		// Copy where
+		ArrayList<ArrayList<String>> newWhere = 
+				new ArrayList<ArrayList<String>>();
+		for(ArrayList<String> clause : where) {
+			ArrayList<String> newClause = 
+					new ArrayList<String>();
+			for(String s : clause) {
+				newClause.add(s);
+			}
+			newWhere.add(newClause);
+		}
+		newObject.setWhere(newWhere);
+		
+		// Copy modifiers
+		ArrayList<String> newModifiers = 
+				new ArrayList<String>();
+		for(String s : modifiers) {
+			newModifiers.add(s);
+		}
+		newObject.setModifiers(newModifiers);
+		
+		// Copy valid flag
+		newObject.setValid(isValid);
+		
+		// Copy query string
+		newObject.setQueryString(queryString);
+		
+		return newObject;
+	}
+	
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
+	}
 	
 	public String getQueryString() {
 		return queryString;
@@ -29,6 +72,7 @@ public class SPARQLQuery {
 
 	public void setSelect(ArrayList<String> select) {
 		this.select = select;
+		updateQueryString();
 	}
 
 	public ArrayList<ArrayList<String>> getWhere() {
@@ -37,6 +81,7 @@ public class SPARQLQuery {
 
 	public void setWhere(ArrayList<ArrayList<String>> where) {
 		this.where = where;
+		updateQueryString();
 	}
 
 	public ArrayList<String> getModifiers() {
@@ -45,8 +90,28 @@ public class SPARQLQuery {
 
 	public void setModifiers(ArrayList<String> modifiers) {
 		this.modifiers = modifiers;
+		updateQueryString();
 	}
 
+	/* TODO: Handle modifiers*/
+	public void updateQueryString() {
+		queryString = "SELECT ";
+		for(String s : select) {
+			queryString += s + " ";
+		}
+		queryString += "WHERE{ ";
+		
+		for(ArrayList<String> clause : where) {
+			
+			for(String s : clause) {
+				queryString += s + " ";
+			}
+			
+			queryString += ".";
+		}
+		queryString += "}";
+	}
+	
 	public SPARQLQuery(String[] query) {
 		
 		// Check the query syntax
@@ -94,5 +159,9 @@ public class SPARQLQuery {
 			// TODO: Handle modifier here
 			
 		}
+	}
+
+	public SPARQLQuery() {
+		// TODO Auto-generated constructor stub
 	}
 }
