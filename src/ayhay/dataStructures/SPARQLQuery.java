@@ -8,6 +8,7 @@ public class SPARQLQuery {
 	private ArrayList<ArrayList<String>> where;
 	private ArrayList<String> modifiers;
 	private boolean isValid;
+	private boolean hasModifiers;
 	private String queryString;
 	
 	public SPARQLQuery copyObject() {
@@ -34,12 +35,14 @@ public class SPARQLQuery {
 		newObject.setWhere(newWhere);
 		
 		// Copy modifiers
-		ArrayList<String> newModifiers = 
-				new ArrayList<String>();
-		for(String s : modifiers) {
-			newModifiers.add(s);
+		if(hasModifiers){
+			ArrayList<String> newModifiers = 
+					new ArrayList<String>();
+			for(String s : modifiers) {
+				newModifiers.add(s);
+			}
+			newObject.setModifiers(newModifiers);
 		}
-		newObject.setModifiers(newModifiers);
 		
 		// Copy valid flag
 		newObject.setValid(isValid);
@@ -72,7 +75,6 @@ public class SPARQLQuery {
 
 	public void setSelect(ArrayList<String> select) {
 		this.select = select;
-		updateQueryString();
 	}
 
 	public ArrayList<ArrayList<String>> getWhere() {
@@ -81,7 +83,6 @@ public class SPARQLQuery {
 
 	public void setWhere(ArrayList<ArrayList<String>> where) {
 		this.where = where;
-		updateQueryString();
 	}
 
 	public ArrayList<String> getModifiers() {
@@ -90,7 +91,6 @@ public class SPARQLQuery {
 
 	public void setModifiers(ArrayList<String> modifiers) {
 		this.modifiers = modifiers;
-		updateQueryString();
 	}
 
 	/* TODO: Handle modifiers*/
@@ -136,6 +136,7 @@ public class SPARQLQuery {
 		where = new ArrayList<ArrayList<String>>();
 		// If there are no modifiers
 		if((query.length - 2) % 3 == 0){
+			hasModifiers = false;
 			for(int i = 1; i < query.length -1; ){
 				ArrayList<String> singleClause = new ArrayList<String>();
 				singleClause.add(query[i]);
@@ -150,6 +151,7 @@ public class SPARQLQuery {
 		}
 		// There are modifiers
 		else {
+			hasModifiers = true;
 			for(int i = 1; i < query.length -2; ){
 				ArrayList<String> singleClause = new ArrayList<String>();
 				singleClause.add(query[i++]);
@@ -163,6 +165,6 @@ public class SPARQLQuery {
 	}
 
 	public SPARQLQuery() {
-		// TODO Auto-generated constructor stub
+		
 	}
 }
