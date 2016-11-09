@@ -1,11 +1,14 @@
 package ayhay.autoComplete;
 
 import java.util.ArrayList;
+import java.util.PriorityQueue;
 
 import org.json.simple.JSONArray;
 
+import ayhay.dataStructures.LiteralStat;
 import ayhay.dataStructures.StringScore;
 import ayhay.utils.FileManager;
+import ayhay.utils.LiteralStatComparator;
 import ayhay.utils.StringScoreComparator;
 import ayhay.utils.Timer;
 import info.debatty.java.stringsimilarity.JaroWinkler;
@@ -18,11 +21,15 @@ public class Warehouse {
 	private ArrayList<String> literalsList;
 	private ArrayList<Integer> indexes;
 	private ArrayList<Integer> lengths;
+	private PriorityQueue<LiteralStat> mostFrequentQueue;
+	private PriorityQueue<LiteralStat> mostFrequentResourcesQueue;
 	private JaroWinkler jw; 
 	
 	public Warehouse() {
 		indexes = new ArrayList<Integer>();
 		lengths = new ArrayList<Integer>();
+		mostFrequentQueue = new PriorityQueue<LiteralStat>(new LiteralStatComparator());
+		mostFrequentResourcesQueue = new PriorityQueue<LiteralStat>(new LiteralStatComparator());
 	}
 	
 	public ArrayList<String> getPredicatesList() {
@@ -48,11 +55,18 @@ public class Warehouse {
 		
 		for(int i = 0; i < literalsList.size(); ++i) {
 			
+			// Update lengths of literals array with indexes
 			if(lastLength != literalsList.get(i).length() - 5) {
 				indexes.add(i);
 				lengths.add(literalsList.get(i).length() - 5); // -5 for ""@en
 			}
 			lastLength = literalsList.get(i).length() - 5;
+			
+			// TODO: Update min-heap for most frequent literals
+			
+			
+			// TODO: Update min-heap for most frequent resources associated with literals
+			
 		}
 		
 	}

@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import ayhay.dataStructures.LiteralStat;
 
-public class ExtendedLengthComparator implements Comparator<LiteralStat>{
+public class LiteralStatComparator implements Comparator<LiteralStat>{
 
 	@Override
 	public int compare(LiteralStat x, LiteralStat y) {
@@ -13,10 +13,10 @@ public class ExtendedLengthComparator implements Comparator<LiteralStat>{
         else if (y == null)
             return +1;
         else{
-        	int lenx = x.getLiteral().length();
-            int leny = y.getLiteral().length();
+        	int lenx = x.getFrequency();
+            int leny = y.getFrequency();
             if (lenx == leny){
-            	return x.getSubjectTriples() < y.getSubjectTriples() ? -1 : +1;
+            	return x.getLiteral().length() < y.getLiteral().length() ? -1 : +1;
             }
             else
                 return lenx < leny ? -1 : +1;

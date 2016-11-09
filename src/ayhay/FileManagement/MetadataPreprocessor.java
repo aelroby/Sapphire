@@ -9,10 +9,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.jena.query.ResultSet;
-
-import ayhay.dataStructures.LiteralStat;
-import ayhay.query.QueryManager;
 import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 
@@ -21,7 +17,6 @@ public class MetadataPreprocessor {
 	private static ArrayList<String> predicatesList;
 	private static Set<String> labels;
 	private static ArrayList<String> labelsList;
-	private static ArrayList<LiteralStat> literalsStats;
 	private static ArrayList<String> labelsLines;
 	private static ParameterFileManager paramManager;
 
@@ -51,7 +46,7 @@ public class MetadataPreprocessor {
 		System.out.println("Setting up predicates for lookup...");
 		setPredicates();
 		System.out.println("Setting up predicates for lookup finished!");
-		System.out.println("Ranking predicates...");
+		System.out.println("LiteralStatRanking predicates...");
 		java.util.Collections.sort(predicatesList, new LengthComparator());
 		System.out.println("Ranking predicates finished!");
 		// Writing predicates to file
@@ -172,31 +167,4 @@ public class MetadataPreprocessor {
 		}
 	}
 	
-	@SuppressWarnings("unused")
-	private static void setLiteralsStats(){
-		literalsStats = new ArrayList<LiteralStat>();
-		ResultSet results;
-		int id = 0;
-		QueryManager queryManager = new QueryManager();
-		queryManager.initializeDataset(paramManager.getTDBDirectory());
-		int counter = 0;
-		int step = 0;
-		int listSize = labelsList.size();
-		for (Iterator<String> iterator = labelsList.iterator(); iterator.hasNext();) {
-			++counter;
-			if(counter > 1.0*step/100*listSize){
-				System.out.println(step + "% completed");
-				++step;
-			}
-		    String literal = iterator.next();
-		    String query = "SELECT (count(distinct ?o) as ?count) { ?s ?label " + literal + " . ?s ?p ?o}";
-		    results = queryManager.executeQuery(0, query);
-		    String answer = results.nextSolution().get("count").toString();
-		    answer = answer.substring(0, answer.indexOf('^'));
-		    int frequency = Integer.parseInt(answer); 
-		    LiteralStat recordStat = new LiteralStat(literal, frequency);
-		    literalsStats.add(recordStat);
-	        iterator.remove();
-		}
-	}
 }
