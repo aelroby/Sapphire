@@ -14,6 +14,7 @@ public class AlternativeQueryGenerator {
 		
 		/* Magic happens here */
 		
+		
 		return alternativeQueries;
 	}
 	
@@ -24,7 +25,6 @@ public class AlternativeQueryGenerator {
 				new ArrayList<String>();
 		
 		/* Magic happens here */
-		System.out.println("Finding alternative predicates...");
 		ArrayList<ArrayList<String>> where = query.getWhere();
 		for(int i = 0; i < where.size(); ++i){
 			ArrayList<String> clause = where.get(i);
@@ -49,7 +49,7 @@ public class AlternativeQueryGenerator {
 				}
 			}
 			
-			// Find alternatives for object
+			// Find alternatives for literals
 			if(clause.get(2).startsWith("\"")) {
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2));

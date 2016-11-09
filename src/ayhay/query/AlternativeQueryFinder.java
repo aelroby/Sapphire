@@ -48,7 +48,6 @@ public class AlternativeQueryFinder extends HttpServlet {
 		
 		String result = "{ \"results\": { \"suggestions\": [ ";
 		for(int i = 0; i < alternativeTokens.size(); ++i){
-			System.out.println("Alternative Token " + i + ":");
 			AlternativeToken thisToken = alternativeTokens.get(i);
 			if(thisToken.getNumOfRows() > 0){
 				System.out.println("Type: " + thisToken.getType() + ", Old Subject: " + thisToken.getSubject() + ", Old Predicate: " + thisToken.getPredicate() + ", Old Object: " + thisToken.getObject() + ", New Value: " + thisToken.getNewValue() + ", Number of answers: " + thisToken.getNumOfRows());

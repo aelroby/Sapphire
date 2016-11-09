@@ -129,10 +129,26 @@ public class Warehouse {
 		if(!s.startsWith("\""))
 			return matches;
 		trimmedString = s.substring(s.indexOf("\"")+1, s.indexOf("\"", s.indexOf("\"")+1)).toLowerCase();	// Just choose what is between brackets
+		
+		int minLength = trimmedString.length();
+		int maxLength = trimmedString.length() + 5;
+		int minIndex = Integer.MAX_VALUE;
+		int maxIndex = -1;
+		
+		for(int i = 0; i < lengths.size(); ++i){
+			if(lengths.get(i) > maxLength) {
+				maxIndex = indexes.get(i);
+				break;
+			}
+			if(minLength >= lengths.get(i)) {
+				minIndex = indexes.get(i);
+			}
+		}
+		
 		double score;
 		String currentLiteral;
 		// Search in LiteralsIndex
-		for(int i = 0; i < literalsList.size(); ++i){
+		for(int i = minIndex; i < maxIndex; ++i){
 			if(s.compareTo(literalsList.get(i)) == 0)
 				continue;
 			if(literalsList.get(i).length() - s.length() > 10)
@@ -170,7 +186,7 @@ public class Warehouse {
 			}
 		}
 		
-		// Search in labels
+		// Search in literals
 		
 		// Choose bins according to length
 		int minLength = query.length();
