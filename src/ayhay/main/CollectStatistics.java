@@ -16,7 +16,9 @@ public class CollectStatistics {
 			Warehouse warehouse = new Warehouse();
 			
 			System.out.println("Initializing warehouse...");
-			warehouse.initializeWarehouse(parameterManager.getLabelsFile(), parameterManager.getPredicatesFile());
+			warehouse.initializeWarehouse(parameterManager.getLabelsFile(),
+					parameterManager.getPredicatesFile(),
+					parameterManager.getFrequentLiteralsFile());
 			
 			System.out.println("Writing length frequency histogram...");
 			warehouse.writeLengthHistogram("literals_histogram.csv");

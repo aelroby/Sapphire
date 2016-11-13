@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ayhay.dataStructures.AlternativeToken;
 import ayhay.dataStructures.SPARQLQuery;
 import ayhay.main.MainServlet;
+import ayhay.utils.RandomIDGenerator;
 
 public class AlternativeQueryGenerator {
 
@@ -70,7 +71,7 @@ public class AlternativeQueryGenerator {
 		
 		System.out.println("Finding answers to alternative queries...");
 		for(int i = 0; i < alternativeQueries.size(); ++i){
-			int id = (int) Math.random() * 10000;
+			int id = RandomIDGenerator.getID();
 			MainServlet.queryManager.executeQuery(id, alternativeQueries.get(i));
 			int numOfRows = MainServlet.queryManager.getNumberOfResults(id);
 			MainServlet.queryManager.closeQuery(id);

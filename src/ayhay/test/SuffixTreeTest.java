@@ -13,8 +13,8 @@ import ayhay.utils.Timer;
 
 public class SuffixTreeTest {
 
-	public static void main(String[] args) {
-        ParameterFileManager parameterManager = null;
+	public static void testPerformance() {
+		ParameterFileManager parameterManager = null;
         try {
         	System.out.println("Reading parameter file...");
 			parameterManager = new ParameterFileManager("parameters");
@@ -22,7 +22,9 @@ public class SuffixTreeTest {
 			Warehouse warehouse = new Warehouse();
 			
 			System.out.println("Initializing warehouse...");
-			warehouse.initializeWarehouse(parameterManager.getLabelsFile(), parameterManager.getPredicatesFile());
+			warehouse.initializeWarehouse(parameterManager.getLabelsFile(),
+					parameterManager.getPredicatesFile(),
+					parameterManager.getFrequentLiteralsFile());
 		    
 		    
 		    
@@ -78,6 +80,21 @@ public class SuffixTreeTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// Test if two entries would return different indexes
+	public static void testFunctionality() {
+		GeneralizedSuffixTree in = new GeneralizedSuffixTree();
+		in.put("barack obama", 0);
+		in.put("barack obama", 1);
+		HashSet<Integer> output = (HashSet<Integer>) in.search("barack obama");
+		for(Integer index : output) {
+    		System.out.println("Index: " + index);
+    	}
+	}
+	
+	public static void main(String[] args) {
+        testFunctionality();
 	}
 
 }

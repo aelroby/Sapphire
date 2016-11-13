@@ -20,7 +20,6 @@ import ayhay.query.QueryManager;
 @WebServlet("/MainServlet")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String TDBDirectory;
     public static QueryManager queryManager;
     
     
@@ -31,12 +30,10 @@ public class MainServlet extends HttpServlet {
         try {
 			parameterManager = new ParameterFileManager("parameters");
 			parameterManager.readParameterFile();
-			this.TDBDirectory = parameterManager.getTDBDirectory();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
         queryManager = new QueryManager();
-    	queryManager.initializeDataset(TDBDirectory);
     }
     /**
      * Default constructor. 
@@ -59,8 +56,6 @@ public class MainServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		
-		if(!queryManager.initialized)
-			queryManager.initializeDataset(TDBDirectory);
 		String[] inputs = request.getParameterValues("myInputs[]");
 		
 		SPARQLQuery sparqlQuery = new SPARQLQuery(inputs);

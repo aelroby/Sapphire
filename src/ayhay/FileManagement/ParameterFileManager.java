@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class ParameterFileManager {
 
-	private String TDBDirectory, labelsFile, predicatesFile;
+	private String TDBDirectory, labelsFile, predicatesFile, frequentLiteralsFile;
 	String fileName;
 	
 	/**
@@ -37,6 +37,10 @@ public class ParameterFileManager {
 	 */
 	public String getTDBDirectory(){
 		return TDBDirectory;
+	}
+	
+	public String getFrequentLiteralsFile() {
+		return frequentLiteralsFile;
 	}
 	
 	public String getLabelsFile() {
@@ -112,7 +116,28 @@ public class ParameterFileManager {
 			br.close();
 			throw new IllegalArgumentException("Third line should be formatted \"InputLinks=<InputLinksFilesDirectory>\"");
 		}
-			
+		
+		// Fourth line is most frequent literals
+		line = br.readLine();
+		parts = line.split("=");
+		if(parts[0].compareTo("FrequentLiterals") == 0){
+			frequentLiteralsFile = parts[1];
+			try{
+				File f = new File(frequentLiteralsFile);
+				if(!f.exists()){
+					br.close();
+					throw new FileNotFoundException("most frequent literals file "
+					+ frequentLiteralsFile + " not found");
+				}
+			}
+			catch(FileNotFoundException e){
+				System.out.println(e.getMessage());
+			}
+		}
+		else{
+			br.close();
+			throw new IllegalArgumentException("Fourth line should be formatted \"FrequentLiterals=<FrequentLiteralsFilesDirectory>\"");
+		}
 		br.close();
 	}
 
