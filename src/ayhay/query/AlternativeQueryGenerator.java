@@ -7,25 +7,42 @@ import ayhay.dataStructures.SPARQLQuery;
 import ayhay.main.MainServlet;
 import ayhay.utils.RandomIDGenerator;
 
+
+/**
+ * This class suggests alternative queries to the one executed
+ * This happens by finding alternatives to values in the triples
+ * of the query.
+ * It also mutates the structure of the query to find more alternatives
+ * @author ahmed
+ */
 public class AlternativeQueryGenerator {
 
+	
+	/**
+	 * Relax the query to find alternatives to its structure
+	 * @param query The SPARQL query 
+	 * @return ArrayList of alternative queries
+	 */
 	public ArrayList<SPARQLQuery> relaxQuery(SPARQLQuery query) {
 		ArrayList<SPARQLQuery> alternativeQueries = 
 				new ArrayList<SPARQLQuery>();
 		
-		/* Magic happens here */
-		
+		// TODO: Magic happens here
 		
 		return alternativeQueries;
 	}
 	
+	/**
+	 * Find alternatives to the query seeds (values of predicates and literal)
+	 * @param query The SPARQL query
+	 * @return ArrayList of alternative tokens
+	 */
 	public ArrayList<AlternativeToken> findSimilarQueries(SPARQLQuery query) {
 		ArrayList<AlternativeToken> alternativeTokens = 
 				new ArrayList<AlternativeToken>();
 		ArrayList<String> alternativeQueries = 
 				new ArrayList<String>();
 		
-		/* Magic happens here */
 		ArrayList<ArrayList<String>> where = query.getWhere();
 		for(int i = 0; i < where.size(); ++i){
 			ArrayList<String> clause = where.get(i);

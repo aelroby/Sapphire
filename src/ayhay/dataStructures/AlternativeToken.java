@@ -1,5 +1,14 @@
 package ayhay.dataStructures;
 
+
+/**
+ * This class described ana alternative token for the query.
+ * A token is a triple.
+ * This class keeps the original subject, predicate, and objects
+ * and the new value of the changed value.
+ * 
+ * @author ahmed
+ */
 public class AlternativeToken {
 	
 	private String subject, predicate, object, newValue;

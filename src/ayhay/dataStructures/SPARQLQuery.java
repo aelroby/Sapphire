@@ -3,14 +3,28 @@ package ayhay.dataStructures;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * This class is a representation of the SPARQL query.
+ * It contains the following:
+ * SELECT values
+ * WHERE Triples
+ * Modifiers
+ * SPARQL query as a String
+ * @author ahmed
+ *
+ */
 public class SPARQLQuery {
 	private ArrayList<String> select;
 	private ArrayList<ArrayList<String>> where;
 	private ArrayList<String> modifiers;
-	private boolean isValid;
-	private boolean hasModifiers;
+	private boolean isValid;		// This query is valid and can be executed
+	private boolean hasModifiers;	// This query has modifiers
 	private String queryString;
 	
+	/**
+	 * 
+	 * @return A copy of this SPARQL query object
+	 */
 	public SPARQLQuery copyObject() {
 		SPARQLQuery newObject = new SPARQLQuery();
 		
