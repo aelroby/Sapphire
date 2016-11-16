@@ -3,7 +3,7 @@ package ayhay.autoComplete;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 
@@ -11,6 +11,7 @@ import com.abahgat.suffixtree.GeneralizedSuffixTree;
 
 import ayhay.dataStructures.StringScore;
 import ayhay.utils.FileManager;
+import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
 import ayhay.utils.Timer;
 import info.debatty.java.stringsimilarity.JaroWinkler;
@@ -35,8 +36,8 @@ public class Warehouse {
 	private ArrayList<Integer> lengths;
 	
 	// Synchronized list used by threads
-	private List<String> listForTypeahead;
-	private List<StringScore> listForSuggestions;
+	private Set<String> setForTypeahead;
+	private Set<StringScore> setForSuggestions;
 	
 	// Number of corse available in runtime
 	private int numOfCores;
@@ -77,7 +78,7 @@ public class Warehouse {
 				if(literalsList.get(i).toLowerCase().contains(query.toLowerCase())){
 					System.out.println("Thread " + Thread.currentThread().getName() + 
 							" found " + literalsList.get(i));
-					listForTypeahead.add(literalsList.get(i));
+					setForTypeahead.add(literalsList.get(i));
 					--resultsToBeFound;
 					if(resultsToBeFound < 0)
 						break;
@@ -110,8 +111,12 @@ public class Warehouse {
 		public void run() {
 			double score;
 			String currentLiteral;
-			for(int i = minIndex; i < maxIndex; ++i){
+			for(int i = minIndex; i < maxIndex; ++i) {
+				
 				// If the literal is the same as the given string, continue
+				if(literalsList.get(i).compareTo("\"The Godfather\"@en") == 0) {
+					System.out.println("");
+				}
 				if(query.compareTo(literalsList.get(i)) == 0)
 					continue;
 				
@@ -128,7 +133,7 @@ public class Warehouse {
 				
 				// If score is above threshold, add it to list
 				if(score > 0.6){
-					listForSuggestions.add(new StringScore(literalsList.get(i), score));
+					setForSuggestions.add(new StringScore(literalsList.get(i), score));
 				}
 			}
 		}
@@ -148,11 +153,11 @@ public class Warehouse {
 		
 		// This list has to be synchronized because it gets filled
 		// up by multiple threads
-		listForTypeahead = Collections.synchronizedList(new ArrayList<String>());
+		setForTypeahead = Collections.synchronizedSet(new HashSet<String>());
 		
 		// This list has to be synchronized because it gets filled
 		// up by multiple threads
-		listForSuggestions = Collections.synchronizedList(new ArrayList<StringScore>());
+		setForSuggestions = Collections.synchronizedSet(new HashSet<StringScore>());
 		
 		// Stats variables initialized
 		numOfSearchTasks = numOfIndexHits = 0;
@@ -372,8 +377,8 @@ public class Warehouse {
 		}
 		
 		// Copy contents of the synchronized list into the matchesScores list
-		for(int i = 0; i < listForSuggestions.size(); ++i) {
-			matchesScores.add(listForSuggestions.get(i));
+		for(StringScore stringScore : setForSuggestions) {
+			matchesScores.add(stringScore);
 		}
 		
 		// Sort the candidate matches based on score and return top 5
@@ -402,7 +407,7 @@ public class Warehouse {
 		resultsToBeFound = 10;
 		
 		// Clear the matches list
-		listForTypeahead.clear();
+		setForTypeahead.clear();
 		
 		// The returned JSON array
 		JSONArray arrayObj = new JSONArray();
@@ -484,9 +489,16 @@ public class Warehouse {
 			}
 		}
 		
+		// Sort by length
+		ArrayList<String> tempList = new ArrayList<String>();
+		for(String string : setForTypeahead) {
+			tempList.add(string);
+		}
+		java.util.Collections.sort(tempList, new LengthComparator());
+		
 		// Fill the array
-		for(int i = 0; i < listForTypeahead.size(); ++i) {
-			arrayObj.add(listForTypeahead.get(i));
+		for(String string : tempList) {
+			arrayObj.add(string);
 		}
 		
 		// Stop timer
