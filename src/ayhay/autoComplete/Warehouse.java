@@ -354,7 +354,7 @@ public class Warehouse {
 		ArrayList<Thread> threads = new ArrayList<Thread>();
 		
 		for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
-			threads.add(new Thread(new SuggestionTask(minIndex, maxIndex, s, trimmedString)));
+			threads.add(new Thread(new SuggestionTask(i, i + indexesPerThread, s, trimmedString)));
 		}
 		
 		// Start threads
@@ -467,7 +467,7 @@ public class Warehouse {
 		ArrayList<Thread> threads = new ArrayList<Thread>();
 		
 		for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
-			threads.add(new Thread(new SearchTask(minIndex, maxIndex, query)));
+			threads.add(new Thread(new SearchTask(i, i + indexesPerThread, query)));
 		}
 		
 		// Start threads
