@@ -85,7 +85,6 @@ public class Warehouse {
 				}
 			}
 		}
-		
 	}
 	
 	/**
@@ -114,9 +113,6 @@ public class Warehouse {
 			for(int i = minIndex; i < maxIndex; ++i) {
 				
 				// If the literal is the same as the given string, continue
-				if(literalsList.get(i).compareTo("\"The Godfather\"@en") == 0) {
-					System.out.println("");
-				}
 				if(query.compareTo(literalsList.get(i)) == 0)
 					continue;
 				
@@ -132,7 +128,7 @@ public class Warehouse {
 				score = jw.similarity(currentLiteral, trimmedString);
 				
 				// If score is above threshold, add it to list
-				if(score > 0.6){
+				if(score > 0.9){
 					setForSuggestions.add(new StringScore(literalsList.get(i), score));
 				}
 			}
@@ -198,6 +194,20 @@ public class Warehouse {
 	}
 	
 	/**
+	 * Clean the given String ArrayList from extra space at the end
+	 * of each String, if it exists
+	 * @param list
+	 */
+	public void removeSpaceFromEndOfString(ArrayList<String> list) {
+		
+		for(int i = 0; i < list.size(); ++i) {
+			if(list.get(i).charAt(list.get(i).length()-1) == ' ') {
+				list.set(i, list.get(i).substring(0, list.get(i).length()-1));
+			}
+		}
+	}
+	
+	/**
 	 * Reads the predicates and literals from files
 	 * and divide literals in bins
 	 * 
@@ -211,14 +221,17 @@ public class Warehouse {
 		
 		System.out.println("Reading literals file...");
 		literalsList = FileManager.readFileLineByLine(literalsFile);
+		removeSpaceFromEndOfString(literalsList);
 		System.out.println("Reading literals file finished!");
 		
 		System.out.println("Reading predicates file...");
 		predicatesList = FileManager.readFileLineByLine(predicatesFile);
+		removeSpaceFromEndOfString(predicatesList);
 		System.out.println("Reading predicates file finished!");
 		
 		System.out.println("Reading frequent literals file...");
 		frequentLiteralsList = FileManager.readFileLineByLine(mostFrequentLiteralsFile);
+		removeSpaceFromEndOfString(frequentLiteralsList);
 		for(int i = 0; i < frequentLiteralsList.size(); ++i) {
 			in.put(frequentLiteralsList.get(i).toLowerCase(), i);
 		}
@@ -428,7 +441,7 @@ public class Warehouse {
 		}
 		
 		for(Integer index : output) {
-    		arrayObj.add(frequentLiteralsList.get(index));
+			arrayObj.add(frequentLiteralsList.get(index));
     		--resultsToBeFound;
     	}
 		
@@ -492,7 +505,8 @@ public class Warehouse {
 		// Sort by length
 		ArrayList<String> tempList = new ArrayList<String>();
 		for(String string : setForTypeahead) {
-			tempList.add(string);
+			if(!arrayObj.contains(string))
+				tempList.add(string);
 		}
 		java.util.Collections.sort(tempList, new LengthComparator());
 		
