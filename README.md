@@ -1,2 +1,2 @@
-# guidedSPARQL
-SPARQL query constructor for non-experts
+# Sapphire
+Querying RDF Data Made Simple
