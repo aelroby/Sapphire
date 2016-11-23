@@ -1,6 +1,7 @@
 package ayhay.autoComplete;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -303,12 +304,12 @@ public class Warehouse {
 				continue;
 			
 			currentPredicate = predicatesList.get(i);
-
+			
 			// Trim predicate
 			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 					currentPredicate.length()-1).toLowerCase();
 			
-			score = jw.similarity(currentPredicate, trimmedString); 
+			score = jw.similarity(trimmedString, currentPredicate); 
 			
 			// If score is above threshold, add it to the candidate matches list
 			if(score > 0.5){
@@ -433,7 +434,14 @@ public class Warehouse {
 		}
 		
 		// Search in index first
-		HashSet<Integer> output = (HashSet<Integer>) in.search(query.toLowerCase());
+		Collection<Integer> list = in.search(query.toLowerCase());
+		HashSet<Integer> output = null;
+		if(list.size() > 0) {
+			output = (HashSet<Integer>) list;
+		}
+		else {
+			output = new HashSet<Integer>();
+		}
 
 		// If found a match, that's a hit
 		if(output.size() > 0) {
