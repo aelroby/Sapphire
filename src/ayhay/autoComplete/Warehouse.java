@@ -131,7 +131,7 @@ public class Warehouse {
 //				score = jw.similarity(currentLiteral, trimmedString);
 				
 				// If score is above threshold, add it to list
-				if(score > 0.9){
+				if(score > 0.5){
 					setForSuggestions.add(new StringScore(literalsList.get(i), score));
 				}
 			}
