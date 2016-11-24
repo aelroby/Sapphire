@@ -15,7 +15,8 @@ import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
 import ayhay.utils.Timer;
-import info.debatty.java.stringsimilarity.JaroWinkler;
+//import info.debatty.java.stringsimilarity.JaroWinkler;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 
 /**
@@ -50,7 +51,7 @@ public class Warehouse {
 	private GeneralizedSuffixTree in;
 	
 	// Similarity class
-	private JaroWinkler jw;
+//	private JaroWinkler jw;
 	
 	// Variables for statistics
 	private int numOfSearchTasks;
@@ -126,7 +127,8 @@ public class Warehouse {
 					System.out.println("A non-literal value was found in literalsList: " + literalsList.get(i));
 				}
 				// Get the score
-				score = jw.similarity(currentLiteral, trimmedString);
+				score = 1.0 * FuzzySearch.ratio(currentLiteral, trimmedString)/100;
+//				score = jw.similarity(currentLiteral, trimmedString);
 				
 				// If score is above threshold, add it to list
 				if(score > 0.9){
@@ -238,7 +240,7 @@ public class Warehouse {
 		}
 		System.out.println("Reading frequent literals file finished!");
 		
-		jw = new JaroWinkler();
+//		jw = new JaroWinkler();
 		System.out.println("Analyzing literals...");
 		analyzeLiterals();
 		Timer.stop();
@@ -309,7 +311,8 @@ public class Warehouse {
 			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 					currentPredicate.length()-1).toLowerCase();
 			
-			score = jw.similarity(trimmedString, currentPredicate); 
+			score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
+//			score = jw.similarity(trimmedString, currentPredicate); 
 			
 			// If score is above threshold, add it to the candidate matches list
 			if(score > 0.5){
