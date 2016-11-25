@@ -337,6 +337,9 @@ public class Warehouse {
 	 * @return An Arraylist of similar literals
 	 */
 	public ArrayList<String> findSimilarStringsLiterals(String s){
+		
+		setForSuggestions.clear();
+		
 		// ArrayList for match scores
 		ArrayList<StringScore> matchesScores = new ArrayList<StringScore>(); 
 		
@@ -470,7 +473,6 @@ public class Warehouse {
 			writeStatsToFile();
 			return arrayObj;
 		}
-		
 		
 		// In length bins
 		// Search in bins with a minimum length of the query
