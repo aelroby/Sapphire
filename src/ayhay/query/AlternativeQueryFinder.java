@@ -35,8 +35,9 @@ public class AlternativeQueryFinder extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String[] inputs = request.getParameterValues("myInputs[]");
+		String[] filters = request.getParameterValues("myFilters[]");
 
-        SPARQLQuery sparqlQuery = new SPARQLQuery(inputs);
+        SPARQLQuery sparqlQuery = new SPARQLQuery(inputs,filters);
         if(!sparqlQuery.isValid()) {
         	return;
         }

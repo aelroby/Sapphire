@@ -1,7 +1,47 @@
 var lastSubmitInput= [];
+var lastSubmitFilters= [];
 var variables = new Set();
 var dataSet = [];
 var myTable;
+
+
+function show_filter() {
+	var filter_type = document.getElementById("filter_type").value;
+	
+	console.log("Filter Type = "+filter_type);
+	
+	document.getElementById("filter_value_show").style.display = 'none';
+	document.getElementById("filter_month_show").style.display = 'none';
+	document.getElementById("filter_date_show").style.display = 'none';
+	
+	if(filter_type=="-1" || filter_type=="v" || filter_type=="n" || filter_type=="YEAR"){
+		document.getElementById("filter_value_show").style.display = 'inline';
+		document.getElementById("filter_month_show").style.display = 'none';
+    	document.getElementById("filter_date_show").style.display = 'none';
+	} else if (filter_type=="MONTH"){
+		document.getElementById("filter_value_show").style.display = 'none';
+		document.getElementById("filter_month_show").style.display = 'inline';
+    	document.getElementById("filter_date_show").style.display = 'none';
+	} else if (filter_type=="d"){
+		document.getElementById("filter_value_show").style.display = 'none';
+		document.getElementById("filter_month_show").style.display = 'none';
+    	document.getElementById("filter_date_show").style.display = 'inline';
+	}
+}
+
+function init_filter() {
+	
+	document.getElementById("filter").value = "-1";
+	document.getElementById("filter_type").value = "-1";
+	document.getElementById("operator").value = "-1";
+		
+	document.getElementById("filter_type").value="-1";
+	document.getElementById("filter_value_show").style.display = 'inline';
+	document.getElementById("filter_month_show").style.display = 'none';
+	document.getElementById("filter_date_show").style.display = 'none';
+	
+}
+
 
 /**
  * This function ensures that the set called variables include the most recent list of 
@@ -11,6 +51,7 @@ var myTable;
 function updateVariables(){
 	var allInputs = document.getElementsByTagName("input");
 	variables.clear();
+	show_filter();
 	
 	
 	// find missing variables
@@ -27,11 +68,30 @@ function updateVariables(){
 		document.getElementById("mySelect").value.replace(/(^|\W)\?(\w+)/g, '');
 //	console.log("after replace: "+document.getElementById("mySelect").value);
 	
+	var select = document.getElementById("filter");
+	//select.find('option').remove()
+	selectedValue = select.value
+	select.options.length = 0;
+	select.append(new Option("Pick a variable name","-1"));
+	
+    
 	variables.forEach(function(item) {
 //		console.log("Add to select statement: "+item);
 		document.getElementById("mySelect").value = document.getElementById("mySelect").value.concat(" ",item);
+		// add options to the filter drop-down list
+
+		//var opt = document.createElement('option');
+	    //opt.value = "k";
+	    //opt.innerHTML = "kkk";
+		select.append(new Option(item, item));
+		
+		//$("#filter").append(new Option(item, item));
 		});
 	
+select.value = selectedValue;
+	
+$('.selectpicker').selectpicker('refresh');
+
 //	console.log("after fix: "+document.getElementById("mySelect").value);
 		
 }
@@ -60,8 +120,10 @@ function copyArray(oldA, newA){
 function validateQuery(){
 	
 	var allInputs = document.getElementsByTagName("input");
+	var allFilters = document.getElementsByTagName("select");
 	
 	console.log("current input collected, old length = " + lastSubmitInput.length);
+	console.log("current filter collected, old length = " + lastSubmitFilters.length);
 	
 	// If all are variables --> Don't run query (This will take forever)
 	var allVariables = true;
@@ -79,6 +141,7 @@ function validateQuery(){
 	// If length is different --> different query
 	if(lastSubmitInput.length != allInputs.length){
 		lastSubmitInput = copyArray(lastSubmitInput, allInputs);
+		lastSubmitFilter = copyArray(lastSubmitFilters, allFilters);
 		console.log("last Submit Input updated-1");
 		return true;
 	}
@@ -93,7 +156,29 @@ function validateQuery(){
 
 	if(differentValues == true){
 		lastSubmitInput = copyArray(lastSubmitInput, allInputs);
+		lastSubmitFilter = copyArray(lastSubmitFilters, allFilters);
 		console.log("last Submit Input updated-2");
+		return true;
+	}
+	
+	// may be same variables but different filters !
+	var differentFilters = false;
+	
+	console.log(" filter length = "+ allFilters.length);
+	for(var i=0; i<allFilters.length;i++)
+		console.log(" value ... "+ allFilters[i].value);
+	
+	for(var x=0; x<allFilters.length; x++){
+		console.log("checking " + lastSubmitFilters[x] +" ? " + allFilters[x].value);
+		if(lastSubmitFilter[x] != allFilters[x].value)
+			differentFilters = true;
+	}
+	
+	if(differentFilters == true){
+		
+		lastSubmitInput = copyArray(lastSubmitInput, allInputs);
+		lastSubmitFilters = copyArray(lastSubmitFilters, allFilters);
+		console.log("last Submit Input updated-3");
 		return true;
 	}
 	else{
@@ -167,6 +252,36 @@ function UpdateTriple(f,t,s,p,o,newV){
         }
 }
 
+
+function validate_filters(){
+	
+	var valid = true;
+	
+	if (document.getElementById("filter").value == "-1" ||
+	document.getElementById("filter_type").value == "-1" ||
+	document.getElementById("operator").value == "-1") 
+		valid = false;
+		
+	
+	if (document.getElementById("filter_type").value == 'YEAR' ||
+		document.getElementById("filter_type").value == 'n' ||
+		document.getElementById("filter_type").value == 'v' ){
+		if (document.getElementById("filter_value").value == '')
+			valid = false;
+	}
+	else if (document.getElementById("filter_type").value == 'MONTH'){
+		if (document.getElementById("filter_month").value == "-1")
+			valid = false;
+	}
+	else if (document.getElementById("filter_type").value == 'd'){
+		if (document.getElementById("filter_date").value == '')
+			valid = false;
+	}
+		
+	return valid;
+}
+		
+		
 function validate(f,id){
 	var valid = true;
 	if( document.getElementById("subject-"+id).value == '' 	|| document.getElementById("subject-"+id).value == 'Subject'	||
@@ -333,7 +448,7 @@ function getSuggestions(){
     		// double qoutes cannot be escaped in onClick actions. The best way to write double qoutes in HTML is using &quot;
     		// Reference: http://stackoverflow.com/questions/1081573/escaping-double-quotes-in-javascript-onclick-event-handler
     		record += "<a class=\"updateLink\"  onclick=\"UpdateTriple(this.form,'"+myType+"','"+mySubject+"','"+myPredicate+"','"+
-    			myObject.replace(/\"/g, '&quot;')+"','"+myNewValue.replace(/\"/g, '&quot;')+"'); callQuery(); getSuggestions();\">Update Query</a>";
+    			myObject.replace(/\"/g, '&quot;')+"','"+myNewValue.replace(/\"/g, '&quot;')+"'); init_filter(); callQuery(); getSuggestions();\">Update Query</a>";
     		
     		record += "</td></tr>";
     		body += record;
