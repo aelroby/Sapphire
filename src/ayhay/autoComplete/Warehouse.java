@@ -1,6 +1,7 @@
 package ayhay.autoComplete;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,8 @@ import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
 import ayhay.utils.Timer;
-import info.debatty.java.stringsimilarity.JaroWinkler;
+//import info.debatty.java.stringsimilarity.JaroWinkler;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 
 /**
@@ -49,7 +51,7 @@ public class Warehouse {
 	private GeneralizedSuffixTree in;
 	
 	// Similarity class
-	private JaroWinkler jw;
+//	private JaroWinkler jw;
 	
 	// Variables for statistics
 	private int numOfSearchTasks;
@@ -76,8 +78,8 @@ public class Warehouse {
 		public void run() {
 			for(int i = minIndex; i < maxIndex; ++i){
 				if(literalsList.get(i).toLowerCase().contains(query.toLowerCase())){
-					System.out.println("Thread " + Thread.currentThread().getName() + 
-							" found " + literalsList.get(i));
+//					System.out.println("Thread " + Thread.currentThread().getName() + 
+//							" found " + literalsList.get(i));
 					setForTypeahead.add(literalsList.get(i));
 					--resultsToBeFound;
 					if(resultsToBeFound < 0)
@@ -125,10 +127,13 @@ public class Warehouse {
 					System.out.println("A non-literal value was found in literalsList: " + literalsList.get(i));
 				}
 				// Get the score
-				score = jw.similarity(currentLiteral, trimmedString);
+				score = 1.0 * FuzzySearch.ratio(currentLiteral, trimmedString)/100;
+//				score = jw.similarity(currentLiteral, trimmedString);
 				
 				// If score is above threshold, add it to list
-				if(score > 0.9){
+				if(score > 0.7){
+//					System.out.println("Thread " + Thread.currentThread().getId() + ": found " +
+//							literalsList.get(i));
 					setForSuggestions.add(new StringScore(literalsList.get(i), score));
 				}
 			}
@@ -237,7 +242,7 @@ public class Warehouse {
 		}
 		System.out.println("Reading frequent literals file finished!");
 		
-		jw = new JaroWinkler();
+//		jw = new JaroWinkler();
 		System.out.println("Analyzing literals...");
 		analyzeLiterals();
 		Timer.stop();
@@ -303,12 +308,13 @@ public class Warehouse {
 				continue;
 			
 			currentPredicate = predicatesList.get(i);
-
+			
 			// Trim predicate
 			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 					currentPredicate.length()-1).toLowerCase();
 			
-			score = jw.similarity(currentPredicate, trimmedString); 
+			score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
+//			score = jw.similarity(trimmedString, currentPredicate); 
 			
 			// If score is above threshold, add it to the candidate matches list
 			if(score > 0.5){
@@ -331,6 +337,9 @@ public class Warehouse {
 	 * @return An Arraylist of similar literals
 	 */
 	public ArrayList<String> findSimilarStringsLiterals(String s){
+		
+		setForSuggestions.clear();
+		
 		// ArrayList for match scores
 		ArrayList<StringScore> matchesScores = new ArrayList<StringScore>(); 
 		
@@ -348,7 +357,7 @@ public class Warehouse {
 		trimmedString = s.substring(s.indexOf("\"")+1, s.indexOf("\"", s.indexOf("\"")+1)).toLowerCase();	// Just choose what is between brackets
 		
 		// Find similar literals withing 5 characters
-		int minLength = trimmedString.length();
+		int minLength = trimmedString.length() - 2;
 		int maxLength = trimmedString.length() + 5;
 		
 		int minIndex = Integer.MAX_VALUE;
@@ -390,12 +399,19 @@ public class Warehouse {
 		}
 		
 		// Copy contents of the synchronized list into the matchesScores list
+		System.out.println("Found " + setForSuggestions.size() + " alternatives for " + s);
+		for(StringScore score : setForSuggestions) {
+			System.out.println(score.getS());
+		}
+		
 		for(StringScore stringScore : setForSuggestions) {
 			matchesScores.add(stringScore);
 		}
 		
 		// Sort the candidate matches based on score and return top 5
+		System.out.println("Sorting alternatives...");
 		java.util.Collections.sort(matchesScores, new StringScoreComparator());
+		System.out.println("Picking top 5!");
 		for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
 			matches.add(matchesScores.get(i).getS());
 		}
@@ -433,7 +449,14 @@ public class Warehouse {
 		}
 		
 		// Search in index first
-		HashSet<Integer> output = (HashSet<Integer>) in.search(query.toLowerCase());
+		Collection<Integer> list = in.search(query.toLowerCase());
+		HashSet<Integer> output = null;
+		if(list.size() > 0) {
+			output = (HashSet<Integer>) list;
+		}
+		else {
+			output = new HashSet<Integer>();
+		}
 
 		// If found a match, that's a hit
 		if(output.size() > 0) {
@@ -451,12 +474,11 @@ public class Warehouse {
 			return arrayObj;
 		}
 		
-		
 		// In length bins
 		// Search in bins with a minimum length of the query
 		// and a maximum of the query length + 12
 		int minLength = query.length();
-		int maxLength = query.length() + 12;
+		int maxLength = query.length() + 10;
 		
 		int minIndex = Integer.MAX_VALUE;
 		int maxIndex = -1;
