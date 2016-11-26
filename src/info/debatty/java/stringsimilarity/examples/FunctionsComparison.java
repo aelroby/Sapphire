@@ -6,16 +6,21 @@ import info.debatty.java.stringsimilarity.JaroWinkler;
 import info.debatty.java.stringsimilarity.NGram;
 import info.debatty.java.stringsimilarity.NormalizedLevenshtein;
 import info.debatty.java.stringsimilarity.SorensenDice;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 public class FunctionsComparison {
 
 	public static void main(String[] args) {
 
 		double similarityScore;
-		String s1 = "name";
-		String s2 = "familyname";
+		String s1 = "Countries in Africa";
+		String s2 = "African Countries";
 		
 		System.out.println("Comparison between \"" + s1 + "\" and \"" + s2 + "\":");
+		
+		// FuzzyWuzzy
+		System.out.println("FuzzyWuzzy: " + 
+				1.0 * FuzzySearch.ratio(s1, s2)/100);
 		
 		// Jaccard Index
 		Jaccard j2 = new Jaccard(2);

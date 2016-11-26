@@ -313,6 +313,11 @@ public class Warehouse {
 			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 					currentPredicate.length()-1).toLowerCase();
 			
+			if(trimmedString.contains("name") && currentPredicate.equals("rdf-schema#label")) {
+				matchesScores.add(new StringScore(predicatesList.get(i), 1));
+				continue;
+			}
+			
 			score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
 //			score = jw.similarity(trimmedString, currentPredicate); 
 			
