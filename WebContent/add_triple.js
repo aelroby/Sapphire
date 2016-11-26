@@ -58,3 +58,5 @@ function addTriple(formGroup, addButtonGroup){
         accurateCounter++;
     }
 }
+
+

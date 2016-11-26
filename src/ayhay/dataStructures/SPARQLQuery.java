@@ -126,7 +126,7 @@ public class SPARQLQuery {
 		queryString += "}";
 	}
 	
-	public SPARQLQuery(String[] query) {
+	public SPARQLQuery(String[] query, String[] filters) {
 		
 		// Check the query syntax
 		isValid = true;
@@ -161,6 +161,39 @@ public class SPARQLQuery {
 				queryString += query[i++] + ".";
 				where.add(singleClause);
 			}
+			
+			System.out.println(filters.length);
+			System.out.println(filters[0]);
+			System.out.println(filters[1]);
+			
+			if (filters.length>0 && filters.length%3==0 && !filters[0].equalsIgnoreCase("-1") && !filters[1].equalsIgnoreCase("-1") ){
+
+				queryString += " FILTER (";
+				
+
+				if(filters[1].equalsIgnoreCase("n") || filters[1].equalsIgnoreCase("v")){
+					queryString += filters[0] + " ";
+					queryString += filters[2] + " "; // operator
+					queryString += filters[3] + " "; // value
+				}else if(filters[1].equalsIgnoreCase("YEAR") || filters[1].equalsIgnoreCase("MONTH")){
+					queryString += filters[1]+"(" + filters[0] + ") "; // YEAR
+					queryString += filters[2] + " "; // operator
+					queryString += filters[3] + " "; // value
+				}else if(filters[1].equalsIgnoreCase("MONTH") || filters[1].equalsIgnoreCase("MONTH")){
+					queryString += filters[1]+"(" + filters[0] + ") "; // YEAR
+					queryString += filters[2] + " "; // operator
+					queryString += filters[4] + " "; // month
+				}else if(filters[1].equalsIgnoreCase("d")){
+					queryString += filters[0] + " ";
+					queryString += filters[2] + " "; // operator
+					queryString += "\""+filters[5] +"\"^^<http://www.w3.org/2001/XMLSchema#date> "; // date value
+				}else{
+					System.out.println("ERROR: filter type is not recognized");
+				}
+				
+				
+				queryString += ").";
+			}
 			queryString += "}";
 		}
 		// There are modifiers
@@ -176,6 +209,13 @@ public class SPARQLQuery {
 			// TODO: Handle modifier here
 			
 		}
+		
+		if(filters.length >0){
+			// TODO: apply filters
+			
+		}
+		System.out.println("------+++++====+++++++-----");
+		System.out.println(queryString);
 	}
 
 	public SPARQLQuery() {

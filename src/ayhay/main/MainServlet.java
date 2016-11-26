@@ -57,8 +57,9 @@ public class MainServlet extends HttpServlet {
 
 		
 		String[] inputs = request.getParameterValues("myInputs[]");
+		String[] filters = request.getParameterValues("myFilters[]");
 		
-		SPARQLQuery sparqlQuery = new SPARQLQuery(inputs);
+		SPARQLQuery sparqlQuery = new SPARQLQuery(inputs, filters);
 		if(!sparqlQuery.isValid())
 			return;
 		String query = sparqlQuery.getQueryString();
