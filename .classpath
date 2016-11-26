@@ -10,5 +10,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JenaLibs"/>
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/fuzzywuzzy"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Wordnet"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
