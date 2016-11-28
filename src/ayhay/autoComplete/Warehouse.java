@@ -3,7 +3,9 @@ package ayhay.autoComplete;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.json.simple.JSONArray;
@@ -15,7 +17,6 @@ import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
 import ayhay.utils.Timer;
-//import info.debatty.java.stringsimilarity.JaroWinkler;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
 
@@ -40,6 +41,8 @@ public class Warehouse {
 	// Synchronized list used by threads
 	private Set<String> setForTypeahead;
 	private Set<StringScore> setForSuggestions;
+	
+	private Map<String, ArrayList<String>> semanticRelationsMap;
 	
 	// Number of corse available in runtime
 	private int numOfCores;
@@ -141,6 +144,162 @@ public class Warehouse {
 		
 	}
 	
+	// Fill in relations based on wordnet
+	private void fillSemanticRelations() {
+
+		// name
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("label");
+		list.add("word");
+		semanticRelationsMap.put("name", list);
+		
+		
+		// wife
+		list = new ArrayList<String>();
+		list.add("spouse");
+		list.add("partner");
+		list.add("mate");
+		list.add("woman");
+		list.add("housewife");
+		semanticRelationsMap.put("wife", list);
+		
+		// vice
+		list = new ArrayList<String>();
+		list.add("frailty");
+		list.add("gambling");
+		list.add("intemperance");
+		list.add("transgression");
+		list.add("executive");
+		semanticRelationsMap.put("vice", list);
+		
+		// start
+		list = new ArrayList<String>();
+		list.add("beginning");
+		list.add("commencement");
+		semanticRelationsMap.put("start", list);
+		
+		// type
+		list = new ArrayList<String>();
+		list.add("breed");
+		list.add("nature");
+		list.add("kind");
+		list.add("form");
+		semanticRelationsMap.put("type", list);
+		
+		// instrument
+		list = new ArrayList<String>();
+		list.add("tool");
+		list.add("device");
+		semanticRelationsMap.put("instrument", list);
+		
+		// parent
+		list = new ArrayList<String>();
+		list.add("mother");
+		list.add("father");
+		list.add("child");
+		semanticRelationsMap.put("parent", list);
+		
+		// child
+		list = new ArrayList<String>();
+		list.add("kid");
+		list.add("minor");
+		list.add("baby");
+		semanticRelationsMap.put("child", list);
+		
+		// author
+		list = new ArrayList<String>();
+		list.add("writer");
+		list.add("contributor");
+		list.add("journalist");
+		list.add("paragrapher");
+		semanticRelationsMap.put("author", list);
+		
+		// altitude
+		list = new ArrayList<String>();
+		list.add("height");
+		list.add("level");
+		list.add("ceiling");
+		list.add("elevation");
+		list.add("length");
+		semanticRelationsMap.put("altitude", list);
+		
+		// director
+		list = new ArrayList<String>();
+		list.add("manager");
+		list.add("administrator");
+		list.add("executive");
+		semanticRelationsMap.put("director", list);
+		
+		// artist
+		list = new ArrayList<String>();
+		list.add("musician");
+		list.add("painter");
+		list.add("sculptor");
+		list.add("stylest");
+		list.add("creator");
+		list.add("architect");
+		list.add("designer");
+		list.add("developer");
+		list.add("inventor");
+		list.add("author");
+		semanticRelationsMap.put("artist", list);
+		
+		// daughter
+		list = new ArrayList<String>();
+		list.add("kid");
+		list.add("child");
+		list.add("girl");
+		semanticRelationsMap.put("daughter", list);
+		
+		// currency
+		list = new ArrayList<String>();
+		list.add("money");
+		list.add("cash");
+		list.add("coinage");
+		semanticRelationsMap.put("currency", list);
+		
+		// designer
+		list = new ArrayList<String>();
+		list.add("architect");
+		list.add("intriguer");
+		list.add("builder");
+		list.add("artist");
+		list.add("developer");
+		list.add("inventor");
+		list.add("creator");
+		list.add("author");
+		semanticRelationsMap.put("designer", list);
+		
+		// creator
+		list = new ArrayList<String>();
+		list.add("maker");
+		list.add("lord");
+		list.add("musician");
+		list.add("painter");
+		list.add("sculptor");
+		list.add("stylest");
+		list.add("architect");
+		list.add("designer");
+		list.add("developer");
+		list.add("inventor");
+		list.add("writer");
+		list.add("contributor");
+		list.add("journalist");
+		list.add("paragrapher");
+		list.add("author");
+		semanticRelationsMap.put("creator", list);
+		
+		// work
+		list = new ArrayList<String>();
+		list.add("employment");
+		list.add("operation");
+		list.add("practice");
+		list.add("service");
+		list.add("occupation");
+		semanticRelationsMap.put("work", list);
+		
+	}
+	
 	// Constructor of the Warehouse class
 	public Warehouse() {
 		indexes = new ArrayList<Integer>();
@@ -159,6 +318,11 @@ public class Warehouse {
 		// This list has to be synchronized because it gets filled
 		// up by multiple threads
 		setForSuggestions = Collections.synchronizedSet(new HashSet<StringScore>());
+		
+		
+		// Map for semantic relations for words
+		semanticRelationsMap = new HashMap<String, ArrayList<String>> ();
+		fillSemanticRelations();
 		
 		// Stats variables initialized
 		numOfSearchTasks = numOfIndexHits = 0;
@@ -300,6 +464,9 @@ public class Warehouse {
 		trimmedString = s.substring(s.lastIndexOf("/")+1, s.length()-1).toLowerCase();	
 		double score;
 		String currentPredicate;
+
+		// Semantic relations
+		ArrayList<String> list = semanticRelationsMap.get(trimmedString);
 		
 		// Search in predicates
 		for(int i = 0; i < predicatesList.size(); ++i){
@@ -313,9 +480,11 @@ public class Warehouse {
 			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 					currentPredicate.length()-1).toLowerCase();
 			
-			if(trimmedString.contains("name") && currentPredicate.equals("rdf-schema#label")) {
-				matchesScores.add(new StringScore(predicatesList.get(i), 1));
-				continue;
+			// Look for semantic relations
+			for(String element : list) {
+				if(currentPredicate.contains(element)) {
+					matchesScores.add(new StringScore(predicatesList.get(i), 1));
+				}
 			}
 			
 			score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
@@ -328,8 +497,8 @@ public class Warehouse {
 		}
 
 		// Sort the candidate matches based on score and return top 5
-		java.util.Collections.sort(matchesScores, new StringScoreComparator());
-		for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
+//		java.util.Collections.sort(matchesScores, new StringScoreComparator());
+		for(int i = 0; i < 20 && i < matchesScores.size(); ++i){
 			matches.add(matchesScores.get(i).getS());
 		}
 		return matches;
@@ -451,6 +620,12 @@ public class Warehouse {
 			if(predicatesList.get(i).toLowerCase().contains(query.toLowerCase())){
 				arrayObj.add(predicatesList.get(i));
 			}
+			ArrayList<String> semanticRelations = semanticRelationsMap.get(query.toLowerCase());
+			for(String s : semanticRelations) {
+				if(predicatesList.get(i).toLowerCase().contains(s.toLowerCase())){
+					arrayObj.add(predicatesList.get(i));
+				}
+			}
 		}
 		
 		// Search in index first
@@ -482,7 +657,7 @@ public class Warehouse {
 		// In length bins
 		// Search in bins with a minimum length of the query
 		// and a maximum of the query length + 12
-		int minLength = query.length();
+		int minLength = query.length()-1;
 		int maxLength = query.length() + 10;
 		
 		int minIndex = Integer.MAX_VALUE;

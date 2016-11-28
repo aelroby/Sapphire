@@ -13,8 +13,8 @@ public class FunctionsComparison {
 	public static void main(String[] args) {
 
 		double similarityScore;
-		String s1 = "Countries in Africa";
-		String s2 = "African Countries";
+		String s1 = "name";
+		String s2 = "nickname";
 		
 		System.out.println("Comparison between \"" + s1 + "\" and \"" + s2 + "\":");
 		
