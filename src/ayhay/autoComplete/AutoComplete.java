@@ -57,6 +57,7 @@ public class AutoComplete extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Expires", "-1");
         
+        
         String query = request.getParameter("term");
         if (query.charAt(0)=='?'){
         	// if the term is a variable, ignore AutoComplete

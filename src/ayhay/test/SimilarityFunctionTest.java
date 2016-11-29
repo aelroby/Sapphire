@@ -8,8 +8,8 @@ public class SimilarityFunctionTest {
 	public static void main(String[] args) {
 		
 		JaroWinkler jw = new JaroWinkler();
-		String s1 = "Kennedys";
-		String s2 = "The Kennedys";
+		String s1 = "African Countries";
+		String s2 = "Countries in Africa";
 		
 				
 		System.out.println("FuzzyWuzzy Similarity between \"" + s1 + "\" and \"" + s2 + "\": " + 
