@@ -53,12 +53,10 @@ public class Warehouse {
 	// Suffix tree
 	private GeneralizedSuffixTree in;
 	
-	// Similarity class
-//	private JaroWinkler jw;
-	
 	// Variables for statistics
 	private int numOfSearchTasks;
 	private int numOfIndexHits;
+	private double totalTime;
 	
 	/**
 	 * 
@@ -326,6 +324,7 @@ public class Warehouse {
 		
 		// Stats variables initialized
 		numOfSearchTasks = numOfIndexHits = 0;
+		totalTime = 0.0;
 	}
 	
 	public ArrayList<String> getPredicatesList() {
@@ -419,9 +418,10 @@ public class Warehouse {
 	 */
 	private void writeStatsToFile() {
 		String fileName = "IndexStats.dat";
-		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio\n";
+		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio,Avg_Time\n";
 		contents += numOfSearchTasks + "," + numOfIndexHits + 
-				"," + 1.0 * numOfIndexHits / numOfSearchTasks;
+				"," + 1.0 * numOfIndexHits / numOfSearchTasks + 
+				"," + totalTime / numOfSearchTasks;
 		FileManager.writeToFile(fileName, contents);
 	}
 	
@@ -654,6 +654,8 @@ public class Warehouse {
 		
 		// If all results were found in suffix tree
 		if(resultsToBeFound < 0) {
+			Timer.stop();
+			totalTime += Timer.getTime();
 			writeStatsToFile();
 			return arrayObj;
 		}
@@ -723,7 +725,7 @@ public class Warehouse {
 		
 		// Stop timer
 		Timer.stop();
-		System.out.println("Time: " + Timer.getTime());
+		totalTime += Timer.getTime();
 		
 		// Update the stats file with number of tasks and hits
 		writeStatsToFile();

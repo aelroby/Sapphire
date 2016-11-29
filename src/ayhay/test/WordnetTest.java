@@ -15,7 +15,7 @@ public class WordnetTest {
 
 	public static void main(String[] args) throws IOException {
 		// construct the URL to the Wordnet dictionary directory
-		String wnhome = System.getenv ( " WNHOME " ) ;
+		String wnhome = System.getenv("WNHOME");
 		System.out.println("wnhome: " + wnhome);
 		
 		String path = wnhome + File.separator + " dict " ;
