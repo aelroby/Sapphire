@@ -64,8 +64,6 @@ public class MainServlet extends HttpServlet {
 			return;
 		String query = sparqlQuery.getQueryString();
         
-        
-        
         System.out.println("Answering Query: " + query);
         int id = (int) Math.random() * 10000;
 		queryManager.executeUserQuery(id, sparqlQuery);
