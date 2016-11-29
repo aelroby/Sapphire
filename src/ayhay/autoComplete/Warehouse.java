@@ -481,9 +481,11 @@ public class Warehouse {
 					currentPredicate.length()-1).toLowerCase();
 			
 			// Look for semantic relations
-			for(String element : list) {
-				if(currentPredicate.contains(element)) {
-					matchesScores.add(new StringScore(predicatesList.get(i), 1));
+			if(list != null) {
+				for(String element : list) {
+					if(currentPredicate.contains(element)) {
+						matchesScores.add(new StringScore(predicatesList.get(i), 1));
+					}
 				}
 			}
 			
@@ -621,9 +623,11 @@ public class Warehouse {
 				arrayObj.add(predicatesList.get(i));
 			}
 			ArrayList<String> semanticRelations = semanticRelationsMap.get(query.toLowerCase());
-			for(String s : semanticRelations) {
-				if(predicatesList.get(i).toLowerCase().contains(s.toLowerCase())){
-					arrayObj.add(predicatesList.get(i));
+			if(semanticRelations != null) {
+				for(String s : semanticRelations) {
+					if(predicatesList.get(i).toLowerCase().contains(s.toLowerCase())){
+						arrayObj.add(predicatesList.get(i));
+					}
 				}
 			}
 		}

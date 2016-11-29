@@ -44,7 +44,9 @@ public class AlternativeQueryFinder extends HttpServlet {
         
         ArrayList<AlternativeToken> alternativeTokens = altQueryGenerator.findSimilarQueries(sparqlQuery);
 		
-		java.util.Collections.sort(alternativeTokens, new AlternativeTokenComparator());
+        if(alternativeTokens.size() > 0) {
+        	java.util.Collections.sort(alternativeTokens, new AlternativeTokenComparator());
+        }
 		System.out.println("Finding answers to alternative queries finished");
 		
 		String result = "{ \"results\": { \"suggestions\": [ ";
