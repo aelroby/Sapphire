@@ -13,8 +13,8 @@ public class FunctionsComparison {
 	public static void main(String[] args) {
 
 		double similarityScore;
-		String s1 = "Salt Lake City, Utah, United States";
-		String s2 = "Salt Lake City";
+		String s1 = "Lincoln";
+		String s2 = "Abraham Lincoln";
 		
 		System.out.println("Comparison between \"" + s1 + "\" and \"" + s2 + "\":");
 		

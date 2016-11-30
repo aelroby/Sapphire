@@ -79,12 +79,10 @@ public class Warehouse {
 		public void run() {
 			for(int i = minIndex; i < maxIndex; ++i){
 				if(literalsList.get(i).toLowerCase().contains(query.toLowerCase())){
-//					System.out.println("Thread " + Thread.currentThread().getName() + 
-//							" found " + literalsList.get(i));
 					setForTypeahead.add(literalsList.get(i));
-					--resultsToBeFound;
-					if(resultsToBeFound < 0)
-						break;
+//					--resultsToBeFound;
+//					if(resultsToBeFound < 0)
+//						break;
 				}
 			}
 		}
@@ -147,9 +145,14 @@ public class Warehouse {
 
 		// name
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("label");
+		list.add("rdf-schema#label");
 		list.add("word");
 		semanticRelationsMap.put("name", list);
+
+		// label
+		list = new ArrayList<String>();
+		list.add("name");
+		semanticRelationsMap.put("rdf-schema#label", list);
 		
 		
 		// wife
@@ -468,6 +471,26 @@ public class Warehouse {
 		// Semantic relations
 		ArrayList<String> list = semanticRelationsMap.get(trimmedString);
 		
+		if(list != null) {
+			for(int i = 0; i < predicatesList.size(); ++i){ 
+				currentPredicate = predicatesList.get(i);
+				
+				// Trim predicate
+				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
+						currentPredicate.length()-1).toLowerCase();
+				
+				for(String element : list) {
+					if(currentPredicate.compareTo(element) == 0) {
+						matchesScores.add(new StringScore(predicatesList.get(i), 1));
+					}
+				}
+				
+			}
+		}
+		
+		
+			
+		
 		// Search in predicates
 		for(int i = 0; i < predicatesList.size(); ++i){
 			// If the predicate is the same as the given predicate, continue
@@ -480,17 +503,7 @@ public class Warehouse {
 			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 					currentPredicate.length()-1).toLowerCase();
 			
-			// Look for semantic relations
-			if(list != null) {
-				for(String element : list) {
-					if(currentPredicate.contains(element)) {
-						matchesScores.add(new StringScore(predicatesList.get(i), 1));
-					}
-				}
-			}
-			
 			score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
-//			score = jw.similarity(trimmedString, currentPredicate); 
 			
 			// If score is above threshold, add it to the candidate matches list
 			if(score > 0.5){
@@ -663,7 +676,7 @@ public class Warehouse {
 		// In length bins
 		// Search in bins with a minimum length of the query
 		// and a maximum of the query length + 12
-		int minLength = query.length()-1;
+		int minLength = query.length()-2;
 		int maxLength = query.length() + 10;
 		
 		int minIndex = Integer.MAX_VALUE;
@@ -719,8 +732,9 @@ public class Warehouse {
 		java.util.Collections.sort(tempList, new LengthComparator());
 		
 		// Fill the array
-		for(String string : tempList) {
-			arrayObj.add(string);
+		int remainingSlots = resultsToBeFound - arrayObj.size(); 
+		for(int i = 0; i < tempList.size() && remainingSlots > 0; ++i, --remainingSlots) {
+			arrayObj.add(tempList.get(i));
 		}
 		
 		// Stop timer

@@ -15,7 +15,10 @@ public class AlternativeTokenComparator implements Comparator<AlternativeToken>{
         else {
         	int numX = x.getNumOfRows();
         	int numY = y.getNumOfRows();
-    		return numY < numX ? -1 : +1;
+        	if(numX == numY)
+        		return 0;
+        	else
+        		return numY < numX ? -1 : +1;
         }
 	}
 

@@ -27,7 +27,7 @@ public class TestHashSet {
 		
 		testSet = Collections.synchronizedSet(new HashSet<String>());
 		
-		testSet.add("Ahmed");
+		testSet.add("AHMED");
 
 		ArrayList<Thread> threads = new ArrayList<Thread>();
 		threads.add(new Thread(test.new TestTask()));
