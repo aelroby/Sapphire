@@ -124,7 +124,7 @@
                   <label for="inputText" class="control-label">SELECT</label>
                 </div>
                 <div class="col-sm-3">
-                  <input id="mySelect" type="text" class="form-control" placeholder="Your Selected Attributes" name="myInputs[]" onblur="if(validateQuery()) {callQuery(); getSuggestions();}">
+                  <input id="mySelect" type="text" class="form-control" placeholder="Your Selected Attributes" name="myInputs[]">
                 </div>
               </div>
               <div class="form-group">
@@ -132,13 +132,13 @@
                   <label for="inputText" class="control-label">WHERE</label>
                 </div>
                 <div class="col-sm-3">
-                  <input type="text" class="form-control" id="subject-0" placeholder="Subject" onblur="if(validate(this.form,0) &amp;&amp; validateQuery()) {callQuery(); getSuggestions();}" name="myInputs[]">
+                  <input type="text" class="form-control" id="subject-0" placeholder="Subject"  name="myInputs[]">
                 </div>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="predicate-0" placeholder="Predicate" onblur="if(validate(this.form,0) &amp;&amp; validateQuery()) {callQuery(); getSuggestions();} changeInput2Date(0);" name="myInputs[]">
+                  <input type="text" class="form-control" id="predicate-0" placeholder="Predicate" name="myInputs[]">
                 </div>
                 <div class="col-sm-2">
-                  <input type="text" class="form-control" id="object-0" onblur="if(validate(this.form,0) &amp;&amp; validateQuery()) {callQuery(); getSuggestions();}" placeholder="Object" name="myInputs[]">
+                  <input type="text" class="form-control" id="object-0"  placeholder="Object" name="myInputs[]">
                 </div>
               </div>
               <div class="form-group" id="add_button_group">
@@ -214,7 +214,7 @@
 			    </div>
 			    
 			    <div id="filter_date_show" class="col-sm-2">
-	                <input type="date"  id="filter_date" name="myFilters[]" onblur="show_filter(); if(validate_filters() &amp;&amp; validate(this.form,0) &amp;&amp; validateQuery()) {callQuery(); getSuggestions();}">
+	                <input type="date"  id="filter_date" name="myFilters[]" >
 			    </div>
 			    
 

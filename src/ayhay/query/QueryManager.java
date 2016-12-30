@@ -21,12 +21,10 @@ public class QueryManager {
 	public boolean initialized = false;
 	private HashMap<Integer, ResultSet> resultSetMap;
 	
+	private static QueryManager singleton = new QueryManager();
 	
-	public void test(){
-
-	}
 	
-	public QueryManager () {
+	private QueryManager () {
 		resultSetMap = new HashMap<Integer, ResultSet>();
 	}
 	
@@ -74,4 +72,9 @@ public class QueryManager {
 		qexec.close();
 		resultSetMap.remove(id);
 	}
+
+	public static QueryManager getInstance() {
+		return singleton;
+	}
+
 }

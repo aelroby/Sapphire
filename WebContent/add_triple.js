@@ -19,28 +19,20 @@ function addTriple(formGroup, addButtonGroup){
         // Subject
         var subjectDiv = document.createElement('div');
         subjectDiv.setAttribute('class', 'col-sm-3');
-        subjectDiv.innerHTML = '<input type="text" id="subject-'+counter+'" onBlur="if(validate(this.form,'+counter+') && validateQuery()) {callQuery(); getSuggestions();}"  class="form-control" placeholder="Subject" name="myInputs[]">';
+        subjectDiv.innerHTML = '<input type="text" id="subject-'+counter+'" class="form-control" placeholder="Subject" name="myInputs[]">';
         formGroupNewTriple.appendChild(subjectDiv);
         
         // Predicate
         var predicateDiv = document.createElement('div');
         predicateDiv.setAttribute('class', 'col-sm-5');
-        predicateDiv.innerHTML = '<input type="text"  id="predicate-'+counter+'" onBlur="if(validate(this.form,'+counter+') && validateQuery()) {callQuery(); getSuggestions();} changeInput2Date(0);"   class="form-control" placeholder="Subject" name="myInputs[]">';
+        predicateDiv.innerHTML = '<input type="text"  id="predicate-'+counter+'" class="form-control" placeholder="Subject" name="myInputs[]">';
         formGroupNewTriple.appendChild(predicateDiv);
         
         // Object
         var objectDiv = document.createElement('div');
         objectDiv.setAttribute('class', 'col-sm-2');
-        objectDiv.innerHTML = '<input type="text"  id="object-'+counter+'" onBlur="if(validate(this.form,'+counter+') && validateQuery()) {callQuery(); getSuggestions();}"  class="form-control" placeholder="Subject" name="myInputs[]">';
+        objectDiv.innerHTML = '<input type="text"  id="object-'+counter+'" class="form-control" placeholder="Subject" name="myInputs[]">';
         formGroupNewTriple.appendChild(objectDiv);
-
-/*
-        // Object
-        var object2Div = document.createElement('div');
-        object2Div.setAttribute('class', 'col-sm-3');
-        object2Div.innerHTML = '<input type="text"  id="object2-'+counter+'" onBlur="if(validate(this.form,'+counter+') && validateQuery()) {callQuery(); getSuggestions();}"  class="form-control" placeholder="Subject" name="myInputs[]">';
-        formGroupNewTriple.appendChild(object2Div);
-*/
         
         // Remove
         var removeDiv = document.createElement('div');

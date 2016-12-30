@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import ayhay.dataStructures.AlternativeToken;
 import ayhay.dataStructures.SPARQLQuery;
-import ayhay.main.MainServlet;
 import ayhay.utils.RandomIDGenerator;
 
 
@@ -17,6 +16,17 @@ import ayhay.utils.RandomIDGenerator;
  */
 public class AlternativeQueryGenerator {
 
+	/**
+	 * Relax the predicate by finding different predicates 
+	 * that return answers
+	 * @param query The SPARQL query
+	 * @return ArrayList of alternative tokens
+	 */
+	public ArrayList<AlternativeToken> relaxPredicates(SPARQLQuery query) {
+		ArrayList<AlternativeToken> tokens = new ArrayList<AlternativeToken>();
+		
+		return tokens;
+	}
 	
 	/**
 	 * Relax the query to find alternatives to its structure
@@ -27,7 +37,16 @@ public class AlternativeQueryGenerator {
 		ArrayList<SPARQLQuery> alternativeQueries = 
 				new ArrayList<SPARQLQuery>();
 		
-		// TODO: Magic happens here
+//		ArrayList<ElementIndex> seeds = new ArrayList<ElementIndex>(); 
+//		
+//		for(int i = 0; i < query.where.size(); ++i) {
+//			// If this triple contains a literal, that's a seed
+//			if(query.where.get(i).get(2).contains("@en")) {
+//				
+//			}
+//		}
+		
+		
 		
 		return alternativeQueries;
 	}
@@ -54,8 +73,9 @@ public class AlternativeQueryGenerator {
 			
 			// Find alternatives for predicate
 			if(!clause.get(1).startsWith("?")) {
+				
 				ArrayList<String> alternatives = 
-						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause.get(1));
+						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause);
 
 				for(int j = 0; j < alternatives.size(); ++j){
 					SPARQLQuery newQuery = query.copyObject();
@@ -87,11 +107,12 @@ public class AlternativeQueryGenerator {
 		System.out.println("Finding alternative literals finished!");
 		
 		System.out.println("Finding answers to alternative queries...");
+		QueryManager queryManager = QueryManager.getInstance();
 		for(int i = 0; i < alternativeQueries.size(); ++i){
 			int id = RandomIDGenerator.getID();
-			MainServlet.queryManager.executeQuery(id, alternativeQueries.get(i));
-			int numOfRows = MainServlet.queryManager.getNumberOfResults(id);
-			MainServlet.queryManager.closeQuery(id);
+			queryManager.executeQuery(id, alternativeQueries.get(i));
+			int numOfRows = queryManager.getNumberOfResults(id);
+			queryManager.closeQuery(id);
 			alternativeTokens.get(i).setNumOfRows(numOfRows);
 		}
 		

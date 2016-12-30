@@ -8,11 +8,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.jena.query.ResultSet;
 import org.json.simple.JSONArray;
 
 import com.abahgat.suffixtree.GeneralizedSuffixTree;
 
 import ayhay.dataStructures.StringScore;
+import ayhay.query.QueryManager;
 import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
@@ -80,9 +82,6 @@ public class Warehouse {
 			for(int i = minIndex; i < maxIndex; ++i){
 				if(literalsList.get(i).toLowerCase().contains(query.toLowerCase())){
 					setForTypeahead.add(literalsList.get(i));
-//					--resultsToBeFound;
-//					if(resultsToBeFound < 0)
-//						break;
 				}
 			}
 		}
@@ -127,12 +126,9 @@ public class Warehouse {
 				}
 				// Get the score
 				score = 1.0 * FuzzySearch.ratio(currentLiteral, trimmedString)/100;
-//				score = jw.similarity(currentLiteral, trimmedString);
 				
 				// If score is above threshold, add it to list
 				if(score > 0.7){
-//					System.out.println("Thread " + Thread.currentThread().getId() + ": found " +
-//							literalsList.get(i));
 					setForSuggestions.add(new StringScore(literalsList.get(i), score));
 				}
 			}
@@ -455,16 +451,32 @@ public class Warehouse {
 	
 	/**
 	 * Find similar predicates to the one sent to this function
-	 * @param s The predicate to find similar predicates for
+	 * @param originalPredicate The predicate to find similar predicates for
 	 * @return An Arraylist of similar predicates
 	 */
-	public ArrayList<String> findSimilarStringsPredicates(String s){
+	public ArrayList<String> findSimilarStringsPredicates(ArrayList<String> clause){
+		
+		String originalPredicate = clause.get(1);
 		ArrayList<StringScore> matchesScores = new ArrayList<StringScore>(); 
 		ArrayList<String> matches = new ArrayList<String>();
 		String trimmedString;
-
+		QueryManager queryManager = QueryManager.getInstance();
+		
+		// Check if this triple has answers with a variable predicate
+		Set<String> refinedPredicates = new HashSet<String>();
+		if(clause.get(2).startsWith("\"") && clause.get(0).startsWith("?")) {
+			String query = "SELECT " + clause.get(0) + " ?p WHERE { "
+					+ clause.get(0) + " ?p " + clause.get(2) + "}"; 
+			int id = (int) Math.random() * 10000;
+			ResultSet results = queryManager.executeQuery(id, query);
+			while(results.hasNext()) {
+				refinedPredicates.add("<" + results.next().get("p").toString() + ">");
+			}
+		}
+		
+		
 		// Whatever is after the last /
-		trimmedString = s.substring(s.lastIndexOf("/")+1, s.length()-1).toLowerCase();	
+		trimmedString = originalPredicate.substring(originalPredicate.lastIndexOf("/")+1, originalPredicate.length()-1).toLowerCase();	
 		double score;
 		String currentPredicate;
 
@@ -488,33 +500,53 @@ public class Warehouse {
 			}
 		}
 		
-		
-			
-		
-		// Search in predicates
-		for(int i = 0; i < predicatesList.size(); ++i){
-			// If the predicate is the same as the given predicate, continue
-			if(s.compareTo(predicatesList.get(i)) == 0)
-				continue;
-			
-			currentPredicate = predicatesList.get(i);
-			
-			// Trim predicate
-			currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
-					currentPredicate.length()-1).toLowerCase();
-			
-			score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
-			
-			// If score is above threshold, add it to the candidate matches list
-			if(score > 0.5){
-				matchesScores.add(new StringScore(predicatesList.get(i), score));
+		if(refinedPredicates.size() > 0) {
+			// Search in predicates
+			for(String candidatePredicate : refinedPredicates){
+				// If the predicate is the same as the given predicate, continue
+				if(originalPredicate.compareTo(candidatePredicate) == 0)
+					continue;
+				
+				currentPredicate = candidatePredicate;
+				
+				// Trim predicate
+				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
+						currentPredicate.length()-1).toLowerCase();
+				
+				score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
+				
+				// If score is above threshold, add it to the candidate matches list
+				matchesScores.add(new StringScore(candidatePredicate, score));
+			}
+			java.util.Collections.sort(matchesScores, new StringScoreComparator());
+			for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
+				matches.add(matchesScores.get(i).getS());
 			}
 		}
-
-		// Sort the candidate matches based on score and return top 5
-//		java.util.Collections.sort(matchesScores, new StringScoreComparator());
-		for(int i = 0; i < 20 && i < matchesScores.size(); ++i){
-			matches.add(matchesScores.get(i).getS());
+		else {
+		
+			// Search in predicates
+			for(int i = 0; i < predicatesList.size(); ++i){
+				// If the predicate is the same as the given predicate, continue
+				if(originalPredicate.compareTo(predicatesList.get(i)) == 0)
+					continue;
+				
+				currentPredicate = predicatesList.get(i);
+				
+				// Trim predicate
+				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
+						currentPredicate.length()-1).toLowerCase();
+				
+				score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
+				
+				// If score is above threshold, add it to the candidate matches list
+				if(score > 0.7){
+					matchesScores.add(new StringScore(predicatesList.get(i), score));
+				}
+			}
+			for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
+				matches.add(matchesScores.get(i).getS());
+			}
 		}
 		return matches;
 		

@@ -20,6 +20,7 @@ import ayhay.utils.AlternativeTokenComparator;
 public class AlternativeQueryFinder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static AlternativeQueryGenerator altQueryGenerator;
+	private QueryManager queryManager;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -27,6 +28,7 @@ public class AlternativeQueryFinder extends HttpServlet {
     public AlternativeQueryFinder() {
         super();
         altQueryGenerator = new AlternativeQueryGenerator();
+        queryManager = QueryManager.getInstance();
     }
 
 	/**
@@ -42,7 +44,20 @@ public class AlternativeQueryFinder extends HttpServlet {
         	return;
         }
         
-        ArrayList<AlternativeToken> alternativeTokens = altQueryGenerator.findSimilarQueries(sparqlQuery);
+        String query = sparqlQuery.getQueryString();
+        
+        System.out.println("Answering Query: " + query);
+        int id = (int) Math.random() * 10000;
+		queryManager.executeUserQuery(id, sparqlQuery);
+		
+		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
+		
+		// If there are no answers, relax the query
+		if(queryManager.getNumberOfResults(id) == 0) {
+			
+		}
+		
+        alternativeTokens.addAll(altQueryGenerator.findSimilarQueries(sparqlQuery));
 		
         if(alternativeTokens.size() > 0) {
         	java.util.Collections.sort(alternativeTokens, new AlternativeTokenComparator());
@@ -63,7 +78,6 @@ public class AlternativeQueryFinder extends HttpServlet {
 	    response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
 	    response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
 	    response.getWriter().write(result);
-	        
 	}
 
 	/**

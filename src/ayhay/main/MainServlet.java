@@ -20,7 +20,7 @@ import ayhay.query.QueryManager;
 @WebServlet("/MainServlet")
 public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    public static QueryManager queryManager;
+    private QueryManager queryManager;
     
     
     
@@ -33,7 +33,7 @@ public class MainServlet extends HttpServlet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        queryManager = new QueryManager();
+        queryManager = QueryManager.getInstance();
     }
     /**
      * Default constructor. 
@@ -54,7 +54,6 @@ public class MainServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		
 		String[] inputs = request.getParameterValues("myInputs[]");
 		String[] filters = request.getParameterValues("myFilters[]");
@@ -67,15 +66,13 @@ public class MainServlet extends HttpServlet {
         System.out.println("Answering Query: " + query);
         int id = (int) Math.random() * 10000;
 		queryManager.executeUserQuery(id, sparqlQuery);
-        String answers = queryManager.getResultsAsJSON(id);
+		String answers = queryManager.getResultsAsJSON(id);
         queryManager.closeQuery(id);
         System.out.println("Answers:" + answers);
         
         response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
         response.setCharacterEncoding("UTF-8"); // You want world domination, huh?
         response.getWriter().write(answers);
- 
-        
 	}
 
 }

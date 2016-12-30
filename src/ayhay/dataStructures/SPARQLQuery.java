@@ -14,12 +14,12 @@ import java.util.Arrays;
  *
  */
 public class SPARQLQuery {
-	private ArrayList<String> select;
-	private ArrayList<ArrayList<String>> where;
-	private ArrayList<String> modifiers;
-	private boolean isValid;		// This query is valid and can be executed
-	private boolean hasModifiers;	// This query has modifiers
-	private String queryString;
+	public ArrayList<String> select;
+	public ArrayList<ArrayList<String>> where;
+	public ArrayList<String> modifiers;
+	public boolean isValid;		// This query is valid and can be executed
+	public boolean hasModifiers;	// This query has modifiers
+	public String queryString;
 	
 	/**
 	 * 
