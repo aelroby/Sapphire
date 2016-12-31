@@ -1,6 +1,10 @@
 package ayhay.query;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.apache.jena.query.ResultSet;
 
 import ayhay.dataStructures.AlternativeToken;
 import ayhay.dataStructures.SPARQLQuery;
@@ -24,9 +28,33 @@ public class AlternativeQueryGenerator {
 	 * @return ArrayList of alternative tokens
 	 */
 	public ArrayList<AlternativeToken> relaxPredicates(SPARQLQuery query) {
-		ArrayList<AlternativeToken> tokens = new ArrayList<AlternativeToken>();
+		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
+		QueryManager queryManager = QueryManager.getInstance();
 		
-		return tokens;
+		// Find seeds and relax them
+		for(int i = 0; i < query.where.size(); ++i) {
+			// The predicate is not a variable, relax it
+			if(!query.where.get(i).get(1).startsWith("?")) {
+				SPARQLQuery newQuery = query.copyObject();
+				newQuery.where.get(i).set(1, "?p");
+				newQuery.updateQueryString();
+				int id = RandomIDGenerator.getID();
+				ResultSet results = queryManager.executeUserQuery(id, newQuery);
+				if(results.hasNext()) {
+					Set<String> relaxedPredicates = new HashSet<String>();
+					while(results.hasNext()) {
+						String answer = "<" + results.next().get("p").toString() + ">";
+						relaxedPredicates.add(answer);
+					}
+					for(String relaxedObject : relaxedPredicates) {
+						alternativeTokens.add(new AlternativeToken(query.getWhere().get(i).get(0),
+								query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
+								relaxedObject, "P"));
+					}
+				}
+			}
+		}
+		return alternativeTokens;
 	}
 	
 	/**
@@ -38,7 +66,7 @@ public class AlternativeQueryGenerator {
 		ArrayList<AlternativeToken> alternativeTokens = 
 				new ArrayList<AlternativeToken>();
 		
-		ArrayList<SPARQLQuery> newQueries = new ArrayList<SPARQLQuery>();
+		QueryManager queryManager = QueryManager.getInstance();
 		
 		// Find seeds and relax them
 		for(int i = 0; i < query.where.size(); ++i) {
@@ -51,16 +79,25 @@ public class AlternativeQueryGenerator {
 				newTriple.add("?p");
 				newTriple.add(query.where.get(i).get(2));
 				newQuery.getWhere().add(newTriple);
-				newQueries.add(newQuery);
+				newQuery.updateQueryString();
+				
+				// Execute this query
+				int id = RandomIDGenerator.getID();
+				ResultSet results = queryManager.executeUserQuery(id, newQuery);
+				if(results.hasNext()) {
+					Set<String> relaxedObjects = new HashSet<String>();
+					while(results.hasNext()) {
+						String answer = "<" + results.next().get("s").toString() + ">";
+						relaxedObjects.add(answer);
+					}
+					for(String relaxedObject : relaxedObjects) {
+						alternativeTokens.add(new AlternativeToken(query.getWhere().get(i).get(0),
+								query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
+								relaxedObject, "O"));
+					}
+				}
 			}
 		}
-		
-		// Execute relaxed queries
-		for(SPARQLQuery relaxedQuery : newQueries) {
-			
-		}
-		
-		
 		return alternativeTokens;
 	}
 	
