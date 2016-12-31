@@ -69,7 +69,6 @@ public class QueryManager {
 	}
 	
 	public synchronized void closeQuery(int id){
-		qexec.close();
 		resultSetMap.remove(id);
 	}
 

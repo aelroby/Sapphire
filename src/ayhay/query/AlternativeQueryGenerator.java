@@ -37,19 +37,24 @@ public class AlternativeQueryGenerator {
 			if(!query.where.get(i).get(1).startsWith("?")) {
 				SPARQLQuery newQuery = query.copyObject();
 				newQuery.where.get(i).set(1, "?p");
+				newQuery.select.add("?p");
 				newQuery.updateQueryString();
 				int id = RandomIDGenerator.getID();
 				ResultSet results = queryManager.executeUserQuery(id, newQuery);
+				int numOfRows = 0;
 				if(results.hasNext()) {
 					Set<String> relaxedPredicates = new HashSet<String>();
 					while(results.hasNext()) {
+						++numOfRows;
 						String answer = "<" + results.next().get("p").toString() + ">";
 						relaxedPredicates.add(answer);
 					}
 					for(String relaxedObject : relaxedPredicates) {
-						alternativeTokens.add(new AlternativeToken(query.getWhere().get(i).get(0),
+						AlternativeToken newToken = new AlternativeToken(query.getWhere().get(i).get(0),
 								query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
-								relaxedObject, "P"));
+								relaxedObject, "P");
+						newToken.setNumOfRows(numOfRows);
+						alternativeTokens.add(newToken);
 					}
 				}
 			}
@@ -79,21 +84,26 @@ public class AlternativeQueryGenerator {
 				newTriple.add("?p");
 				newTriple.add(query.where.get(i).get(2));
 				newQuery.getWhere().add(newTriple);
+				newQuery.select.add("?s");
 				newQuery.updateQueryString();
 				
 				// Execute this query
 				int id = RandomIDGenerator.getID();
 				ResultSet results = queryManager.executeUserQuery(id, newQuery);
+				int numOfRows = 0;
 				if(results.hasNext()) {
+					++numOfRows;
 					Set<String> relaxedObjects = new HashSet<String>();
 					while(results.hasNext()) {
 						String answer = "<" + results.next().get("s").toString() + ">";
 						relaxedObjects.add(answer);
 					}
 					for(String relaxedObject : relaxedObjects) {
-						alternativeTokens.add(new AlternativeToken(query.getWhere().get(i).get(0),
+						AlternativeToken newToken = new AlternativeToken(query.getWhere().get(i).get(0),
 								query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
-								relaxedObject, "O"));
+								relaxedObject, "O");
+						newToken.setNumOfRows(numOfRows);
+						alternativeTokens.add(newToken);
 					}
 				}
 			}
@@ -162,7 +172,7 @@ public class AlternativeQueryGenerator {
 
 		System.out.println("Finding alternative literals finished!");
 		
-		System.out.println("Finding answers to alternative queries...");
+		System.out.println("Finding answers to " + alternativeQueries.size() + " alternative queries...");
 		Timer.start();
 		QueryManager queryManager = QueryManager.getInstance();
 		for(int i = 0; i < alternativeQueries.size(); ++i){

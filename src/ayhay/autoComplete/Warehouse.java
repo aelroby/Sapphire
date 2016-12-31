@@ -18,6 +18,7 @@ import ayhay.query.QueryManager;
 import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
+import ayhay.utils.StringScoreLengthComparator;
 import ayhay.utils.Timer;
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
@@ -43,6 +44,7 @@ public class Warehouse {
 	// Synchronized list used by threads
 	private Set<String> setForTypeahead;
 	private Set<StringScore> setForSuggestions;
+	private Set<StringScore> setForPredicates;
 	
 	private Map<String, ArrayList<String>> semanticRelationsMap;
 	
@@ -59,6 +61,41 @@ public class Warehouse {
 	private int numOfSearchTasks;
 	private int numOfIndexHits;
 	private double totalTime;
+	
+	private class PredicateSearchTask implements Runnable {
+		int minIndex, maxIndex;
+		String originalPredicate;
+		
+		public PredicateSearchTask(int min, int max, String originalPredicate) {
+			minIndex = min;
+			maxIndex = max;
+			this.originalPredicate = originalPredicate;
+		}
+		public void run() {
+			for(int i = minIndex; i < maxIndex; ++i){
+				// If the predicate is the same as the given predicate, continue
+				if(originalPredicate.compareTo(predicatesList.get(i)) == 0)
+					continue;
+				
+				String currentPredicate = predicatesList.get(i);
+				
+				// Trim predicate
+				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
+						currentPredicate.length()-1).toLowerCase();
+				
+				String trimmedString = originalPredicate.substring(originalPredicate.lastIndexOf("/")+1,
+						originalPredicate.length()-1).toLowerCase();
+				
+				double score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
+				
+				// If score is above threshold, add it to the candidate matches list
+				if(score > 0.7){
+					setForPredicates.add(new StringScore(predicatesList.get(i), score, i));
+				}
+			}
+		}
+		
+	}
 	
 	/**
 	 * 
@@ -316,6 +353,10 @@ public class Warehouse {
 		// up by multiple threads
 		setForSuggestions = Collections.synchronizedSet(new HashSet<StringScore>());
 		
+		// This list has to be synchronized because it gets filled
+		// up by multiple threads
+		setForPredicates = Collections.synchronizedSet(new HashSet<StringScore>());
+		
 		
 		// Map for semantic relations for words
 		semanticRelationsMap = new HashMap<String, ArrayList<String>> ();
@@ -486,7 +527,6 @@ public class Warehouse {
 		if(list != null) {
 			for(int i = 0; i < predicatesList.size(); ++i){ 
 				currentPredicate = predicatesList.get(i);
-				
 				// Trim predicate
 				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 						currentPredicate.length()-1).toLowerCase();
@@ -526,24 +566,40 @@ public class Warehouse {
 		else {
 		
 			// Search in predicates
-			for(int i = 0; i < predicatesList.size(); ++i){
-				// If the predicate is the same as the given predicate, continue
-				if(originalPredicate.compareTo(predicatesList.get(i)) == 0)
-					continue;
-				
-				currentPredicate = predicatesList.get(i);
-				
-				// Trim predicate
-				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
-						currentPredicate.length()-1).toLowerCase();
-				
-				score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
-				
-				// If score is above threshold, add it to the candidate matches list
-				if(score > 0.7){
-					matchesScores.add(new StringScore(predicatesList.get(i), score));
+			int minIndex = 0;
+			int maxIndex = predicatesList.size() - 1;
+			
+			// Assign threads to search tasks
+			int indexesPerThread = (maxIndex - minIndex) / (numOfCores - 1);
+			
+			// Arraylist to keep track of threads
+			ArrayList<Thread> threads = new ArrayList<Thread>();
+			
+			for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
+				threads.add(new Thread(new PredicateSearchTask(i, i+indexesPerThread, originalPredicate)));
+			}
+			
+			// Start threads
+			for(int i = 0; i < threads.size(); ++i) {
+				threads.get(i).start();
+			}
+			
+			// Join threads before continue
+			for(int i = 0; i < threads.size(); ++i) {
+				try {
+					threads.get(i).join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
+			
+			// Copy contents of the synchronized list into the matchesScores list
+			ArrayList<StringScore> newMatchesScores = new ArrayList<StringScore>();
+			for(StringScore stringScore : setForPredicates) {
+				newMatchesScores.add(stringScore);
+			}
+			java.util.Collections.sort(newMatchesScores, new StringScoreLengthComparator());
+			matchesScores.addAll(newMatchesScores);
 			for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
 				matches.add(matchesScores.get(i).getS());
 			}
@@ -625,9 +681,7 @@ public class Warehouse {
 		}
 		
 		// Sort the candidate matches based on score and return top 5
-		System.out.println("Sorting alternatives...");
 		java.util.Collections.sort(matchesScores, new StringScoreComparator());
-		System.out.println("Picking top 5!");
 		for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
 			matches.add(matchesScores.get(i).getS());
 		}
