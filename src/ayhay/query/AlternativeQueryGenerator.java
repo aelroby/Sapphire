@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import ayhay.dataStructures.AlternativeToken;
 import ayhay.dataStructures.SPARQLQuery;
 import ayhay.utils.RandomIDGenerator;
+import ayhay.utils.Timer;
 
 
 /**
@@ -31,24 +32,36 @@ public class AlternativeQueryGenerator {
 	/**
 	 * Relax the query to find alternatives to its structure
 	 * @param query The SPARQL query 
-	 * @return ArrayList of alternative queries
+	 * @return ArrayList of alternative tokens
 	 */
-	public ArrayList<SPARQLQuery> relaxQuery(SPARQLQuery query) {
-		ArrayList<SPARQLQuery> alternativeQueries = 
-				new ArrayList<SPARQLQuery>();
+	public ArrayList<AlternativeToken> relaxQuery(SPARQLQuery query) {
+		ArrayList<AlternativeToken> alternativeTokens = 
+				new ArrayList<AlternativeToken>();
 		
-//		ArrayList<ElementIndex> seeds = new ArrayList<ElementIndex>(); 
-//		
-//		for(int i = 0; i < query.where.size(); ++i) {
-//			// If this triple contains a literal, that's a seed
-//			if(query.where.get(i).get(2).contains("@en")) {
-//				
-//			}
-//		}
+		ArrayList<SPARQLQuery> newQueries = new ArrayList<SPARQLQuery>();
+		
+		// Find seeds and relax them
+		for(int i = 0; i < query.where.size(); ++i) {
+			// If this triple contains a literal, that's a seed
+			if(query.where.get(i).get(2).contains("@en")) {
+				SPARQLQuery newQuery = query.copyObject();
+				newQuery.getWhere().get(i).set(2, "?s");
+				ArrayList<String> newTriple = new ArrayList<String>();
+				newTriple.add("?s");
+				newTriple.add("?p");
+				newTriple.add(query.where.get(i).get(2));
+				newQuery.getWhere().add(newTriple);
+				newQueries.add(newQuery);
+			}
+		}
+		
+		// Execute relaxed queries
+		for(SPARQLQuery relaxedQuery : newQueries) {
+			
+		}
 		
 		
-		
-		return alternativeQueries;
+		return alternativeTokens;
 	}
 	
 	/**
@@ -73,7 +86,7 @@ public class AlternativeQueryGenerator {
 			
 			// Find alternatives for predicate
 			if(!clause.get(1).startsWith("?")) {
-				
+				Timer.start();
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause);
 
@@ -85,10 +98,14 @@ public class AlternativeQueryGenerator {
 					alternativeTokens.add(new AlternativeToken(clause.get(0), 
 							clause.get(1), clause.get(2), alternatives.get(j), "P"));
 				}
+				Timer.stop();
+				System.out.println("Found alternatives for predicates in " + Timer.getTimeInSeconds() + " seconds");
 			}
+			
 			
 			// Find alternatives for literals
 			if(clause.get(2).startsWith("\"")) {
+				Timer.start();
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2));
 				
@@ -100,6 +117,8 @@ public class AlternativeQueryGenerator {
 					alternativeTokens.add(new AlternativeToken(clause.get(0), 
 							clause.get(1), clause.get(2), alternatives.get(j), "O"));
 				}
+				Timer.stop();
+				System.out.println("Found alternatives for literals in " + Timer.getTimeInSeconds() + " seconds");
 			}
 			
 		}
@@ -107,6 +126,7 @@ public class AlternativeQueryGenerator {
 		System.out.println("Finding alternative literals finished!");
 		
 		System.out.println("Finding answers to alternative queries...");
+		Timer.start();
 		QueryManager queryManager = QueryManager.getInstance();
 		for(int i = 0; i < alternativeQueries.size(); ++i){
 			int id = RandomIDGenerator.getID();
@@ -115,6 +135,8 @@ public class AlternativeQueryGenerator {
 			queryManager.closeQuery(id);
 			alternativeTokens.get(i).setNumOfRows(numOfRows);
 		}
+		Timer.stop();
+		System.out.println("Answered alternatives in " + Timer.getTimeInSeconds() + " seconds");
 		
 		return alternativeTokens;
 	}

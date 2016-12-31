@@ -13,8 +13,16 @@ public class Timer {
 		time = System.nanoTime() - start;
 	}
 
-	public static double getTime() {
+	public static double getTimeInSeconds() {
 		return 1.0 * time / 1000000000;
+	}
+	
+	public static double getTimeInNanoSeconds() {
+		return time;
+	}
+	
+	public static double getTimeInMelliseconds() {
+		return 1.0 * time / 1000000;
 	}
 
 }

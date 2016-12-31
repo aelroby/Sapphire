@@ -162,9 +162,6 @@ public class SPARQLQuery {
 				where.add(singleClause);
 			}
 			
-			System.out.println(filters.length);
-			System.out.println(filters[0]);
-			System.out.println(filters[1]);
 			
 			if (filters.length>0 && filters.length%3==0 && !filters[0].equalsIgnoreCase("-1") && !filters[1].equalsIgnoreCase("-1") ){
 
@@ -214,8 +211,6 @@ public class SPARQLQuery {
 			// TODO: apply filters
 			
 		}
-		System.out.println("------+++++====+++++++-----");
-		System.out.println(queryString);
 	}
 
 	public SPARQLQuery() {

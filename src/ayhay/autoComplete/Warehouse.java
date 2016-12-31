@@ -408,7 +408,7 @@ public class Warehouse {
 		System.out.println("Analyzing literals...");
 		analyzeLiterals();
 		Timer.stop();
-		System.out.println("Warehouse initialization took: " + Timer.getTime());
+		System.out.println("Warehouse initialization took: " + Timer.getTimeInSeconds());
 		
 	}
 	
@@ -579,7 +579,7 @@ public class Warehouse {
 		
 		// Find similar literals withing 5 characters
 		int minLength = trimmedString.length() - 2;
-		int maxLength = trimmedString.length() + 5;
+		int maxLength = trimmedString.length() + 3;
 		
 		int minIndex = Integer.MAX_VALUE;
 		int maxIndex = -1;
@@ -620,11 +620,6 @@ public class Warehouse {
 		}
 		
 		// Copy contents of the synchronized list into the matchesScores list
-		System.out.println("Found " + setForSuggestions.size() + " alternatives for " + s);
-		for(StringScore score : setForSuggestions) {
-			System.out.println(score.getS());
-		}
-		
 		for(StringScore stringScore : setForSuggestions) {
 			matchesScores.add(stringScore);
 		}
@@ -700,7 +695,7 @@ public class Warehouse {
 		// If all results were found in suffix tree
 		if(resultsToBeFound < 0) {
 			Timer.stop();
-			totalTime += Timer.getTime();
+			totalTime += Timer.getTimeInSeconds();
 			writeStatsToFile();
 			return arrayObj;
 		}
@@ -771,7 +766,7 @@ public class Warehouse {
 		
 		// Stop timer
 		Timer.stop();
-		totalTime += Timer.getTime();
+		totalTime += Timer.getTimeInSeconds();
 		
 		// Update the stats file with number of tasks and hits
 		writeStatsToFile();

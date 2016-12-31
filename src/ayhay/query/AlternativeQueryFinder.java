@@ -20,7 +20,6 @@ import ayhay.utils.AlternativeTokenComparator;
 public class AlternativeQueryFinder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static AlternativeQueryGenerator altQueryGenerator;
-	private QueryManager queryManager;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,7 +27,6 @@ public class AlternativeQueryFinder extends HttpServlet {
     public AlternativeQueryFinder() {
         super();
         altQueryGenerator = new AlternativeQueryGenerator();
-        queryManager = QueryManager.getInstance();
     }
 
 	/**
@@ -44,25 +42,18 @@ public class AlternativeQueryFinder extends HttpServlet {
         	return;
         }
         
-        String query = sparqlQuery.getQueryString();
-        
-        System.out.println("Answering Query: " + query);
-        int id = (int) Math.random() * 10000;
-		queryManager.executeUserQuery(id, sparqlQuery);
-		
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
-		
-		// If there are no answers, relax the query
-		if(queryManager.getNumberOfResults(id) == 0) {
-			
-		}
 		
         alternativeTokens.addAll(altQueryGenerator.findSimilarQueries(sparqlQuery));
 		
         if(alternativeTokens.size() > 0) {
         	java.util.Collections.sort(alternativeTokens, new AlternativeTokenComparator());
         }
-		System.out.println("Finding answers to alternative queries finished");
+        
+        // No alternative had any answers, relax this query in a final attempt to find answers
+        if(alternativeTokens.get(0).getNumOfRows() == 0) {
+        	
+        }
 		
 		String result = "{ \"results\": { \"suggestions\": [ ";
 		for(int i = 0; i < alternativeTokens.size(); ++i){

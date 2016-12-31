@@ -62,7 +62,7 @@ public class SuffixTreeTest {
 		    	}
 		    }
 		    Timer.stop();
-		    System.out.println("Suffix tree time: " + Timer.getTime() + " seconds");
+		    System.out.println("Suffix tree time: " + Timer.getTimeInSeconds() + " seconds");
 		    
 		    // Correctness test
 		    HashSet<Integer> output = (HashSet<Integer>) in.search("abc");
