@@ -503,18 +503,6 @@ public class Warehouse {
 		String trimmedString;
 		QueryManager queryManager = QueryManager.getInstance();
 		
-		// Check if this triple has answers with a variable predicate
-		/*Set<String> refinedPredicates = new HashSet<String>();
-		if(clause.get(2).startsWith("\"") && clause.get(0).startsWith("?")) {
-			String query = "SELECT " + clause.get(0) + " ?p WHERE { "
-					+ clause.get(0) + " ?p " + clause.get(2) + "}"; 
-			int id = (int) Math.random() * 10000;
-			ResultSet results = queryManager.executeQuery(id, query);
-			while(results.hasNext()) {
-				refinedPredicates.add("<" + results.next().get("p").toString() + ">");
-			}
-		}*/
-		
 		
 		// Whatever is after the last /
 		trimmedString = originalPredicate.substring(originalPredicate.lastIndexOf("/")+1, originalPredicate.length()-1).toLowerCase();	
@@ -525,105 +513,62 @@ public class Warehouse {
 		ArrayList<String> list = semanticRelationsMap.get(trimmedString);
 		
 		if(list != null) {
-			/*if(refinedPredicates.size() > 0) {
-				for(String refinedPredicate : refinedPredicates){ 
-					currentPredicate = refinedPredicate;
-					// Trim predicate
-					currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
-							currentPredicate.length()-1).toLowerCase();
-					
-					for(String element : list) {
-						if(currentPredicate.compareTo(element) == 0) {
-							matchesScores.add(new StringScore(refinedPredicate, 1));
-						}
-					}
-					
-				}
-			}
-			else {*/
-				for(int i = 0; i < predicatesList.size(); ++i){ 
-					currentPredicate = predicatesList.get(i);
-					// Trim predicate
-					currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
-							currentPredicate.length()-1).toLowerCase();
-					
-					for(String element : list) {
-						if(currentPredicate.compareTo(element) == 0) {
-							matchesScores.add(new StringScore(predicatesList.get(i), 1));
-						}
-					}
-					
-				}
-			}
-		//}
-		
-		/*if(refinedPredicates.size() > 0) {
-			System.out.println("Searching in refined predicates...");
-			// Search in predicates
-			for(String candidatePredicate : refinedPredicates){
-				// If the predicate is the same as the given predicate, continue
-				if(originalPredicate.compareTo(candidatePredicate) == 0)
-					continue;
-				
-				currentPredicate = candidatePredicate;
-				
+			for(int i = 0; i < predicatesList.size(); ++i){ 
+				currentPredicate = predicatesList.get(i);
 				// Trim predicate
 				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
 						currentPredicate.length()-1).toLowerCase();
 				
-				score = 1.0 * FuzzySearch.ratio(trimmedString, currentPredicate)/100;
+				for(String element : list) {
+					if(currentPredicate.compareTo(element) == 0) {
+						matchesScores.add(new StringScore(predicatesList.get(i), 1));
+					}
+				}
 				
-				// If score is above threshold, add it to the candidate matches list
-				matchesScores.add(new StringScore(candidatePredicate, score));
-			}
-			java.util.Collections.sort(matchesScores, new StringScoreComparator());
-			for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
-				matches.add(matchesScores.get(i).getS());
 			}
 		}
-		else {*/
-			System.out.println("Searching in all predicates...");
-			// Search in predicates
-			int minIndex = 0;
-			int maxIndex = predicatesList.size() - 1;
-			
-			// Assign threads to search tasks
-			int indexesPerThread = (maxIndex - minIndex) / (numOfCores - 1);
-			
-			// Arraylist to keep track of threads
-			ArrayList<Thread> threads = new ArrayList<Thread>();
-			
-			for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
-				threads.add(new Thread(new PredicateSearchTask(i,
-						Math.min(i+indexesPerThread, predicatesList.size() - 1),
-						originalPredicate)));
+		
+		System.out.println("Searching in all predicates...");
+		// Search in predicates
+		int minIndex = 0;
+		int maxIndex = predicatesList.size() - 1;
+		
+		// Assign threads to search tasks
+		int indexesPerThread = (maxIndex - minIndex) / (numOfCores - 1);
+		
+		// Arraylist to keep track of threads
+		ArrayList<Thread> threads = new ArrayList<Thread>();
+		
+		for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
+			threads.add(new Thread(new PredicateSearchTask(i,
+					Math.min(i+indexesPerThread, predicatesList.size() - 1),
+					originalPredicate)));
+		}
+		
+		// Start threads
+		for(int i = 0; i < threads.size(); ++i) {
+			threads.get(i).start();
+		}
+		
+		// Join threads before continue
+		for(int i = 0; i < threads.size(); ++i) {
+			try {
+				threads.get(i).join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			
-			// Start threads
-			for(int i = 0; i < threads.size(); ++i) {
-				threads.get(i).start();
-			}
-			
-			// Join threads before continue
-			for(int i = 0; i < threads.size(); ++i) {
-				try {
-					threads.get(i).join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			
-			// Copy contents of the synchronized list into the matchesScores list
-			ArrayList<StringScore> newMatchesScores = new ArrayList<StringScore>();
-			for(StringScore stringScore : setForPredicates) {
-				newMatchesScores.add(stringScore);
-			}
-			java.util.Collections.sort(newMatchesScores, new StringScoreLengthComparator());
-			matchesScores.addAll(newMatchesScores);
-			for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
-				matches.add(matchesScores.get(i).getS());
-			}
-//		}
+		}
+		
+		// Copy contents of the synchronized list into the matchesScores list
+		ArrayList<StringScore> newMatchesScores = new ArrayList<StringScore>();
+		for(StringScore stringScore : setForPredicates) {
+			newMatchesScores.add(stringScore);
+		}
+		java.util.Collections.sort(newMatchesScores, new StringScoreLengthComparator());
+		matchesScores.addAll(newMatchesScores);
+		for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
+			matches.add(matchesScores.get(i).getS());
+		}
 		return matches;
 		
 	}
