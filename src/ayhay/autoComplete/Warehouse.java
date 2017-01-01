@@ -504,7 +504,7 @@ public class Warehouse {
 		QueryManager queryManager = QueryManager.getInstance();
 		
 		// Check if this triple has answers with a variable predicate
-		Set<String> refinedPredicates = new HashSet<String>();
+		/*Set<String> refinedPredicates = new HashSet<String>();
 		if(clause.get(2).startsWith("\"") && clause.get(0).startsWith("?")) {
 			String query = "SELECT " + clause.get(0) + " ?p WHERE { "
 					+ clause.get(0) + " ?p " + clause.get(2) + "}"; 
@@ -513,7 +513,7 @@ public class Warehouse {
 			while(results.hasNext()) {
 				refinedPredicates.add("<" + results.next().get("p").toString() + ">");
 			}
-		}
+		}*/
 		
 		
 		// Whatever is after the last /
@@ -525,22 +525,40 @@ public class Warehouse {
 		ArrayList<String> list = semanticRelationsMap.get(trimmedString);
 		
 		if(list != null) {
-			for(int i = 0; i < predicatesList.size(); ++i){ 
-				currentPredicate = predicatesList.get(i);
-				// Trim predicate
-				currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
-						currentPredicate.length()-1).toLowerCase();
-				
-				for(String element : list) {
-					if(currentPredicate.compareTo(element) == 0) {
-						matchesScores.add(new StringScore(predicatesList.get(i), 1));
+			/*if(refinedPredicates.size() > 0) {
+				for(String refinedPredicate : refinedPredicates){ 
+					currentPredicate = refinedPredicate;
+					// Trim predicate
+					currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
+							currentPredicate.length()-1).toLowerCase();
+					
+					for(String element : list) {
+						if(currentPredicate.compareTo(element) == 0) {
+							matchesScores.add(new StringScore(refinedPredicate, 1));
+						}
 					}
+					
 				}
-				
 			}
-		}
+			else {*/
+				for(int i = 0; i < predicatesList.size(); ++i){ 
+					currentPredicate = predicatesList.get(i);
+					// Trim predicate
+					currentPredicate = currentPredicate.substring(currentPredicate.lastIndexOf("/")+1,
+							currentPredicate.length()-1).toLowerCase();
+					
+					for(String element : list) {
+						if(currentPredicate.compareTo(element) == 0) {
+							matchesScores.add(new StringScore(predicatesList.get(i), 1));
+						}
+					}
+					
+				}
+			}
+		//}
 		
-		if(refinedPredicates.size() > 0) {
+		/*if(refinedPredicates.size() > 0) {
+			System.out.println("Searching in refined predicates...");
 			// Search in predicates
 			for(String candidatePredicate : refinedPredicates){
 				// If the predicate is the same as the given predicate, continue
@@ -563,8 +581,8 @@ public class Warehouse {
 				matches.add(matchesScores.get(i).getS());
 			}
 		}
-		else {
-		
+		else {*/
+			System.out.println("Searching in all predicates...");
 			// Search in predicates
 			int minIndex = 0;
 			int maxIndex = predicatesList.size() - 1;
@@ -576,7 +594,9 @@ public class Warehouse {
 			ArrayList<Thread> threads = new ArrayList<Thread>();
 			
 			for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
-				threads.add(new Thread(new PredicateSearchTask(i, i+indexesPerThread, originalPredicate)));
+				threads.add(new Thread(new PredicateSearchTask(i,
+						Math.min(i+indexesPerThread, predicatesList.size() - 1),
+						originalPredicate)));
 			}
 			
 			// Start threads
@@ -603,7 +623,7 @@ public class Warehouse {
 			for(int i = 0; i < 5 && i < matchesScores.size(); ++i){
 				matches.add(matchesScores.get(i).getS());
 			}
-		}
+//		}
 		return matches;
 		
 	}
@@ -631,7 +651,8 @@ public class Warehouse {
 			return matches;
 		
 		// Extract what's between double quotes
-		trimmedString = s.substring(s.indexOf("\"")+1, s.indexOf("\"", s.indexOf("\"")+1)).toLowerCase();	// Just choose what is between brackets
+		trimmedString = s.substring(s.indexOf("\"")+1,
+				s.indexOf("\"", s.indexOf("\"")+1)).toLowerCase();	// Just choose what is between brackets
 		
 		// Find similar literals withing 5 characters
 		int minLength = trimmedString.length() - 2;
@@ -813,8 +834,7 @@ public class Warehouse {
 		java.util.Collections.sort(tempList, new LengthComparator());
 		
 		// Fill the array
-		int remainingSlots = resultsToBeFound - arrayObj.size(); 
-		for(int i = 0; i < tempList.size() && remainingSlots > 0; ++i, --remainingSlots) {
+		for(int i = 0; i < tempList.size() && resultsToBeFound > 0; ++i, --resultsToBeFound) {
 			arrayObj.add(tempList.get(i));
 		}
 		

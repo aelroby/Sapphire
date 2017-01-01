@@ -51,20 +51,18 @@ public class AlternativeQueryFinder extends HttpServlet {
         	java.util.Collections.sort(alternativeTokens, new AlternativeTokenComparator());
         }
         
-        // No alternative had any answers, relax this query in a final attempt to find answers
-        if(alternativeTokens.get(0).getNumOfRows() == 0) {
-        	// Literals first
-        	Timer.start();
-        	alternativeTokens.addAll(altQueryGenerator.relaxQuery(sparqlQuery));
-        	Timer.stop();
-        	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
-        	
-        	// Predicates
-        	Timer.start();
-        	alternativeTokens.addAll(altQueryGenerator.relaxPredicates(sparqlQuery));
-        	Timer.stop();
-        	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
-        }
+        // Query relaxation too
+    	// Literals first
+    	Timer.start();
+    	alternativeTokens.addAll(altQueryGenerator.relaxQuery(sparqlQuery));
+    	Timer.stop();
+    	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
+    	
+    	// Predicates
+    	Timer.start();
+    	alternativeTokens.addAll(altQueryGenerator.relaxPredicates(sparqlQuery));
+    	Timer.stop();
+    	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
 		
 		String result = "{ \"results\": { \"suggestions\": [ ";
 		for(int i = 0; i < alternativeTokens.size(); ++i){

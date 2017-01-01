@@ -176,6 +176,7 @@ public class AlternativeQueryGenerator {
 		Timer.start();
 		QueryManager queryManager = QueryManager.getInstance();
 		for(int i = 0; i < alternativeQueries.size(); ++i){
+			System.out.println("Query " + i + ": " + alternativeQueries.get(i));
 			int id = RandomIDGenerator.getID();
 			queryManager.executeQuery(id, alternativeQueries.get(i));
 			int numOfRows = queryManager.getNumberOfResults(id);
