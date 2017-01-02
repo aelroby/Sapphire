@@ -77,33 +77,39 @@ public class AlternativeQueryGenerator {
 		for(int i = 0; i < query.where.size(); ++i) {
 			// If this triple contains a literal, that's a seed
 			if(query.where.get(i).get(2).contains("@en")) {
-				SPARQLQuery newQuery = query.copyObject();
-				newQuery.getWhere().get(i).set(2, "?s");
-				ArrayList<String> newTriple = new ArrayList<String>();
-				newTriple.add("?s");
-				newTriple.add("?p");
-				newTriple.add(query.where.get(i).get(2));
-				newQuery.getWhere().add(newTriple);
-				newQuery.select.add("?s");
-				newQuery.updateQueryString();
-				
-				// Execute this query
-				int id = RandomIDGenerator.getID();
-				ResultSet results = queryManager.executeUserQuery(id, newQuery);
-				int numOfRows = 0;
-				if(results.hasNext()) {
-					++numOfRows;
-					Set<String> relaxedObjects = new HashSet<String>();
-					while(results.hasNext()) {
-						String answer = "<" + results.next().get("s").toString() + ">";
-						relaxedObjects.add(answer);
-					}
-					for(String relaxedObject : relaxedObjects) {
-						AlternativeToken newToken = new AlternativeToken(query.getWhere().get(i).get(0),
-								query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
-								relaxedObject, "O");
-						newToken.setNumOfRows(numOfRows);
-						alternativeTokens.add(newToken);
+				ArrayList<String> literalMatches = new ArrayList<String>();
+				literalMatches.add(query.where.get(i).get(2));
+				literalMatches.addAll(ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(
+								query.where.get(i).get(2), 1));
+				for(String literalMatch : literalMatches) {
+					SPARQLQuery newQuery = query.copyObject();
+					newQuery.getWhere().get(i).set(2, "?s");
+					ArrayList<String> newTriple = new ArrayList<String>();
+					newTriple.add("?s");
+					newTriple.add("?p");
+					newTriple.add(literalMatch);
+					newQuery.getWhere().add(newTriple);
+					newQuery.select.add("?s");
+					newQuery.updateQueryString();
+					
+					// Execute this query
+					int id = RandomIDGenerator.getID();
+					ResultSet results = queryManager.executeUserQuery(id, newQuery);
+					int numOfRows = 0;
+					if(results.hasNext()) {
+						++numOfRows;
+						Set<String> relaxedObjects = new HashSet<String>();
+						while(results.hasNext()) {
+							String answer = "<" + results.next().get("s").toString() + ">";
+							relaxedObjects.add(answer);
+						}
+						for(String relaxedObject : relaxedObjects) {
+							AlternativeToken newToken = new AlternativeToken(query.getWhere().get(i).get(0),
+									query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
+									relaxedObject, "O");
+							newToken.setNumOfRows(numOfRows);
+							alternativeTokens.add(newToken);
+						}
 					}
 				}
 			}
@@ -154,7 +160,7 @@ public class AlternativeQueryGenerator {
 			if(clause.get(2).startsWith("\"")) {
 				Timer.start();
 				ArrayList<String> alternatives = 
-						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2));
+						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2), 0.7);
 				
 				for(int j = 0; j < alternatives.size(); ++j){
 					SPARQLQuery newQuery = query.copyObject();

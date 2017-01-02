@@ -8,13 +8,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.jena.query.ResultSet;
 import org.json.simple.JSONArray;
 
 import com.abahgat.suffixtree.GeneralizedSuffixTree;
 
 import ayhay.dataStructures.StringScore;
-import ayhay.query.QueryManager;
 import ayhay.utils.FileManager;
 import ayhay.utils.LengthComparator;
 import ayhay.utils.StringScoreComparator;
@@ -134,13 +132,15 @@ public class Warehouse {
 
 		int minIndex, maxIndex;
 		String query, trimmedString;
+		double threshold;
 		
 		public SuggestionTask(int minIndex, int maxIndex,
-				String query, String trimmedString) {
+				String query, String trimmedString, double threshold) {
 			this.minIndex = minIndex;
 			this.maxIndex = maxIndex;
 			this.query = query;
 			this.trimmedString = trimmedString;
+			this.threshold = threshold;
 		}
 		
 		@Override
@@ -165,7 +165,7 @@ public class Warehouse {
 				score = 1.0 * FuzzySearch.ratio(currentLiteral, trimmedString)/100;
 				
 				// If score is above threshold, add it to list
-				if(score > 0.7){
+				if(score >= threshold){
 					setForSuggestions.add(new StringScore(literalsList.get(i), score));
 				}
 			}
@@ -457,7 +457,7 @@ public class Warehouse {
 	 * Write stats to file
 	 */
 	private void writeStatsToFile() {
-		String fileName = "IndexStats.dat";
+		String fileName = "TypeaheadStats.dat";
 		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio,Avg_Time\n";
 		contents += numOfSearchTasks + "," + numOfIndexHits + 
 				"," + 1.0 * numOfIndexHits / numOfSearchTasks + 
@@ -501,12 +501,10 @@ public class Warehouse {
 		ArrayList<StringScore> matchesScores = new ArrayList<StringScore>(); 
 		ArrayList<String> matches = new ArrayList<String>();
 		String trimmedString;
-		QueryManager queryManager = QueryManager.getInstance();
 		
 		
 		// Whatever is after the last /
 		trimmedString = originalPredicate.substring(originalPredicate.lastIndexOf("/")+1, originalPredicate.length()-1).toLowerCase();	
-		double score;
 		String currentPredicate;
 
 		// Semantic relations
@@ -578,7 +576,7 @@ public class Warehouse {
 	 * @param s The literal to find similar predicates for
 	 * @return An Arraylist of similar literals
 	 */
-	public ArrayList<String> findSimilarStringsLiterals(String s){
+	public ArrayList<String> findSimilarStringsLiterals(String s, double score){
 		
 		setForSuggestions.clear();
 		
@@ -624,7 +622,7 @@ public class Warehouse {
 		ArrayList<Thread> threads = new ArrayList<Thread>();
 		
 		for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
-			threads.add(new Thread(new SuggestionTask(i, i + indexesPerThread, s, trimmedString)));
+			threads.add(new Thread(new SuggestionTask(i, i + indexesPerThread, s, trimmedString, score)));
 		}
 		
 		// Start threads
