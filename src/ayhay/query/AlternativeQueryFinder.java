@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import ayhay.dataStructures.AlternativeToken;
 import ayhay.dataStructures.SPARQLQuery;
 import ayhay.utils.AlternativeTokenComparator;
+import ayhay.utils.FileManager;
+import ayhay.utils.SimpleTimestamp;
 import ayhay.utils.Timer;
 
 /**
@@ -43,6 +45,11 @@ public class AlternativeQueryFinder extends HttpServlet {
         	return;
         }
         
+        String logContents = SimpleTimestamp.getFormattedTimestamp() + 
+        		"Finding alternatives for query \"" + sparqlQuery.queryString + "\":";
+        
+        FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", logContents);
+        
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
 		
         alternativeTokens.addAll(altQueryGenerator.findSimilarQueries(sparqlQuery));
@@ -63,6 +70,8 @@ public class AlternativeQueryFinder extends HttpServlet {
     	alternativeTokens.addAll(altQueryGenerator.relaxPredicates(sparqlQuery));
     	Timer.stop();
     	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
+    	
+    	FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", "++++++++++++++++++++++++++++++++++++++");
 		
 		String result = "{ \"results\": { \"suggestions\": [ ";
 		for(int i = 0; i < alternativeTokens.size(); ++i){

@@ -47,12 +47,24 @@ public class FileManager {
 		
 	}
 	
-	public static void appendToFile(String filePath, String contents) {
+	public static void appendToFileWithNewLine(String filePath, String contents) {
 		try(FileWriter fw = new FileWriter(filePath, true);
 		    BufferedWriter bw = new BufferedWriter(fw);
 		    PrintWriter out = new PrintWriter(bw))
 		{
 		    out.println(contents);
+		} catch (IOException e) {
+			System.out.println("Error appending to file " + filePath);
+			e.printStackTrace();
+		}
+	}
+	
+	public static void appendToFileNoNewLine(String filePath, String contents) {
+		try(FileWriter fw = new FileWriter(filePath, true);
+		    BufferedWriter bw = new BufferedWriter(fw);
+		    PrintWriter out = new PrintWriter(bw))
+		{
+		    out.print(contents);
 		} catch (IOException e) {
 			System.out.println("Error appending to file " + filePath);
 			e.printStackTrace();

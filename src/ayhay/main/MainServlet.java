@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import ayhay.FileManagement.ParameterFileManager;
 import ayhay.dataStructures.SPARQLQuery;
 import ayhay.query.QueryManager;
+import ayhay.utils.FileManager;
+import ayhay.utils.SimpleTimestamp;
 
 /**
  * Servlet implementation class MainServlet
@@ -22,7 +24,7 @@ public class MainServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private QueryManager queryManager;
     
-    
+    private int queryNum = 0;
     
     public void init (ServletConfig config) throws ServletException{
         super.init(config);
@@ -62,6 +64,11 @@ public class MainServlet extends HttpServlet {
 		if(!sparqlQuery.isValid())
 			return;
 		String query = sparqlQuery.getQueryString();
+		
+		String logContent = SimpleTimestamp.getFormattedTimestamp() + 
+				"query " + queryNum++ + ": " + query;
+		
+		FileManager.appendToFileWithNewLine("MainQueryLog.dat", logContent);
         
         System.out.println("Answering Query: " + query);
         int id = (int) Math.random() * 10000;
@@ -69,6 +76,8 @@ public class MainServlet extends HttpServlet {
 		String answers = queryManager.getResultsAsJSON(id);
         queryManager.closeQuery(id);
         System.out.println("Answers:" + answers);
+        
+        FileManager.appendToFileWithNewLine("MainQueryLog.dat", "++++++++++++++++++++++++++++++++++++++");
         
         response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.
         response.setCharacterEncoding("UTF-8"); // You want world domination, huh?

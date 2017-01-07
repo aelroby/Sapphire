@@ -8,7 +8,9 @@ import org.apache.jena.query.ResultSet;
 
 import ayhay.dataStructures.AlternativeToken;
 import ayhay.dataStructures.SPARQLQuery;
+import ayhay.utils.FileManager;
 import ayhay.utils.RandomIDGenerator;
+import ayhay.utils.SimpleTimestamp;
 import ayhay.utils.Timer;
 
 
@@ -139,11 +141,25 @@ public class AlternativeQueryGenerator {
 			
 			// Find alternatives for predicate
 			if(!clause.get(1).startsWith("?")) {
+				FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", 
+						SimpleTimestamp.getFormattedTimestamp() + 
+						"Alternatives for predicate <" + clause.get(1) + ">:");
 				Timer.start();
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause);
 
 				for(int j = 0; j < alternatives.size(); ++j){
+					
+					// Logging
+					if(j == alternatives.size() - 1) {
+						FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", 
+								alternatives.get(j));
+					}
+					else {
+						FileManager.appendToFileNoNewLine("AlternativeQueriesLog.dat", 
+								alternatives.get(j) + ",");
+					}
+					
 					SPARQLQuery newQuery = query.copyObject();
 					newQuery.getWhere().get(i).set(1, alternatives.get(j));
 					newQuery.updateQueryString();
@@ -158,11 +174,22 @@ public class AlternativeQueryGenerator {
 			
 			// Find alternatives for literals
 			if(clause.get(2).startsWith("\"")) {
+				FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", 
+						SimpleTimestamp.getFormattedTimestamp() + "Alternatives for literal \"" + clause.get(2) + "\":");
 				Timer.start();
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2), 0.7);
 				
 				for(int j = 0; j < alternatives.size(); ++j){
+					// Logging
+					if(j == alternatives.size() - 1) {
+						FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", 
+								alternatives.get(j));
+					}
+					else {
+						FileManager.appendToFileNoNewLine("AlternativeQueriesLog.dat", 
+								alternatives.get(j) + ",");
+					}
 					SPARQLQuery newQuery = query.copyObject();
 					newQuery.getWhere().get(i).set(2, alternatives.get(j));
 					newQuery.updateQueryString();
@@ -183,6 +210,9 @@ public class AlternativeQueryGenerator {
 		QueryManager queryManager = QueryManager.getInstance();
 		for(int i = 0; i < alternativeQueries.size(); ++i){
 			System.out.println("Query " + i + ": " + alternativeQueries.get(i));
+			FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", 
+					SimpleTimestamp.getFormattedTimestamp() + 
+					"Answering query \"" + alternativeQueries.get(i) + "\"");
 			int id = RandomIDGenerator.getID();
 			queryManager.executeQuery(id, alternativeQueries.get(i));
 			int numOfRows = queryManager.getNumberOfResults(id);
