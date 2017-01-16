@@ -43,11 +43,9 @@ public class AlternativeQueryGenerator {
 				newQuery.updateQueryString();
 				int id = RandomIDGenerator.getID();
 				ResultSet results = queryManager.executeUserQuery(id, newQuery);
-				int numOfRows = 0;
 				if(results.hasNext()) {
 					Set<String> relaxedPredicates = new HashSet<String>();
 					while(results.hasNext()) {
-						++numOfRows;
 						String answer = "<" + results.next().get("p").toString() + ">";
 						relaxedPredicates.add(answer);
 					}
@@ -55,7 +53,7 @@ public class AlternativeQueryGenerator {
 						AlternativeToken newToken = new AlternativeToken(query.getWhere().get(i).get(0),
 								query.getWhere().get(i).get(1), query.getWhere().get(i).get(2),
 								relaxedObject, "P");
-						newToken.setNumOfRows(numOfRows);
+						newToken.setNumOfRows(1);
 						alternativeTokens.add(newToken);
 					}
 				}

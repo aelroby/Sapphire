@@ -197,6 +197,13 @@ public class Warehouse {
 		list.add("housewife");
 		semanticRelationsMap.put("wife", list);
 		
+		// husband
+		list = new ArrayList<String>();
+		list.add("spouse");
+		list.add("partner");
+		list.add("mate");
+		semanticRelationsMap.put("husband", list);
+		
 		// vice
 		list = new ArrayList<String>();
 		list.add("frailty");

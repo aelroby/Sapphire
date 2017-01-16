@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 
 import ayhay.FileManagement.ParameterFileManager;
+import ayhay.utils.FileManager;
 
 /**
  * Servlet implementation class AutoComplete
@@ -66,6 +67,7 @@ public class AutoComplete extends HttpServlet {
         	out.close();
         }
         else{
+        	FileManager.appendToFileWithNewLine("TypeaheadWords.dat", query);
             System.out.println("Received term: " + query);
             query = query.toLowerCase();
             JSONArray arrayObj = warehouse.findMatches(query);
