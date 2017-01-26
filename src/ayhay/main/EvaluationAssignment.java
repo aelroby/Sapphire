@@ -11,7 +11,7 @@ public class EvaluationAssignment {
 	
 	static int[] groupQuestionNum = {9, 8, 8};
 	
-	static int questionsNum = 4;
+	static int[] questionsNum = {4,3,3};
 	
 	public static void main(String[] args) {
 		Set<Integer> chosenSet = new HashSet<Integer>();
@@ -20,13 +20,13 @@ public class EvaluationAssignment {
 		System.out.println("Assigning questions to participant...");
 		for(int i = 0; i < groupNum; ++i) {
 			chosenSet.clear();
-			for(int j = 0; j < questionsNum; ++j) {
+			for(int j = 0; j < questionsNum[i]; ++j) {
 				int chosenNum = 1 + (int)(Math.random() * groupQuestionNum[i]);
 				while(chosenSet.contains(chosenNum)) {
 					chosenNum = 1 + (int)(Math.random() * groupQuestionNum[i]);
 				}
 				chosenSet.add(chosenNum);
-				contents += Integer.toString(chosenNum) + ") \n";
+				contents += Integer.toString(i+1) + "." + Integer.toString(chosenNum) + ") \n";
 			}
 			contents += "=====================\n";
 		}

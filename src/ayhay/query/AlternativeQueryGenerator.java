@@ -1,5 +1,6 @@
 package ayhay.query;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -123,12 +124,23 @@ public class AlternativeQueryGenerator {
 	 * @return ArrayList of alternative tokens
 	 */
 	public ArrayList<AlternativeToken> findSimilarQueries(SPARQLQuery query) {
+		
+		// Initialize the log file
+		File altTimeStatFile = new File("AlternativeQueriesTimeStatsSeconds.dat");
+		if(!altTimeStatFile.exists()) {
+			FileManager.writeToFile("AlternativeQueriesTimeStatsSeconds.dat",
+					"AltPredicates,AltLiterals,AnswersAlternatives,RelaxQuery,RelaxPredicates\n");
+		}
+		
+		
 		ArrayList<AlternativeToken> alternativeTokens = 
 				new ArrayList<AlternativeToken>();
 		ArrayList<String> alternativeQueries = 
 				new ArrayList<String>();
 		
 		ArrayList<ArrayList<String>> where = query.getWhere();
+		double timeForPredicates = 0;
+		double timeForLiterals = 0;
 		for(int i = 0; i < where.size(); ++i){
 			ArrayList<String> clause = where.get(i);
 			// If predicate and object in this clause are variables --> skip
@@ -145,6 +157,9 @@ public class AlternativeQueryGenerator {
 				Timer.start();
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause);
+				Timer.stop();
+				timeForPredicates += Timer.getTimeInMelliseconds();
+				System.out.println("Found alternatives for predicates in " + Timer.getTimeInSeconds() + " seconds");
 
 				for(int j = 0; j < alternatives.size(); ++j){
 					
@@ -165,8 +180,7 @@ public class AlternativeQueryGenerator {
 					alternativeTokens.add(new AlternativeToken(clause.get(0), 
 							clause.get(1), clause.get(2), alternatives.get(j), "P"));
 				}
-				Timer.stop();
-				System.out.println("Found alternatives for predicates in " + Timer.getTimeInSeconds() + " seconds");
+				
 			}
 			
 			
@@ -177,6 +191,9 @@ public class AlternativeQueryGenerator {
 				Timer.start();
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2), 0.7);
+				Timer.stop();
+				timeForLiterals += Timer.getTimeInMelliseconds();
+				System.out.println("Found alternatives for literals in " + Timer.getTimeInSeconds() + " seconds");
 				
 				for(int j = 0; j < alternatives.size(); ++j){
 					// Logging
@@ -195,11 +212,16 @@ public class AlternativeQueryGenerator {
 					alternativeTokens.add(new AlternativeToken(clause.get(0), 
 							clause.get(1), clause.get(2), alternatives.get(j), "O"));
 				}
-				Timer.stop();
-				System.out.println("Found alternatives for literals in " + Timer.getTimeInSeconds() + " seconds");
+				
 			}
 			
 		}
+		
+		FileManager.appendToFileNoNewLine("AlternativeQueriesTimeStatsSeconds.dat",
+				timeForPredicates + ",");
+		
+		FileManager.appendToFileNoNewLine("AlternativeQueriesTimeStatsSeconds.dat",
+				timeForLiterals + ",");
 
 		System.out.println("Finding alternative literals finished!");
 		
@@ -218,6 +240,8 @@ public class AlternativeQueryGenerator {
 			alternativeTokens.get(i).setNumOfRows(numOfRows);
 		}
 		Timer.stop();
+		FileManager.appendToFileNoNewLine("AlternativeQueriesTimeStatsSeconds.dat",
+				Double.toString(Timer.getTimeInSeconds()) + ",");
 		System.out.println("Answered alternatives in " + Timer.getTimeInSeconds() + " seconds");
 		
 		return alternativeTokens;

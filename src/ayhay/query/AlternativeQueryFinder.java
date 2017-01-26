@@ -63,12 +63,16 @@ public class AlternativeQueryFinder extends HttpServlet {
     	Timer.start();
     	alternativeTokens.addAll(altQueryGenerator.relaxQuery(sparqlQuery));
     	Timer.stop();
+    	FileManager.appendToFileNoNewLine("AlternativeQueriesTimeStatsSeconds.dat",
+				Double.toString(Timer.getTimeInSeconds()) + ",");
     	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
     	
     	// Predicates
     	Timer.start();
     	alternativeTokens.addAll(altQueryGenerator.relaxPredicates(sparqlQuery));
     	Timer.stop();
+    	FileManager.appendToFileWithNewLine("AlternativeQueriesTimeStatsSeconds.dat",
+				Double.toString(Timer.getTimeInSeconds()));
     	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
     	
     	FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", "++++++++++++++++++++++++++++++++++++++");

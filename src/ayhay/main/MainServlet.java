@@ -15,6 +15,7 @@ import ayhay.dataStructures.SPARQLQuery;
 import ayhay.query.QueryManager;
 import ayhay.utils.FileManager;
 import ayhay.utils.SimpleTimestamp;
+import ayhay.utils.Timer;
 
 /**
  * Servlet implementation class MainServlet
@@ -72,7 +73,11 @@ public class MainServlet extends HttpServlet {
         
         System.out.println("Answering Query: " + query);
         int id = (int) Math.random() * 10000;
+        Timer.start();
 		queryManager.executeUserQuery(id, sparqlQuery);
+		Timer.stop();
+		FileManager.appendToFileWithNewLine("QueryTimeStatsMelliseconds.dat",
+				Double.toString(Timer.getTimeInMelliseconds()));
 		String answers = queryManager.getResultsAsJSON(id);
         queryManager.closeQuery(id);
         System.out.println("Answers:" + answers);
