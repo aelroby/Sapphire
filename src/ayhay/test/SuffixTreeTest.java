@@ -86,8 +86,8 @@ public class SuffixTreeTest {
 	public static void testFunctionality() {
 		GeneralizedSuffixTree in = new GeneralizedSuffixTree();
 		in.put("barack obama", 0);
-		in.put("barack obama", 1);
-		HashSet<Integer> output = (HashSet<Integer>) in.search("barack obama");
+		in.put("barbaric", 1);
+		HashSet<Integer> output = (HashSet<Integer>) in.search("ob");
 		for(Integer index : output) {
     		System.out.println("Index: " + index);
     	}

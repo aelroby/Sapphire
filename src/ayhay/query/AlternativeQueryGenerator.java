@@ -130,8 +130,7 @@ public class AlternativeQueryGenerator {
 		if(!altTimeStatFile.exists()) {
 			FileManager.writeToFile("AlternativeQueriesTimeStatsSeconds.dat",
 					"AltPredicates,AltLiterals,AnswersAlternatives,RelaxQuery,RelaxPredicates\n");
-		}
-		
+		}		
 		
 		ArrayList<AlternativeToken> alternativeTokens = 
 				new ArrayList<AlternativeToken>();
@@ -158,7 +157,7 @@ public class AlternativeQueryGenerator {
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause);
 				Timer.stop();
-				timeForPredicates += Timer.getTimeInMelliseconds();
+				timeForPredicates += Timer.getTimeInSeconds();
 				System.out.println("Found alternatives for predicates in " + Timer.getTimeInSeconds() + " seconds");
 
 				for(int j = 0; j < alternatives.size(); ++j){
@@ -192,7 +191,7 @@ public class AlternativeQueryGenerator {
 				ArrayList<String> alternatives = 
 						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(clause.get(2), 0.7);
 				Timer.stop();
-				timeForLiterals += Timer.getTimeInMelliseconds();
+				timeForLiterals += Timer.getTimeInSeconds();
 				System.out.println("Found alternatives for literals in " + Timer.getTimeInSeconds() + " seconds");
 				
 				for(int j = 0; j < alternatives.size(); ++j){

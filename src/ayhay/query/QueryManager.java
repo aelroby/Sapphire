@@ -46,6 +46,7 @@ public class QueryManager {
 	public synchronized ResultSet executeQuery(int id, String queryString){
 		this.queryString = queryString;
 		query = QueryFactory.create(queryString);
+		// http://husky-big.cs.uwaterloo.ca:8890/sparql
 		qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
 		ResultSet results = qexec.execSelect();
 		resultSetMap.put(id, results);
