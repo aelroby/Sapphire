@@ -37,7 +37,7 @@ public class AutoComplete extends HttpServlet {
        warehouse = new Warehouse();
        warehouse.initializeWarehouse(parameterManager.getLabelsFile(),
     		   parameterManager.getPredicatesFile(),
-    		   parameterManager.getFrequentLiteralsFile());
+    		   parameterManager.getFrequentLiteralsFile(), -1);
     }
 	
     /**

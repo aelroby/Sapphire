@@ -55,13 +55,15 @@ public class EvaluationAssignment {
 		for(int i = 0; i < groupNum; ++i) {
 			chosenSet.clear();
 			for(int j = 0; j < questionsNum[i]; ++j) {
-				int chosenNum = 1 + (int)(Math.random() * groupQuestionNum[i]);
+				double randomNum = Math.random();
+				int chosenNum = 1 + (int)(randomNum * groupQuestionNum[i]);
 				while(chosenSet.contains(chosenNum)) {
-					chosenNum = 1 + (int)(Math.random() * groupQuestionNum[i]);
+					randomNum = Math.random();
+					chosenNum = 1 + (int)(randomNum * groupQuestionNum[i]);
 				}
 				chosenSet.add(chosenNum);
 				contents += Integer.toString(i+1) + "." + Integer.toString(chosenNum) + ") "
-				+ questions[i][j] + "\n";
+				+ questions[i][chosenNum-1] + "\n";
 			}
 			contents += "=====================\n";
 		}

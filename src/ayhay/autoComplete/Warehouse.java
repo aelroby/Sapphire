@@ -58,6 +58,7 @@ public class Warehouse {
 	// Variables for statistics
 	private int numOfSearchTasks;
 	private int numOfIndexHits;
+	private double pruningPercentage;
 	private double totalTime;
 	
 	private class PredicateSearchTask implements Runnable {
@@ -371,7 +372,7 @@ public class Warehouse {
 		
 		// Stats variables initialized
 		numOfSearchTasks = numOfIndexHits = 0;
-		totalTime = 0.0;
+		pruningPercentage = totalTime = 0.0;
 	}
 	
 	public ArrayList<String> getPredicatesList() {
@@ -428,9 +429,11 @@ public class Warehouse {
 	 * 
 	 * @param literalsFile is the path of the literals file
 	 * @param predicatesFile is the path of the predicates file
+	 * @param mostFrequentLiteralsFile location of the file that contains most frequent literals
+	 * @param numOfMostFrequent the number of literals that need to be indexed. If you don't know what this is, -1 is the value for you
 	 */
 	public void initializeWarehouse(String literalsFile, 
-			String predicatesFile, String mostFrequentLiteralsFile){
+			String predicatesFile, String mostFrequentLiteralsFile, int numOfMostFrequent){
 		
 		Timer.start();
 		
@@ -447,7 +450,17 @@ public class Warehouse {
 		System.out.println("Reading frequent literals file...");
 		frequentLiteralsList = FileManager.readFileLineByLine(mostFrequentLiteralsFile);
 		removeSpaceFromEndOfString(frequentLiteralsList);
-		for(int i = 0; i < frequentLiteralsList.size(); ++i) {
+		
+		int numOfLiteralsIndexed;
+		if(numOfMostFrequent == -1) {
+			numOfLiteralsIndexed = frequentLiteralsList.size();
+		}
+		else {
+			numOfLiteralsIndexed = Math.min(numOfMostFrequent,
+					frequentLiteralsList.size());
+		}
+		
+		for(int i = 0; i < numOfLiteralsIndexed; ++i) {
 			in.put(frequentLiteralsList.get(i).toLowerCase(), i);
 		}
 		System.out.println("Reading frequent literals file finished!");
@@ -465,10 +478,11 @@ public class Warehouse {
 	 */
 	private void writeStatsToFile() {
 		String fileName = "TypeaheadStats.dat";
-		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio,Avg_Time\n";
+		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio,Avg_Time,Pruning\n";
 		contents += numOfSearchTasks + "," + numOfIndexHits + 
 				"," + 1.0 * numOfIndexHits / numOfSearchTasks + 
-				"," + totalTime / numOfSearchTasks;
+				"," + totalTime / numOfSearchTasks +
+				"," + pruningPercentage / numOfSearchTasks;
 		FileManager.writeToFile(fileName, contents);
 	}
 	
@@ -727,8 +741,8 @@ public class Warehouse {
 		
 		// In length bins
 		// Search in bins with a minimum length of the query
-		// and a maximum of the query length + 12
-		int minLength = query.length()-2;
+		// and a maximum of the query length + 10
+		int minLength = query.length()-1;
 		int maxLength = query.length() + 10;
 		
 		int minIndex = Integer.MAX_VALUE;
@@ -746,13 +760,21 @@ public class Warehouse {
 			}
 		}
 		
-		System.out.println("Searching between indeces: " + minIndex + 
+		pruningPercentage += 1 - (1.0 * (maxIndex - minIndex) / literalsList.size());
+		try{
+		System.out.println("Searching for " + query +  " between indeces: " + minIndex + 
 				" corresponding to length " + (literalsList.get(minIndex).length()-5) +
 				" and " + maxIndex + " corresponding to length " + 
 				(literalsList.get(maxIndex).length()-5));
+		}
+		catch(IndexOutOfBoundsException e) {
+			System.out.println("query = " + query);
+			System.out.println("minIndex = " + minIndex);
+			System.out.println("maxIndex = " + maxIndex);
+		}
 		
 		// Assign threads to search tasks
-		int indexesPerThread = (maxIndex - minIndex) / (numOfCores - 1);
+		int indexesPerThread = (maxIndex - minIndex) / (numOfCores);
 		
 		// Arraylist to keep track of threads
 		ArrayList<Thread> threads = new ArrayList<Thread>();

@@ -24,7 +24,8 @@ public class SuffixTreeTest {
 			System.out.println("Initializing warehouse...");
 			warehouse.initializeWarehouse(parameterManager.getLabelsFile(),
 					parameterManager.getPredicatesFile(),
-					parameterManager.getFrequentLiteralsFile());
+					parameterManager.getFrequentLiteralsFile(),
+					-1);
 		    
 		    
 		    
