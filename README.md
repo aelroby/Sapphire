@@ -7,11 +7,22 @@ RDF data in the linked open data (LOD) cloud is very valuable for many different
 ## Requirements
 - Install a web application server, such as Tomcat.
 
-## Procedure
+## Steps
 1. Create a WAR file for Sapphire (Sapphire.war)
-2. Copy Sapphire.war to `\var\lib\tomcat\webapps\`
+	a. Open the code in Eclipse (_we use Eclipse Java EE IDE for Web Developers. Neon.1a Release (4.6.1)_)
+	b. Right-click on the project name, Sapphire, and select export.
+	c. Choose the option to export as WAR and in the dialog pick your tomcat version for optimization.
+	d. The generated war file is large because it includes all the required libs. You can find them all the lib directory.
+2. Copy Sapphire.war to `/var/lib/tomcat/webapps/`
 3. Restart the tomcat server: `sudo service tomcat7 stop`
-4. Add any required data files to `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/metadata/`
-5. Change the log directory in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/classes/logging.properties`:
+4. Add any required data files to an accessible directory `/metdata_directory/`
+5. Edit the parameters file in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/`; the contents of this file are:
+'''
+TDBDirectory=/metdata_directory/DB
+Labels=/metdata_directory/refinedLabels.dat
+Predicates=/metdata_directory/refinedPredicates.dat
+FrequentLiterals=/metdata_directory/FrequentLiterals.dat
+'''
+6. Change the log directory in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/classes/logging.properties`:
 	- java.util.logging.FileHandler.pattern= /Sapphire_log_directory/
-6. Restart the tomcat server: `sudo service tomcat7 stop`
+7. Restart the tomcat server: `sudo service tomcat7 stop`
