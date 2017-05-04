@@ -48,13 +48,43 @@ import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
  */
 public class AlternativeQueryGenerator {
 
-	private HashSet<String> expandedNodes = new HashSet<String>();
+	private HashSet<String> expandedNodes;
 	
-	// We use a map to map int id to an edge
-	// This is because JUNG does not allow using an existing edge
-	// to connect different vertices
-	private HashMap<Integer, String> edgeMap = new HashMap<Integer, String>();
+	private ArrayList<String> queryPredicates;
+	
 	private int edgeCntr = 0;
+	
+	class CustomEdge {
+		 private double weight;
+		 private String label;
+		 int id;
+
+		 public CustomEdge(double weight, String label) {
+			 this.id = edgeCntr++; // This is defined in the outer class.
+			 this.setWeight(weight);
+			 this.setLabel(label);
+		 }
+		 
+		 public String toString() { 
+			 return "E"+id;
+		 }
+
+		public double getWeight() {
+			return weight;
+		}
+
+		public void setWeight(double weight) {
+			this.weight = weight;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public void setLabel(String label) {
+			this.label = label;
+		}
+	 }
 	
 	/**
 	 * Visualize the graph
@@ -102,7 +132,7 @@ public class AlternativeQueryGenerator {
 	 * @param Queue<String> nodes A queue of the nodes to be expanded
 	 * @param Graph<String, String> g The graph to be updated
 	 */
-	private void expandNodes (Queue<String> nodes, Graph<String, Integer> g) {
+	private void expandNodes (Queue<String> nodes, Graph<String, CustomEdge> g) {
 		
 		QueryManager queryManager = QueryManager.getInstance();
 		
@@ -142,8 +172,20 @@ public class AlternativeQueryGenerator {
 							expandedNodes.add(object);
 						}
 						g.addVertex(object);
-						edgeMap.put(edgeCntr, predicate);
-						g.addEdge(edgeCntr++, node, object);
+						double defaultWeight = 2;
+						// whatever after the last / without the >
+						String trimmedPredicate = predicate.substring(
+								predicate.lastIndexOf("/")+1,
+								predicate.length()-2).toLowerCase();
+						for(int j = 0; j < queryPredicates.size(); ++ j) {
+							String trimmedQueryPredicate = queryPredicates.get(j).substring(
+									queryPredicates.get(j).lastIndexOf("/")+1,
+									queryPredicates.get(j).length()-2).toLowerCase();
+							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
+								defaultWeight = 1;
+							}
+						}
+						g.addEdge(new CustomEdge(defaultWeight, predicate), node, object);
 						nodes.add(object);
 					}
 					
@@ -162,8 +204,20 @@ public class AlternativeQueryGenerator {
 							expandedNodes.add(subject);
 						}
 						g.addVertex(subject);
-						edgeMap.put(edgeCntr, predicate);
-						g.addEdge(edgeCntr++, subject, node);
+						double defaultWeight = 2;
+						// whatever after the last / without the >
+						String trimmedPredicate = predicate.substring(
+								predicate.lastIndexOf("/")+1,
+								predicate.length()-2).toLowerCase();
+						for(int j = 0; j < queryPredicates.size(); ++ j) {
+							String trimmedQueryPredicate = queryPredicates.get(j).substring(
+									queryPredicates.get(j).lastIndexOf("/")+1,
+									queryPredicates.get(j).length()-2).toLowerCase();
+							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
+								defaultWeight = 1;
+							}
+						}
+						g.addEdge(new CustomEdge(defaultWeight, predicate), subject, node);
 						nodes.add(subject);
 					}
 					
@@ -180,8 +234,20 @@ public class AlternativeQueryGenerator {
 						String predicate = "<" + sol.get("p").toString() + ">";
 						String subject = "<" + sol.get("s").toString() + ">";
 						g.addVertex(subject);
-						edgeMap.put(edgeCntr, predicate);
-						g.addEdge(edgeCntr++, subject, node);
+						double defaultWeight = 2;
+						// whatever after the last / without the >
+						String trimmedPredicate = predicate.substring(
+								predicate.lastIndexOf("/")+1,
+								predicate.length()-2).toLowerCase();
+						for(int j = 0; j < queryPredicates.size(); ++ j) {
+							String trimmedQueryPredicate = queryPredicates.get(j).substring(
+									queryPredicates.get(j).lastIndexOf("/")+1,
+									queryPredicates.get(j).length()-2).toLowerCase();
+							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
+								defaultWeight = 1;
+							}
+						}
+						g.addEdge(new CustomEdge(defaultWeight, predicate), subject, node);
 						nodes.add(subject);
 					}
 				}
@@ -196,12 +262,19 @@ public class AlternativeQueryGenerator {
 	 * @param g The graph
 	 * @return
 	 */
-	private ArrayList<List<Integer>> findPaths (ArrayList<String> seeds,
+	private ArrayList<List<CustomEdge>> findPaths (ArrayList<String> seeds,
 			HashMap<String, Set<String>> groups,
-			Graph<String, Integer> g) {
+			Graph<String, CustomEdge> g) {
 		
-		ArrayList<List<Integer>> paths = new ArrayList<List<Integer>>();
-		DijkstraShortestPath<String, Integer> alg = new DijkstraShortestPath<String, Integer>(g);
+		ArrayList<List<CustomEdge>> paths = new ArrayList<List<CustomEdge>>();
+		
+		Transformer<CustomEdge, Double> wtTransformer = new Transformer<CustomEdge,Double>() {
+			 public Double transform(CustomEdge edge) {
+				 return edge.weight;
+			 }
+		};
+		DijkstraShortestPath<String, CustomEdge> alg = new DijkstraShortestPath<String, CustomEdge>(g,
+				wtTransformer);
 		
 		Set<String> firstSeedSet = groups.get(seeds.get(0));
 		Set<String> secondSeedSet = groups.get(seeds.get(1));
@@ -209,7 +282,7 @@ public class AlternativeQueryGenerator {
 		for(String firstSetLiteral : firstSeedSet) {
 			
 			for(String secondSetLiteral : secondSeedSet) {
-				List<Integer> l = alg.getPath(firstSetLiteral, secondSetLiteral);
+				List<CustomEdge> l = alg.getPath(firstSetLiteral, secondSetLiteral);
 				if(l.size() > 0) {
 					paths.add(l);
 				}
@@ -231,16 +304,18 @@ public class AlternativeQueryGenerator {
 	 */
 	public ArrayList<AlternativeToken> relaxQuery (SPARQLQuery query) {
 		
-		expandedNodes.clear();
+		expandedNodes = new HashSet<String>();
 		expandedNodes.add("<http://www.w3.org/2002/07/owl#Thing>");
 		edgeCntr = 0;
 		
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
 		
-		Graph<String, Integer> g = new UndirectedSparseMultigraph<String, Integer>();
+		Graph<String, CustomEdge> g = new UndirectedSparseMultigraph<String, CustomEdge>();
 		
 		// seeds in the query
 		ArrayList<String> seeds = new ArrayList<String>();
+		// predicates in the query
+		queryPredicates = new ArrayList<String>();
 		
 		// Groups for seeds
 		HashMap<String, Set<String>> groups = new HashMap<String, Set<String>>();
@@ -250,6 +325,9 @@ public class AlternativeQueryGenerator {
 		
 		// Find seeds
 		for(int i = 0; i < query.where.size(); ++i) {
+			// update predicates
+			queryPredicates.add(query.where.get(i).get(1));
+			
 			// If this triple contains a literal, that's a seed
 			if(query.where.get(i).get(2).contains("@en")) {
 				seeds.add(query.where.get(i).get(2));
@@ -269,14 +347,14 @@ public class AlternativeQueryGenerator {
 		}
 		
 		// Do only 2 levels of expansions
-		ArrayList<List<Integer>> paths = null;
+		ArrayList<List<CustomEdge>> paths = null;
 		for(int i = 0; i < 2; ++i) {
 			expandNodes(q, g);
 		}
 		paths = findPaths(seeds, groups, g);
 		
-		Collections.sort(paths, new Comparator<List<Integer>>(){
-		    public int compare(List<Integer> a1, List<Integer> a2) {
+		Collections.sort(paths, new Comparator<List<CustomEdge>>(){
+		    public int compare(List<CustomEdge> a1, List<CustomEdge> a2) {
 		        return a1.size() - a2.size(); // shortest to longest
 		    }
 		});
@@ -288,10 +366,10 @@ public class AlternativeQueryGenerator {
 			currentLength = paths.get(i).size();
 //			if(currentLength > minLength) break;
 			System.out.println("Shortest path is: ");
-			for(Integer edge : paths.get(i)) {
+			for(CustomEdge edge : paths.get(i)) {
 				Pair<String> pair = g.getEndpoints(edge);
 				System.out.println("(" + pair.getFirst() + ", " +
-				edgeMap.get(edge) +
+				edge.getLabel() +
 				", " + pair.getSecond() + ")");
 			}
 		}

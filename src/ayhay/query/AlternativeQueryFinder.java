@@ -60,7 +60,7 @@ public class AlternativeQueryFinder extends HttpServlet {
         }
         
         // Query relaxation too
-        
+        // This does nothing for now
         altQueryGenerator.relaxQuery(sparqlQuery);
         
     	// Literals first
