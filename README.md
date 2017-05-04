@@ -17,12 +17,12 @@ RDF data in the linked open data (LOD) cloud is very valuable for many different
 3. Restart the tomcat server: `sudo service tomcat7 stop`
 4. Add any required data files to an accessible directory `/metdata_directory/`
 5. Edit the parameters file in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/`; the contents of this file are:
-'''
+```
 TDBDirectory=/metdata_directory/DB
 Labels=/metdata_directory/refinedLabels.dat
 Predicates=/metdata_directory/refinedPredicates.dat
 FrequentLiterals=/metdata_directory/FrequentLiterals.dat
-'''
+```
 6. Change the log directory in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/classes/logging.properties`:
 	- java.util.logging.FileHandler.pattern= /Sapphire_log_directory/
 7. Restart the tomcat server: `sudo service tomcat7 stop`
