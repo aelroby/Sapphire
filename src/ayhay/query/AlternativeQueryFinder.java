@@ -52,6 +52,7 @@ public class AlternativeQueryFinder extends HttpServlet {
         
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
 		
+		// Finding alternatives for predicates and literals
         alternativeTokens.addAll(altQueryGenerator.findSimilarQueries(sparqlQuery));
 		
         if(alternativeTokens.size() > 0) {
@@ -59,9 +60,12 @@ public class AlternativeQueryFinder extends HttpServlet {
         }
         
         // Query relaxation too
+        
+        altQueryGenerator.relaxQuery(sparqlQuery);
+        
     	// Literals first
     	Timer.start();
-    	alternativeTokens.addAll(altQueryGenerator.relaxQuery(sparqlQuery));
+    	alternativeTokens.addAll(altQueryGenerator.relaxStructure(sparqlQuery));
     	Timer.stop();
     	FileManager.appendToFileNoNewLine("AlternativeQueriesTimeStatsSeconds.dat",
 				Double.toString(Timer.getTimeInSeconds()) + ",");

@@ -27,7 +27,7 @@ public class TypeaheadEvaluation {
         warehouse.initializeWarehouse(parameterManager.getLabelsFile(),
      		   parameterManager.getPredicatesFile(),
      		   parameterManager.getFrequentLiteralsFile(),
-     		   10000);
+     		   40000);
         
         // Read typeahead log
         System.out.println("Reading words...");
@@ -35,11 +35,15 @@ public class TypeaheadEvaluation {
         
         // Benchmark Warehouse
         System.out.println("Benchmarking Warehouse...");
+        long start = System.nanoTime();
         for(String word : words) {
         	warehouse.findMatches(word);
         }
-		
-        System.out.println("Finished benchmarking warehouse. Check the stats file now.");
+        long time = System.nanoTime() - start;
+        System.out.println("Finished in " + (1.0 * time / 1000000000));
+        System.out.println("Size of list = " + words.size());
+        double avgTime = (1.0 * time / 1000000000) / words.size();
+        System.out.println("Finished benchmarking warehouse. Avg. Time = " + avgTime);
 	}
 
 }

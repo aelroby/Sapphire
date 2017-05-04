@@ -21,7 +21,7 @@ public class MostFrequentFilesProcessor {
 		// most frequent literals 
 				String contents = "";
 				ArrayList<String> fileLines = FileManager.readFileLineByLine(
-						"/home/ahmed/work/workspace/Data/Metadata/MostFrequent/most_frequent_literals_person.html");
+						"/home/ahmed/work/workspace/Data/Metadata/40000.dat");
 				for(String s : fileLines) {
 					if(s.contains("@en")) {
 						String candidate = s.substring(s.indexOf("\""),
@@ -41,13 +41,13 @@ public class MostFrequentFilesProcessor {
 					}
 				}
 				
-				FileManager.writeToFile("FrequentLiterals.dat", contents);
+				FileManager.writeToFile("/home/ahmed/work/workspace/Data/Metadata/40000_refined.dat", contents);
 	}
 	
 	public static void main(String[] args) {
-		
-		processPredicatesFile();
-		
+		System.out.println("Processing file...");
+		processLiteralsFile();
+		System.out.println("Finished processing!");
 	}
 
 }

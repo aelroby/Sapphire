@@ -15,35 +15,35 @@ public class EvaluationAssignment {
 	
 	static String[][] questions = {
 			{
-				"Country in which the Ganges starts",
-				"John F. Kennedy's vice president",
-				"Time zone of Salt Lake City",
-				"Children of Margaret Thatcher",
-				"Currency of the Czech Republic",
-				"Designer of the Brooklyn Bridge",
-				"Wife of U.S. president Abraham Lincoln",
-				"Creator of Wikipedia",
-				"Depth of lake Placid"
+				"Country in which the Ganges starts", 			// 5-train
+				"John F. Kennedy's vice president",  			// 4-train
+				"Time zone of Salt Lake City",  				// 4-train
+				"Children of Margaret Thatcher", 				// 4-train
+				"Currency of the Czech Republic",				// 4-train
+				"Designer of the Brooklyn Bridge",				// 4-train
+				"Wife of U.S. president Abraham Lincoln",		// 3-train
+				"Creator of Wikipedia",							// 3-train
+				"Depth of lake Placid"							// 4-test
 			},
 			{
-				"Instruments played by Cat Stevens",
-				"Parents of the wife of Juan Carlos I",
-				"U.S. state in which Fort Knox is located",
-				"Person who is called Frank The Tank",
-				"Birthdays of all actors of the television show Charmed",
-				"Country in which the Limerick Lake is located",
-				"Person to which Robert F. Kennedy's daughter is married",
-				"Films directed by Steven Spielberg with a budget of at least $80 million"	
+				"Instruments played by Cat Stevens",										// 5-train
+				"Parents of the wife of Juan Carlos I",										// 5-train
+				"U.S. state in which Fort Knox is located",									// 5-train
+				"Person who is called Frank The Tank",										// 5-train
+				"Birthdays of all actors of the television show Charmed",					// 5-train
+				"Country in which the Limerick Lake is located",							// 5-train
+				"Person to which Robert F. Kennedy's daughter is married",					// 5-train
+				"Films directed by Steven Spielberg with a budget of at least $80 million"	// 5-train
 			},
 			{
-				"Chess players who died in the same place they were born in",
-				"Books by William Goldman with more than 300 pages",
-				"Books by Jack Kerouac which were published by Viking Press",
-				"Number of people living in the capital of Australia",
-				"Films starring Clint Eastwood direct by himself",
-				"Presidents born in 1945",
-				"Find each company that works in both the aerospace and medicine industries",
-				"Number of inhabitants of the most populous city in Canada"
+				"Chess players who died in the same place they were born in",					// 5-train
+				"Books by William Goldman with more than 300 pages",							// 5-train
+				"Books by Jack Kerouac which were published by Viking Press",					// 5-train
+				"Number of people living in the capital of Australia",							// 5-train
+				"Films starring Clint Eastwood direct by himself",								// 5-train
+				"Presidents born in 1945",														// 5-train
+				"Find each company that works in both the aerospace and medicine industries",	// 5-train
+				"Number of inhabitants of the most populous city in Canada"						// 5-train
 			}
 	};
 	

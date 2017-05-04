@@ -1,8 +1,9 @@
 package ayhay.dataStructures;
 
+import java.util.ArrayList;
 
 /**
- * This class described ana alternative token for the query.
+ * This class describes an alternative token for the query.
  * A token is a triple.
  * This class keeps the original subject, predicate, and objects
  * and the new value of the changed value.
@@ -13,6 +14,7 @@ public class AlternativeToken {
 	
 	private String subject, predicate, object, newValue;
 	private String type;
+	private ArrayList<Integer> dependedntTokens;
 	
 	public String getType() {
 		return type;
@@ -23,12 +25,21 @@ public class AlternativeToken {
 	}
 	private int numOfRows;
 	
+	/**
+	 * Original triple and new value
+	 * @param subject original subject
+	 * @param predicate original predicate
+	 * @param object original object
+	 * @param newValue new value of subject, predicate, or object
+	 * @param type type of the new value "S", "P", or "O"
+	 */
 	public AlternativeToken(String subject, String predicate, String object, String newValue, String type){
 		this.subject = subject;
 		this.predicate = predicate;
 		this.object = object;
 		this.newValue = newValue;
 		this.type = type;
+		dependedntTokens = new ArrayList<Integer>();
 	}
 	
 
@@ -68,6 +79,9 @@ public class AlternativeToken {
 	public void setNumOfRows(int numOfRows) {
 		this.numOfRows = numOfRows;
 	}
-	
-	
+
+	public ArrayList<Integer> getDependedntTokens() {
+		return dependedntTokens;
+	}
+
 }

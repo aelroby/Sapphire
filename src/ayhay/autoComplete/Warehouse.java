@@ -59,6 +59,7 @@ public class Warehouse {
 	private int numOfSearchTasks;
 	private int numOfIndexHits;
 	private double pruningPercentage;
+	private double suffixTreeTime;
 	private double totalTime;
 	
 	private class PredicateSearchTask implements Runnable {
@@ -372,7 +373,7 @@ public class Warehouse {
 		
 		// Stats variables initialized
 		numOfSearchTasks = numOfIndexHits = 0;
-		pruningPercentage = totalTime = 0.0;
+		pruningPercentage = totalTime = suffixTreeTime = 0.0;
 	}
 	
 	public ArrayList<String> getPredicatesList() {
@@ -478,10 +479,12 @@ public class Warehouse {
 	 */
 	private void writeStatsToFile() {
 		String fileName = "TypeaheadStats.dat";
-		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio,Avg_Time,Pruning\n";
-		contents += numOfSearchTasks + "," + numOfIndexHits + 
+		String contents = "Typeahead_Tasks,Index_Hits,Hit_Ratio,Avg_Time,Suffix_Time,Pruning\n";
+		contents += numOfSearchTasks + 
+				"," + numOfIndexHits + 
 				"," + 1.0 * numOfIndexHits / numOfSearchTasks + 
 				"," + totalTime / numOfSearchTasks +
+				"," + suffixTreeTime / numOfSearchTasks + 
 				"," + pruningPercentage / numOfSearchTasks;
 		FileManager.writeToFile(fileName, contents);
 	}
@@ -610,7 +613,7 @@ public class Warehouse {
 		// The trimmed string variable
 		String trimmedString;
 		
-		// Check if it's not a literal. URIs support should be added later 
+		// Check if it's not a literal
 		if(!s.startsWith("\""))
 			return matches;
 		
@@ -711,6 +714,9 @@ public class Warehouse {
 			}
 		}
 		
+		// Start the timer for this task
+		Timer.start();
+		
 		// Search in index first
 		Collection<Integer> list = in.search(query.toLowerCase());
 		HashSet<Integer> output = null;
@@ -730,20 +736,25 @@ public class Warehouse {
 			arrayObj.add(frequentLiteralsList.get(index));
     		--resultsToBeFound;
     	}
-		
+		double tempStopTime;
 		// If all results were found in suffix tree
 		if(resultsToBeFound < 0) {
 			Timer.stop();
+			suffixTreeTime += Timer.getTimeInSeconds();
 			totalTime += Timer.getTimeInSeconds();
 			writeStatsToFile();
 			return arrayObj;
 		}
 		
+		Timer.stop();
+		suffixTreeTime += Timer.getTimeInSeconds();
+		tempStopTime = Timer.getTimeInSeconds();
+		Timer.start();
 		// In length bins
 		// Search in bins with a minimum length of the query
 		// and a maximum of the query length + 10
 		int minLength = query.length()-1;
-		int maxLength = query.length() + 10;
+		int maxLength = query.length() + 9;
 		
 		int minIndex = Integer.MAX_VALUE;
 		int maxIndex = -1;
@@ -797,6 +808,10 @@ public class Warehouse {
 			}
 		}
 		
+		// Stop timer
+		Timer.stop();
+		totalTime += tempStopTime + Timer.getTimeInSeconds();
+		
 		// Sort by length
 		ArrayList<String> tempList = new ArrayList<String>();
 		for(String string : setForTypeahead) {
@@ -810,9 +825,7 @@ public class Warehouse {
 			arrayObj.add(tempList.get(i));
 		}
 		
-		// Stop timer
-		Timer.stop();
-		totalTime += Timer.getTimeInSeconds();
+		
 		
 		// Update the stats file with number of tasks and hits
 		writeStatsToFile();

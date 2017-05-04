@@ -1,4 +1,4 @@
 TDBDirectory=/home/ahmed/work/workspace/Data/
 Labels=/home/ahmed/work/workspace/Data/Metadata/refinedLabels.dat
 Predicates=/home/ahmed/work/workspace/Data/Metadata/refinedPredicates.dat
-FrequentLiterals=/home/ahmed/work/workspace/Data/Metadata/FrequentLiterals.dat
+FrequentLiterals=/home/ahmed/work/workspace/Data/Metadata/MostFrequent/FrequentLiterals.dat
