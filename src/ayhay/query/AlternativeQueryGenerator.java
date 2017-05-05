@@ -50,6 +50,8 @@ public class AlternativeQueryGenerator {
 
 	private HashSet<String> expandedNodes;
 	
+	private HashSet<String> similarPredicates;
+	
 	private ArrayList<String> queryPredicates;
 	
 	private int edgeCntr = 0;
@@ -176,11 +178,19 @@ public class AlternativeQueryGenerator {
 						// whatever after the last / without the >
 						String trimmedPredicate = predicate.substring(
 								predicate.lastIndexOf("/")+1,
-								predicate.length()-2).toLowerCase();
+								predicate.length()-1).toLowerCase();
 						for(int j = 0; j < queryPredicates.size(); ++ j) {
 							String trimmedQueryPredicate = queryPredicates.get(j).substring(
 									queryPredicates.get(j).lastIndexOf("/")+1,
-									queryPredicates.get(j).length()-2).toLowerCase();
+									queryPredicates.get(j).length()-1).toLowerCase();
+							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
+								defaultWeight = 1;
+							}
+						}
+						for(String synsetString : similarPredicates) {
+							String trimmedQueryPredicate = synsetString.substring(
+									synsetString.lastIndexOf("/")+1,
+									synsetString.length()-1).toLowerCase();
 							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
 								defaultWeight = 1;
 							}
@@ -208,11 +218,19 @@ public class AlternativeQueryGenerator {
 						// whatever after the last / without the >
 						String trimmedPredicate = predicate.substring(
 								predicate.lastIndexOf("/")+1,
-								predicate.length()-2).toLowerCase();
+								predicate.length()-1).toLowerCase();
 						for(int j = 0; j < queryPredicates.size(); ++ j) {
 							String trimmedQueryPredicate = queryPredicates.get(j).substring(
 									queryPredicates.get(j).lastIndexOf("/")+1,
-									queryPredicates.get(j).length()-2).toLowerCase();
+									queryPredicates.get(j).length()-1).toLowerCase();
+							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
+								defaultWeight = 1;
+							}
+						}
+						for(String synsetString : similarPredicates) {
+							String trimmedQueryPredicate = synsetString.substring(
+									synsetString.lastIndexOf("/")+1,
+									synsetString.length()-1).toLowerCase();
 							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
 								defaultWeight = 1;
 							}
@@ -238,11 +256,19 @@ public class AlternativeQueryGenerator {
 						// whatever after the last / without the >
 						String trimmedPredicate = predicate.substring(
 								predicate.lastIndexOf("/")+1,
-								predicate.length()-2).toLowerCase();
+								predicate.length()-1).toLowerCase();
 						for(int j = 0; j < queryPredicates.size(); ++ j) {
 							String trimmedQueryPredicate = queryPredicates.get(j).substring(
 									queryPredicates.get(j).lastIndexOf("/")+1,
-									queryPredicates.get(j).length()-2).toLowerCase();
+									queryPredicates.get(j).length()-1).toLowerCase();
+							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
+								defaultWeight = 1;
+							}
+						}
+						for(String synsetString : similarPredicates) {
+							String trimmedQueryPredicate = synsetString.substring(
+									synsetString.lastIndexOf("/")+1,
+									synsetString.length()-1).toLowerCase();
 							if(trimmedQueryPredicate.compareTo(trimmedPredicate) == 0) {
 								defaultWeight = 1;
 							}
@@ -317,6 +343,8 @@ public class AlternativeQueryGenerator {
 		// predicates in the query
 		queryPredicates = new ArrayList<String>();
 		
+		similarPredicates = new HashSet<String>();
+		
 		// Groups for seeds
 		HashMap<String, Set<String>> groups = new HashMap<String, Set<String>>();
 		
@@ -327,6 +355,10 @@ public class AlternativeQueryGenerator {
 		for(int i = 0; i < query.where.size(); ++i) {
 			// update predicates
 			queryPredicates.add(query.where.get(i).get(1));
+			
+			similarPredicates.addAll(
+					ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(
+							query.where.get(i).get(1)));
 			
 			// If this triple contains a literal, that's a seed
 			if(query.where.get(i).get(2).contains("@en")) {
@@ -514,7 +546,7 @@ public class AlternativeQueryGenerator {
 						"Alternatives for predicate <" + clause.get(1) + ">:");
 				Timer.start();
 				ArrayList<String> alternatives = 
-						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause);
+						ayhay.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(clause.get(1));
 				Timer.stop();
 				timeForPredicates += Timer.getTimeInSeconds();
 				System.out.println("Found alternatives for predicates in " + Timer.getTimeInSeconds() + " seconds");

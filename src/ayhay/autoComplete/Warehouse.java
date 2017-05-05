@@ -519,16 +519,15 @@ public class Warehouse {
 	 * @param originalPredicate The predicate to find similar predicates for
 	 * @return An Arraylist of similar predicates
 	 */
-	public ArrayList<String> findSimilarStringsPredicates(ArrayList<String> clause){
+	public ArrayList<String> findSimilarStringsPredicates(String predicate){
 		
-		String originalPredicate = clause.get(1);
 		ArrayList<StringScore> matchesScores = new ArrayList<StringScore>(); 
 		ArrayList<String> matches = new ArrayList<String>();
 		String trimmedString;
 		
 		
 		// Whatever is after the last /
-		trimmedString = originalPredicate.substring(originalPredicate.lastIndexOf("/")+1, originalPredicate.length()-1).toLowerCase();	
+		trimmedString = predicate.substring(predicate.lastIndexOf("/")+1, predicate.length()-1).toLowerCase();	
 		String currentPredicate;
 
 		// Semantic relations
@@ -564,7 +563,7 @@ public class Warehouse {
 		for(int i = minIndex; i < maxIndex; i += indexesPerThread) {
 			threads.add(new Thread(new PredicateSearchTask(i,
 					Math.min(i+indexesPerThread, predicatesList.size() - 1),
-					originalPredicate)));
+					predicate)));
 		}
 		
 		// Start threads

@@ -60,8 +60,8 @@ public class AlternativeQueryFinder extends HttpServlet {
         }
         
         // Query relaxation too
-        // This does nothing for now
-        altQueryGenerator.relaxQuery(sparqlQuery);
+        // Disable this until the frontend supports the new type of alternatives
+        //altQueryGenerator.relaxQuery(sparqlQuery);
         
     	// Literals first
     	Timer.start();
