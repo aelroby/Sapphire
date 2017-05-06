@@ -15,13 +15,13 @@ RDF data in the linked open data (LOD) cloud is very valuable for many different
 	d. The generated war file is large because it includes all the required libs. You can find them all the lib directory.
 2. Copy Sapphire.war to `/var/lib/tomcat/webapps/`
 3. Restart the tomcat server: `sudo service tomcat7 stop`
-4. Add any required data files to an accessible directory `/metdata_directory/`
+4. Add any required data files to an accessible directory `Metadata/`. The files to be saved under this directory are mentioned next.
 5. Edit the parameters file in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/`; the contents of this file are:
 ```
-TDBDirectory=/metdata_directory/DB
-Labels=/metdata_directory/refinedLabels.dat
-Predicates=/metdata_directory/refinedPredicates.dat
-FrequentLiterals=/metdata_directory/FrequentLiterals.dat
+TDBDirectory=Metadata/DB
+Labels=Metadata/refinedLabels.dat
+Predicates=Metadata/refinedPredicates.dat
+FrequentLiterals=Metadata/FrequentLiterals.dat
 ```
 6. Change the log directory in `/var/lib/tomcat7/webapps/Sapphire/WEB-INF/classes/logging.properties`:
 	- java.util.logging.FileHandler.pattern= /Sapphire_log_directory/
