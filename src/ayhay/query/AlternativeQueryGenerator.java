@@ -377,7 +377,6 @@ public class AlternativeQueryGenerator {
 				}
 			}
 		}
-		
 		// Do only 2 levels of expansions
 		ArrayList<List<CustomEdge>> paths = null;
 		for(int i = 0; i < 2; ++i) {
