@@ -41,5 +41,16 @@
 	<classpathentry kind="lib" path="lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Jung"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-3d-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-3d-demos-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-algorithms-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-api-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-graph-impl-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-jai-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-jai-samples-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-samples-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/jung-visualization-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/ahmed/work/workspace/Sapphire/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

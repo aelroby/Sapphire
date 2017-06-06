@@ -157,6 +157,9 @@ public class AlternativeQueryGenerator {
 						String object = sol.get("o").toString();
 						if(object.startsWith("http")) {
 							object = "<" + object + ">";
+							if(predicate.compareTo("<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>") == 0) {
+								expandedNodes.add(object);
+							}
 						}
 						else {
 							if(object.length() > 30 || object.contains("\"")) continue;
@@ -174,7 +177,7 @@ public class AlternativeQueryGenerator {
 							expandedNodes.add(object);
 						}
 						g.addVertex(object);
-						double defaultWeight = 2;
+						double defaultWeight = 3;
 						// whatever after the last / without the >
 						String trimmedPredicate = predicate.substring(
 								predicate.lastIndexOf("/")+1,
@@ -214,7 +217,7 @@ public class AlternativeQueryGenerator {
 							expandedNodes.add(subject);
 						}
 						g.addVertex(subject);
-						double defaultWeight = 2;
+						double defaultWeight = 3;
 						// whatever after the last / without the >
 						String trimmedPredicate = predicate.substring(
 								predicate.lastIndexOf("/")+1,
@@ -252,7 +255,7 @@ public class AlternativeQueryGenerator {
 						String predicate = "<" + sol.get("p").toString() + ">";
 						String subject = "<" + sol.get("s").toString() + ">";
 						g.addVertex(subject);
-						double defaultWeight = 2;
+						double defaultWeight = 3;
 						// whatever after the last / without the >
 						String trimmedPredicate = predicate.substring(
 								predicate.lastIndexOf("/")+1,
@@ -282,13 +285,13 @@ public class AlternativeQueryGenerator {
 	}
 	
 	/**
-	 * Find a path between the seeds in the query or their similar literals
+	 * Find the Steiner tree between the seeds in the query or their similar literals
 	 * @param seeds The literals in the query 
 	 * @param groups The groups similar literals
 	 * @param g The graph
 	 * @return
 	 */
-	private ArrayList<List<CustomEdge>> findPaths (ArrayList<String> seeds,
+	private ArrayList<List<CustomEdge>> findSteinerTree (ArrayList<String> seeds,
 			HashMap<String, Set<String>> groups,
 			Graph<String, CustomEdge> g) {
 		
@@ -315,8 +318,6 @@ public class AlternativeQueryGenerator {
 			}
 			
 		}
-		
-		
 		return paths;
 	}
 	
@@ -331,7 +332,6 @@ public class AlternativeQueryGenerator {
 	public ArrayList<AlternativeToken> relaxQuery (SPARQLQuery query) {
 		
 		expandedNodes = new HashSet<String>();
-		expandedNodes.add("<http://www.w3.org/2002/07/owl#Thing>");
 		edgeCntr = 0;
 		
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
@@ -382,7 +382,7 @@ public class AlternativeQueryGenerator {
 		for(int i = 0; i < 2; ++i) {
 			expandNodes(q, g);
 		}
-		paths = findPaths(seeds, groups, g);
+		paths = findSteinerTree(seeds, groups, g);
 		
 		Collections.sort(paths, new Comparator<List<CustomEdge>>(){
 		    public int compare(List<CustomEdge> a1, List<CustomEdge> a2) {
