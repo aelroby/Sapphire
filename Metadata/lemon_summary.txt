@@ -1,0 +1,1282 @@
+person,people,person
+comic,comic
+instrument,instrument,play
+road tunnel,road tunnel
+rugby league,rugby league
+line of fashion,line of fashion
+court case,court case,law case,legal case,legal matter
+mayor,mayor,governor,president
+chemical element,chemical element
+like,like,similar
+olympic result,olympic result
+be added to the NRHP,be added to the NRHP,be placed on the NRHP
+grandson,grandson,granddaughter,grandchild,grandmother,grandfather
+location indicator,location indicator,ICAO code,ICAO identifier
+member,member,class,contain,belong,phylum,family,kingdom,order,genus
+Canadian,Canadian
+recorded,recorded,record date
+made,made,originate,structural system
+snooker player,snooker player
+match,football match,match
+Christian,Christian
+founding year,established,founding year,founded
+team,team,sports team,manager,play,manage,player,race
+British royalty,British royalty
+ethnic group,ethnic group
+criminal,criminal,thug
+historian,historian
+Thai,Thai
+taikonaut,taikonaut
+guest star,guest star,appear,feature
+make,make,genre,write,take in,take over,gross
+time period,time period
+commander,command,commander,leader
+stereo,stereo
+network,network,broadcast network
+cycling team,cycling team
+go,go,study,attend
+shareware,shareware
+periodical,periodical literature,periodical
+population density,population density
+christian democratic,christian democratic
+licensed,licensed
+planet,planet
+sister station,sister station,sister channel,sister network
+serve,serve,have an enrollment of,with an enrollment of,student population,enrollment,fight
+French,French
+population,population,metropolitan population,have inhabitants,total population,urban population
+highway,highway,road,street,route
+African American,African American
+public transit system,public transit system
+host,host,play
+post code,post code,postal code
+genre,make,genre,write
+convention,convention
+manhua,manhua
+research project,research project
+creator,creator,create
+scientist,scientist,researcher
+bone,bone
+site of special scientific interest,site of special scientific interest
+car,car,vehicle,automobile,auto
+Italian,Italian
+known,known
+city,city
+football player,football player
+language,language,spoken
+cave,cave,cavern,grotto
+olympic event,olympic event
+journal,journal,paper,newspaper
+killer,killer,murderer
+chemical compound,chemical compound
+festival,festival
+volcano,volcano
+wear number,wear number,squad number,shirt number
+operational,operational
+produce,produce,construct,build,create,product,develop,manufacture,manufacturer
+medician,medician
+NASCAR driver,NASCAR driver
+mean temperature,mean temperature
+launched,launched
+skater,skater
+draft,draft
+originate,originate,made,source
+engineer,engineer
+record,write,record,interpreter,follow-up,written,sequel,prequel
+polo league,polo league
+NRHP reference number,NRHP reference number,National Register reference number,reference number
+radio program,radio program
+accommodate,accommodate,capacity
+highest mountain,highest mountain
+body of water,body of water
+soccer club,soccer club,soccer team
+architect,architect,design,build
+company,company
+Christian bishop,Christian bishop,bishop
+Russian,Russian
+written work,written work
+mean,stand,mean
+celestial body,celestial body
+squash player,squash player
+radio-controlled racing league,radio-controlled racing league
+African American,African American
+depth,depth,deep
+situated,situated,located
+journalist,journalist
+associated act,associated act
+district water board,district water board,water board
+grotto,cave,cavern,grotto
+amateur boxer,amateur boxer
+proprietary,proprietary
+mouse gene location,mouse gene location
+part,part,located,suburb,operate,episode,subordinate
+comics character,comics character
+baseball team,baseball team
+manufacture,manufacture,manufacturer,produce
+Italian,Italian
+periapse,periapse,periapsis
+British,British
+UTC offset,UTC offset,time zone offset
+liberal,liberal
+broadcast network,network,broadcast network
+inline-four,inline-four
+use,use
+basketball league,basketball league
+newspaper,journal,paper,newspaper
+playmate,playmate,playboy playmate
+infirmary,infirmary,hospital
+station,station
+class D,class D
+LP,LP,album
+constructed,constructed
+manufacture,manufacture,manufacturer,produce
+MMA league,MMA league,martial arts league,mixed martial arts league
+letter,letter
+railway tunnel,railway tunnel
+soccer team,soccer club,soccer team
+plant,plant
+high,high,tall,altitude,stand,height,elevation,rise
+extinct,extinct
+moon crater,lunar crater,moon crater
+sales,sales
+anime,anime
+official color,official color
+Cantonese,Cantonese
+disease,disease,illness,sickness
+found,found,founder,establish,foundation place
+National Collegiate Athletic Association athlete,National Collegiate Athletic Association athlete,NCAA athlete
+show,show,television show,TV show
+place of birth,place of birth,born,birth place
+skier,skier
+minister of education,minister of education
+Formula One racing league,Formula One racing league,racing league
+Gothic,Gothic
+Catholic,Catholic
+create,create,product,produce,develop,creator,design
+Norwegian,Norwegian
+martial arts league,MMA league,martial arts league,mixed martial arts league
+route of transportation,route of transportation
+writer,writer,author,write
+boxing league,boxing league
+researcher,scientist,researcher
+blood type,blood type
+weapon,weapon
+tournament,tournament
+Jew,Jew
+label,label,record label
+American,American
+produce,produce,construct,build,create,product,develop,manufacture,manufacturer
+device,device
+mountain range,mountain range,mountain chain,ridge
+piece of software,piece of software,software
+black-and-white,black-and-white
+character,character,fictional character
+end,end
+hardcover,hardcover
+National Register reference number,NRHP reference number,National Register reference number,reference number
+wine,wine
+Entrez Gene ID,Entrez Gene ID,Entrez ID
+crossing,bridge,crossing,span,cross,traverse
+deanery,deanery
+Chinese,Chinese
+serve,serve,have an enrollment of,with an enrollment of,student population,enrollment,fight
+pope,pope
+constellation,constellation
+write the music for,have music by,write the music for,compose the music for
+playboy playmate,playmate,playboy playmate
+TV season,TV season,season,television season
+home arena,home arena,home stadium,home
+shoot left,shoot left
+wrestling event,wrestling event
+stadium,stadium
+swarm,swarm
+minister of defence,minister of defence
+play,play,feature,star,have a role in,instrument,host,team,manager,manage,player,race,attend,graduate
+mean of transportation,mean of transportation
+population,population,metropolitan population,have inhabitants,total population,urban population
+college,college
+drama,drama
+right-handed,right-handed
+build,build,architect,design,produce,construct
+collection of valuables,collection of valuables,collection
+asteroid,asteroid
+seating capacity,capacity,hold seats,have seats,seating capacity
+child,daughter,child,father,son,mother,parent
+pornographic actor,pornographic actor,porn star,adult actor
+Neo-Gothic,Neo-Gothic
+car racing league,car racing league,racing league,auto racing league
+Catholic,Catholic
+British,British
+faculty size,faculty size,employ
+top speed,top speed
+part,part,located,suburb,operate,episode,subordinate
+cycling league,cycling league
+ice hockey player,ice hockey player
+Serbian,Serbian
+Art Deco,Art Deco
+fashion,fashion
+motorcyclist,motorcyclist,motorcycle rider
+sport competition result,sport competition result,result
+resting place,resting place,buried
+create,create,product,produce,develop,creator,design
+game,game
+first describe,first describe,name
+actor,actor
+hospital,infirmary,hospital
+dog,dog
+Canadian Football league,Canadian Football league
+law case,court case,law case,legal case,legal matter
+university,university,study
+station,station
+species,species
+species,species
+color,color
+cinematographer,cinematographer
+battle,battle,military conflict,war
+located,located,situated,part,based,address
+genus,genus,member,belong
+casino,casino
+draft,draft
+Irish,Irish
+written,written,programming language,prequel,record,follow-up,sequel
+affiliated,affiliated
+area,area,total area,urban area
+Japanese,Japanese
+auto,car,vehicle,automobile,auto
+cycad,cycad
+bridge,bridge,crossing,span,cross,traverse
+apoapsis,apoapsis
+protected area,protected area
+communist,communist
+Korean,Korean
+was coach of,was coach of,former coach
+light novel,light novel
+football team,football team
+green alga,green alga
+Danish,Danish
+public service input,public service input
+snooker world ranking,snooker world ranking
+language,language,spoken
+arrondissement,arrondissement
+run,run,flow
+mollusc,mollusc
+award,award,prize
+military conflict,battle,military conflict,war
+order,order,contain,member,belong
+phylum,phylum,contain,member,belong
+date of birth,date of birth,birth date,born
+hot spring,hot spring
+porn star,pornographic actor,porn star
+close,close
+Tamil,Tamil
+social-democratic,social-democratic
+Turkish,Turkish
+serve,serve,have an enrollment of,with an enrollment of,student population,enrollment,fight
+broadcasted,broadcasted,cover,aired
+academical journal,academical journal
+windmill,windmill
+launch off,launch off,blast off,take off
+song,song,track
+Gridiron Football player,Gridiron Football player
+Christian,Christian
+serve,serve,have an enrollment of,with an enrollment of,student population,enrollment,fight
+season,TV season,season,television season
+cycling competition,cycling competition
+paintball league,paintball league
+birth date,date of birth,birth date,born
+television host,television host,TV host
+place of death,die,place of death,death place
+geological period,geological period
+station,station
+netball player,netball player
+athlete,athlete,sportsman
+game,game
+ski resort,ski resort
+season,TV season,season,television season
+motorcycle racing league,motorcycle racing league
+ice hockey league,ice hockey league
+capacity,accommodate,capacity,hold seats,have seats,seating capacity
+run for episodes,run for episodes,have episodes
+former coach,was coach of,former coach
+urban area,area,urban area
+soccer player,soccer player
+Eurovision song contest entry,Eurovision song contest entry
+railway line,railway line,railroad track
+address,located,address
+lighthouse,lighthouse,beacon
+baseball player,baseball player
+music festival,music festival
+spouse,marry,spouse,wife,husband
+unit of work,unit of work
+nation,nation,country
+continent,continent
+highest region,highest region
+shopping center,shopping center,mall,shopping mall
+president,president,mayor,governor
+episode,episode,part,TV episode,television episode
+cultivar,cultivar,cultivated variety
+deity,deity
+frequency,frequency,broadcast
+founding date,founding date,established,founded
+Victorian Gothic,Victorian Gothic
+latest version,latest version,current release
+Romanian,Romanian
+bridge,bridge,crossing,span,cross,traverse
+mountain chain,mountain range,mountain chain,ridge
+member of parliament,member of parliament
+abbreviated,abbreviate,abbreviation,abbreviated
+voice actor,voice actor
+paper,journal,paper,newspaper
+gene location,gene location
+Dutch,Dutch
+home,home stadium,home,based,operate,home arena
+national soccer team,national soccer team,national soccer club
+space mission,space mission
+ski region,ski region
+win,win,receive,recipient,awarded
+socialist,socialist
+collection,collection of valuables,collection
+Russian,Russian
+birth name,birth name
+retired,retired
+requirement,requirement,require
+castle,castle
+painter,painter
+throw left-handed,throw left,throw left-handed
+home stadium,home stadium,home,based,home arena
+Croatian,Croatian
+political party,party,political party
+paperback,paperback
+fictional character,character,fictional character
+flag,flag
+threatened,threatened
+reside,reside,residence
+locomotive,locomotive,engine
+lieutenant,lieutenant
+V8,V8
+English,English
+minimum altitude,minimum altitude
+station,station
+Swedish,Swedish
+water tower,water tower
+non-profit organisation,non-profit organisation
+television show,show,television show,TV show
+rugby player,rugby player
+former name,former name
+inline-six,inline-six
+author,author,writer,write
+Chinese,Chinese
+geopolitical organisation,geopolitical organisation
+soccer league,soccer league
+single,single
+fern,fern
+biological database,biological database
+manager,manager,manage,team,play,player,race,sports manager
+tennis player,tennis player
+position,position
+province,province
+Olympic Games,Olympic Games,olympics
+aircraft,aircraft,plane,airplane
+aircraft,aircraft,plane,airplane
+darts player,darts player
+locality,locality
+member,member,class,contain,belong,phylum,family,kingdom,order,genus
+handball player,handball player
+penalty shootout,penalty shootout
+Muslim,Muslim
+chemist,chemist
+man,man
+water area,water area
+Polish,Polish
+construct,produce,construct,build
+neighboring municipality,neighboring municipality
+cricket league,cricket league
+saint,saint
+command,command,commander,leader
+based,based,located,home stadium,home
+vice chancellor,vice chancellor
+pickup,pickup
+broadcasting station,broadcasting station,radio station
+release date,released,release date,come out
+Belgian,Belgian
+career station,career station
+church,church
+total population,have inhabitants,population,total population
+book,book
+launch pad,launch pad,launchpad
+congress man,congress man
+Chinese,Chinese
+television station,television station,TV station
+have tracks,have tracks
+nerve,nerve
+manga,manga
+prison,prison
+Protestant,Protestant
+blast off,launch off,blast off,take off
+year,year
+designer,designer,fashion designer
+last name,last name,surname
+snooker champ,snooker champ,snooker champion
+information appliance,information appliance
+field,work,field
+illness,disease,illness,sickness
+interpreter,interpreter,write,record
+born,born,come,place of birth,birth place,date of birth,birth date
+pseudonym,pseudonym,called
+take in,take in,make,take over,gross
+location,place,location
+bull fighter,bull fighter,bullfighter
+village,village
+Marxist-Leninist,Marxist-Leninist
+TV episode,episode,TV episode,television episode
+clerk,cleric,clerk
+conifer,conifer
+cavern,cave,cavern,grotto
+follow-up,follow-up,written,record,sequel
+appear,guest star,appear,feature
+speedway team,speedway team
+murderer,killer,murderer
+philosopher,philosopher
+ISSN,ISSN
+attend,attend,graduate,play,go,study
+work,work,field,occupation,profession
+e-book,e-book
+German,German
+camera,camera
+governor,mayor,governor,president
+take place,take place
+American Football team,American Football team
+currency,currency
+office holder,office holder
+presenter,presenter
+professor,professor
+racing league,Formula One racing league,racing league,car racing league,auto racing league
+made,made,originate,structural system
+skyscraper,skyscraper
+squad number,squad number,shirt number,wear number
+gymnast,gymnast
+family,family,belong,contain,member
+martial artist,martial artist
+TV station,television station,TV station
+British,British
+right-handed,right-handed
+take over,take in,make,take over,gross
+galaxy,galaxy
+Slovene,Slovene
+Hindu,Hindu
+natural region,natural region
+patriarch,patriarch,Christian patriarch
+pornographic actress,pornographic actress,adult actress
+tennis league,tennis league
+volleyball league,volleyball league
+bridge,bridge,crossing,span,cross,traverse
+active,active
+orbital period,orbital period
+foundation place,found,foundation place
+wrestler,wrestler
+stand,stand,mean,high,altitude,tall,height,elevation,rise
+patron,patron,patron saint
+country,nation,country
+principal,rector,principal
+IATA identifier,IATA identifier,IATA location identifier,IATA code
+based,based,located,home stadium,home
+written,written,programming language,prequel,record,follow-up,sequel
+topical concept,topical concept
+French,French
+natural place,natural place
+facility ID,facility ID
+class A,class A
+launched,launched
+border,border
+web page,website,web page
+wide,wide,width
+television season,TV season,season,television season
+color,color
+Australian Football league,Australian Football league
+board member,board member
+ideology,ideology
+monarch,monarch
+begin,begin
+volleyball player,volleyball player
+position,position
+extinct in the wild,extinct in the wild
+museum,museum
+piece of work,piece of work,musical work
+Arabic,Arabic
+group,group
+executive producer,executive producer
+be the same as,be the same as,synonym
+throw right,throw right,throw right-handed
+melt,melt,melting point
+governmental administrative region,governmental administrative region
+found,found,founder,establish,foundation place
+boxer,boxer
+belong,belong,language family,family,contain,member,genus,kingdom,order,class,phylum
+year,year
+military unit,military unit
+OCLC number,OCLC number
+cleric,cleric,clerk
+shoot right,shoot right
+language family,belong,language family
+based,based,located,home stadium,home
+race,race,team,manager,play,manage,player
+fight,fight,serve
+Buddhist,Buddhist
+military structure,military structure
+animal,animal
+urban population,population,have inhabitants,urban population
+require,requirement,require
+active,active
+curler,curler
+lake,lake
+project,project
+municipality,municipality
+death place,die,place of death,death place
+old territory,old territory
+Entrez ID,Entrez Gene ID,Entrez ID
+left-handed,left-handed
+basketball player,basketball player
+biologist,biologist
+composer,compose,write,composer
+painting,painting
+pickup truck,pickup truck
+precursor,precursor,precede,develop
+manufacturer,manufacture,manufacturer,produce
+gnetophyte,gnetophyte
+record date,recorded,record date
+part,part,located,suburb,operate,episode,subordinate
+established,established,formation year,formed,founding year,founded,founding date,formation date
+Mixed Martial Arts event,Mixed Martial Arts event,MMA event
+island,island
+Italian,Italian
+mascot,mascot
+track,song,track
+soccer manager,soccer manager
+female,female
+capacity,accommodate,capacity,hold seats,have seats,seating capacity
+moss,moss
+surname,last name,surname
+mall,shopping center,mall,shopping mall
+railroad track,railway line,railroad track
+manage,manager,manage,team,play,player,race
+current release,latest version,current release
+beverage,beverage,drink
+board game,board game
+develop,precursor,precede,develop,create,product,produce,developer,design
+sports event,sports event
+revenue,revenue
+run,run,flow
+team member,team member
+video games league,video games league
+watermill,watermill
+big,big
+organisation member,organisation member
+conservatist,conservatist
+spoken,language,spoken
+recipient,win,receive,recipient,awarded
+publish,publish,publisher
+parish,parish
+commissioned,commissioned
+prehistorical period,prehistorical period
+air,air,completed
+predecessor,preceed,successor,predecessor,succeed
+feature,guest star,appear,feature,play,star,have a role in
+economist,economist
+anatomical structure,anatomical structure
+ethnicity,ethnicity
+cricketer,cricketer
+street,highway,road,street,route
+cover,broadcasted,cover
+sister channel,sister station,sister channel,sister network
+sport,athletics,sport
+influence,influence,have influence on
+runtime,runtime,long
+budget,budget
+ridge,mountain range,mountain chain,ridge
+film,film,movie
+space station,space station
+artwork,artwork
+melting point,melt,melting point
+insect,insect
+canal,canal
+Indian,Indian
+total area,area,total area
+star,star,sun,play,feature,have a role in
+product,create,product,produce,develop
+magistrate,magistrate,judge
+bowling league,bowling league
+based,based,located,home stadium,home
+person,people,person
+athletics,athletics,sport
+racing driver,racing driver,race driver
+architectural structure,architectural structure
+study,study,Alma Mater,graduate,university,go,attend
+serve,serve,have an enrollment of,with an enrollment of,student population,enrollment,fight
+located,located,situated,part,based,address
+power station,electricity station,power station,generating plant,power plant,generating station
+laid down,laid down
+shirt number,squad number,shirt number,wear number
+bat right,bat right-handed,bat right
+French,French
+parent,daughter,child,parent,father,son,mother
+daughter,daughter,child,parent,father,son,mother
+religious building,religious building
+motorcycle rider,motorcyclist,motorcycle rider
+grandmother,grandson,granddaughter,grandchild,grandmother,grandfather
+radio station,broadcasting station,radio station
+produce,produce,construct,build,create,product,develop,manufacture,manufacturer
+animanga character,animanga character
+create,create,product,produce,develop,creator,design
+hold seats,capacity,hold seats,have seats,seating capacity
+class,member,class,contain,belong
+flow,flow,run
+movie,film,movie
+speedway league,speedway league
+people,people,person
+have inhabitants,have inhabitants,population,total population,urban population
+build,build,architect,design,produce,construct
+Dutch,Dutch
+ambassador,ambassador
+beach volleyball player,beach volleyball player
+source,source,originate
+software,piece of software,software
+band,band
+Indonesian,Indonesian
+conservation status,conservation status
+aristocrat,aristocrat
+formation year,established,formation year,formed
+have episodes,run for episodes,have episodes
+cross,bridge,crossing,span,cross,traverse,intersect
+vein,vein
+musical,musical
+table tennis player,table tennis player
+track list,track list
+preceed,preceed,successor,predecessor,succeed
+legal case,court case,law case,legal case,legal matter
+operate,operate,home,part
+religious,religious
+horse rider,horse rider
+teacher,teacher
+republic,republic
+intercommunality,intercommunality
+Alma Mater,study,Alma Mater,graduate
+holiday,holiday
+hatchback,hatchback
+TV host,television host,TV host
+place,place,location
+open source,open source
+Buddhist,Buddhist
+Punjabi,Punjabi
+administrative region,administrative region
+legal matter,court case,law case,legal case,legal matter
+film festival,film festival
+comics creator,comics creator
+state,state
+samba school,samba school
+sports team,team,sports team
+mosque,mosque
+train,train
+prequel,prequel,written,record
+play,play,feature,star,have a role in,instrument,host,team,manager,manage,player,race,attend,graduate
+gene,gene
+year in spaceflight,year in spaceflight
+spaceship,spaceship,spacecraft
+handball league,handball league
+ship,ship,boat
+profession,profession,work
+Polish,Polish
+wine,wine
+woman,woman
+labor union,trade union,labor union
+boiling point,boiling point,boil
+chairman,chairman
+Japanese,Japanese
+beer,beer
+write,interpreter,write,record,author,writer,make,genre,compose,composer
+work,work,field,occupation,profession
+canonize,canonize
+conservation status,conservation status
+waterway tunnel,waterway tunnel
+architect,architect,design,build
+design,architect,design,build,develop,create
+sublime,sublimation point,sublime
+engine,locomotive,engine
+radio host,radio host
+soap character,soap character
+premier,premier,prime minister
+periodical literature,periodical literature,periodical
+record,write,record,interpreter,follow-up,written,sequel,prequel
+stand,stand,mean,high,altitude,tall,height,elevation,rise
+airport,airport
+Gaelic games player,Gaelic games player
+amphibian,amphibian
+model,model
+hockey team,hockey team
+subordinate,subordinate,part
+religious,religious
+related,related,spin-off,relative
+manufacture,manufacture,manufacturer,produce
+epoch,epoch
+father,daughter,child,father,son,mother,parent
+musical,musical
+population,population,metropolitan population,have inhabitants,total population,urban population
+shopping mall,shopping center,mall,shopping mall
+grid reference,grid reference
+space shuttle,space shuttle
+inline hockey league,inline hockey league
+sportswoman,sportswoman
+judge,magistrate,judge
+royalty,royalty
+building,building
+Hungarian,Hungarian
+plane,aircraft,plane,airplane
+publisher,publisher,publish
+periodical,periodical literature,periodical
+abbreviate,abbreviate,abbreviation,abbreviated
+road,highway,road,street,route
+historical period,historical period
+department,department
+daughter company,daughter company,subsidiary,parent company,own
+electricity station,electricity station,power station,generating plant,power plant,generating station
+Belgian,Belgian
+member,member,class,contain,belong,phylum,family,kingdom,order,genus
+race,race,team,manager,play,manage,player
+station code,station code
+group,group
+website,website,web page
+chemical substance,chemical substance
+tennis tournament,tennis tournament
+artist,artist
+homepage,homepage
+colour,colour
+agent,agent
+horse trainer,horse trainer
+parent company,parent company,daughter company,subsidiary,own
+poker player,poker player
+record,write,record,interpreter,follow-up,written,sequel,prequel
+Hindi,Hindi
+regency,regency
+educational institution,educational institution
+US American,US American
+archaea,archaea
+graduate,study,Alma Mater,graduate,attend,play
+water board,district water board,water board
+Canadian Football player,Canadian Football player
+installment,installment
+country,nation,country
+engine displacement,engine displacement,displacement
+male,male
+home country,home country,come
+own,owner,own,parent company,daughter company,subsidiary
+constitutional monarchy,constitutional monarchy
+cross,bridge,crossing,span,cross,traverse,intersect
+play,play,feature,star,have a role in,instrument,host,team,manager,manage,player,race,attend,graduate
+legislature,legislature
+location,place,location
+die,die,place of death,death place,death date
+airline,airline
+station,station
+contain,phylum,contain,member,belong,order,class,kingdom,family
+beam,beam
+French,French
+railway station,railway station
+French locality,French locality
+world heritage site,world heritage site
+operate,operate,home,part
+distributor,distributor,distribute
+surfer,surfer
+infrastructure,infrastructure
+clerical administrative region,clerical administrative region
+TV show,show,television show,TV show
+member,member,class,contain,belong,phylum,family,kingdom,order,genus
+Christian doctrine,Christian doctrine
+list,list
+throw right-handed,throw right,throw right-handed
+come out,released,release date,come out
+party,party,political party
+Greek,Greek
+straight-four,straight-four
+art period,art period
+reviewed,reviewed,review
+weight,weight,weigh
+Canadian,Canadian
+place,place,location
+audiobook,audiobook
+broadcast,frequency,broadcast
+cosmonaut,cosmonaut
+founder,found,establish,founder
+rocket,rocket
+former band member,former band member,was member of
+order,order,contain,member,belong
+developer,develop,developer
+sub-municipality,sub-municipality
+region,region
+German,German
+football league,football league
+was member of,former band member,was member of
+maximum altitude,maximum altitude,rise
+chess player,chess player
+body builder,body builder
+race course,race course
+rugby club,rugby club
+bishop,Christian bishop,bishop
+fish,fish
+fish,fish
+human gene location,human gene location
+multi-volume publication,multi-volume publication
+granddaughter,grandson,granddaughter,grandchild,grandmother,grandfather
+length,long,length
+medicament,drug,pharmaceutical,medicament,medicine
+IATA location identifier,IATA identifier,IATA location identifier,IATA code
+tall,high,altitude,stand,tall,height,elevation,rise
+minister of justice,minister of justice
+weigh,weight,weigh
+bacteria,bacteria
+color,color
+status,status
+public service output,public service output
+son,daughter,child,parent,father,son,mother
+temple,temple
+tunnel,tunnel
+occupation,occupation,work
+record label,label,record label
+Canadian Football team,Canadian Football team
+time zone,time zone
+snooker champion,snooker champ,snooker champion
+softball league,softball league
+Estonian,Estonian
+IATA code,IATA identifier,IATA location identifier,IATA code
+movie genre,movie genre
+serve,serve,have an enrollment of,with an enrollment of,student population,enrollment,fight
+Portuguese,Portuguese
+slogan,slogan
+park,park
+sportsman,athlete,sportsman
+historic building,historical building,historic building
+Hebrew,Hebrew
+distribute,distributor,distribute
+formation date,established,formation date,formed
+government agency,government agency
+subsidiary,daughter company,subsidiary,parent company,own
+restaurant,restaurant
+bullfighter,bull fighter,bullfighter
+long,long,runtime,length
+ported,developed,ported
+density,density
+football match,football match,match
+tax,tax
+league,league,sports league
+sports manager,manager,sports manager
+mother,daughter,child,parent,father,son,mother
+race,race,team,manager,play,manage,player
+boil,boiling point,boil
+bat right-handed,bat right-handed,bat right
+magnitude,magnitude
+adult actress,pornographic actress,adult actress
+aired,broadcasted,aired
+Dutch,Dutch
+freeware,freeware
+called,pseudonym,called,common name,alias
+programming language,programming language,written
+enzyme,enzyme
+Muslim,Muslim
+ginkgo,ginkgo
+diocese,diocese
+muscle,muscle
+abbreviation,abbreviate,abbreviation,abbreviated
+released,released,release date,come out
+broadcast,frequency,broadcast
+crustacean,crustacean,shellfish
+motto,motto
+receive,win,receive,recipient,awarded
+stadium,stadium
+LC classification,LC classification
+town,town
+system of law,system of law
+wind motor,wind motor
+open swarm,open swarm
+chancellor,chancellor
+monument,monument
+star,star,sun,play,feature,have a role in
+video game,video game
+artery,artery
+drink,beverage,drink
+located,located,situated,part,based,address
+kingdom,contain,member,kingdom,belong
+automobile,car,vehicle,automobile,auto
+class B,class B
+artist,artist
+Polish,Polish
+elevation,high,altitude,stand,tall,height,elevation,rise
+left-handed,left-handed
+sickness,disease,illness,sickness
+traverse,bridge,crossing,span,cross,traverse
+comedy group,comedy group
+cartoon,cartoon
+altitude,high,altitude,stand,tall,height,elevation,rise
+mean,stand,mean
+rise,maximum altitude,rise,high,altitude,stand,tall,height,elevation
+Finnish,Finnish
+sublimation point,sublimation point,sublime
+American Football league,American Football league
+Indian,Indian
+sculptor,sculptor
+arachnid,arachnid
+Irishman,Irishman
+build,build,architect,design,produce,construct
+college,college
+edit,edit
+be placed on the NRHP,be added to the NRHP,be placed on the NRHP
+generating plant,electricity station,power station,generating plant,power plant,generating station
+Japanese,Japanese
+decommissioned,decommissioned
+mountain,mountain
+IUPAC name,IUPAC name
+field hockey league,field hockey league
+graduate,study,Alma Mater,graduate,attend,play
+gross,take in,make,take over,gross
+arena,arena
+polyhedron,polyhedron
+race,race,team,manager,play,manage,player
+found,found,founder,establish,foundation place
+flowering plant,flowering plant
+fashion designer,designer,fashion designer
+venue,venue
+bird,bird
+travel with an average speed of,travel with an average speed of,average speed
+Albanian,Albanian
+patron saint,patron,patron saint
+manhwa,manhwa
+episode,episode,part,TV episode,television episode
+power plant,electricity station,power station,generating plant,power plant,generating station
+straight-six,straight-six
+compose,compose,write,composer
+revolutionary,revolutionary
+come,born,come,home country,home town
+Polish king,Polish king
+precede,precursor,precede,develop
+mill,mill
+air,air,completed
+route,highway,road,street,route
+beauty queen,beauty queen
+mouse gene,mouse gene
+hotel,hotel
+intersect,cross,intersect
+opera,opera
+memorial,memorial
+trade union,trade union,labor union
+compose the music for,have music by,write the music for,compose the music for
+golf league,golf league
+populated place,populated place
+Marxist,Marxist
+with an enrollment of,serve,have an enrollment of,with an enrollment of,student population,enrollment
+badminton player,badminton player
+live,live
+monarchy,monarchy
+have influence on,influence,have influence on
+belong,belong,language family,family,contain,member,genus,kingdom,order,class,phylum
+enrollment,serve,have an enrollment of,with an enrollment of,student population,enrollment
+noble,noble
+successor,preceed,successor,predecessor,succeed
+protohistorical period,protohistorical period
+public service,public service
+vice prime minister,vice prime minister
+birth place,place of birth,born,birth place
+beacon,lighthouse,beacon
+factory,factory
+have tracks,have tracks
+blazon,blazon
+blood vessel,blood vessel
+sports league,league,sports league
+husband,marry,spouse,wife,husband
+have a role in,have a role in,play,feature,star
+periapsis,periapse,periapsis
+have seats,capacity,hold seats,have seats,seating capacity
+car,car,vehicle,automobile,auto
+protein,protein
+part,part,located,suburb,operate,episode,subordinate
+owner,owner,own
+ICAO identifier,location indicator,ICAO code,ICAO identifier
+shellfish,crustacean,shellfish
+jockey,jockey
+biomolecule,biomolecule
+sports team member,sports team member
+produce,produce,construct,build,create,product,develop,manufacture,manufacturer
+vice president,vice president
+convertible,convertible
+Formula One racer,Formula One racer
+structural system,made,structural system
+Women's Tennis Association tournament,Women's Tennis Association tournament,WTA tournament
+common name,common name,called
+fuse,fuse
+soccer tournament,soccer tournament
+cyclist,cyclist
+broadcaster,broadcaster
+military personnel,military person,military personnel
+absolute magnitude,absolute magnitude
+college coach,college coach
+bat left-handed,bat left-handed,bat left
+race track,race track
+voice actress,voice actress
+formed,established,formation date,formed,formation year
+rector,rector,principal
+Supreme Court of the United States case,Supreme Court of the United States case
+drug,drug,pharmaceutical,medicament,medicine
+have employees,have employees
+library,library
+case,case
+database,database
+government type,government type
+adult actor,pornographic actor,adult actor
+assembled,assembled
+sport facility,sport facility
+prime minister,premier,prime minister
+buried,resting place,buried
+vulnerable,vulnerable
+developed,developed,ported
+territory,territory
+critically endangered,critically endangered
+event,event
+spin-off,related,spin-off
+casualties,casualties
+result,sport competition result,result
+mammal,mammal
+politician,politician
+mineral,mineral
+boat,ship,boat
+American Football player,American Football player
+scrapped,scrapped
+eukaryotic,eukaryote,eukaryotic
+game,game
+have seasons,have seasons,run for seasons
+Hollywood cartoon,Hollywood cartoon
+place,place,location
+treadmill,treadmill
+airplane,aircraft,plane,airplane
+name,first describe,name
+atoll,atoll
+auto racing league,car racing league,racing league,auto racing league
+ligament,ligament
+WTA tournament,Women's Tennis Association tournament,WTA tournament
+event,event
+near threatened,near threatened
+debut,debut
+prefecture,prefecture
+land area,land area
+Russian,Russian
+actress,actress
+automobile engine,automobile engine
+displacement,engine displacement,displacement
+hockey league,hockey league
+clerical order,clerical order
+district,district
+curling league,curling league
+have pages,have pages
+span,bridge,crossing,span,cross,traverse
+historical building,historical building,historic building
+format,format
+Spanish,Spanish
+released,released,release date,come out
+metropolitan population,population,metropolitan population
+swimmer,swimmer
+play,play,feature,star,have a role in,instrument,host,team,manager,manage,player,race,attend,graduate
+ambidextrous,ambidextrous
+prize,award,prize
+food,food
+club moss,club moss
+shoot,shoot
+fashion,fashion
+member,member,class,contain,belong,phylum,family,kingdom,order,genus
+bat left,bat left-handed,bat left
+width,wide,width
+English,English
+ISBN,ISBN
+pharmaceutical,drug,pharmaceutical,medicament,medicine
+result,sport competition result,result
+relative,relative,related
+lacrosse league,lacrosse league
+enrollment,serve,have an enrollment of,with an enrollment of,student population,enrollment
+activity,activity
+V6,V6
+similar,like,similar
+awarded,win,receive,recipient,awarded
+religion,religion
+generating station,electricity station,power station,generating plant,power plant,generating station
+Protestant,Protestant
+succeed,preceed,predecessor,successor,succeed
+Dewey classification,Dewey classification
+community,community
+law firm,law firm
+influence,influence,have influence on
+US American,US American
+celebrity,celebrity
+shrine,shrine
+review,reviewed,review
+discography,discography
+height,high,altitude,stand,tall,height,elevation,rise
+comedian,comedian
+figure skater,figure skater
+death date,die,death date
+alias,alias,called
+place,place,location
+consists to percent of water,consists to percent of water
+Pole,Pole
+class C,class C
+German,German
+have an enrollment of,serve,have an enrollment of,with an enrollment of,student population,enrollment
+national soccer club,national soccer team,national soccer club
+settlement,settlement
+river,river
+name,first describe,name
+basketball team,basketball team
+host,host,play
+home town,home town,come
+poet,poet
+founded,established,founding year,founded,founding date
+develop,precursor,precede,develop,create,product,produce,developer,design
+sister network,sister station,sister channel,sister network
+volleyball coach,volleyball coach
+launchpad,launch pad,launchpad
+television episode,episode,TV episode,television episode
+Greek Revival,Greek Revival
+referee,referee
+race driver,race driver,racing driver
+employ,faculty size,employ
+olympics,Olympic Games,olympics
+Hindu,Hindu
+Iran settlement,Iran settlement
+run for seasons,have seasons,run for seasons
+chef,chef
+novel,novel
+throw left,throw left,throw left-handed
+theatre,theatre
+take off,launch off,blast off,take off
+wine region,wine region
+lacrosse player,lacrosse player
+city district,city district
+auto,car,vehicle,automobile,auto
+nationalistic,nationalistic
+overseas department,overseas department
+student population,serve,have an enrollment of,with an enrollment of,student population,enrollment
+daughter,daughter,child,parent,father,son,mother
+grape,grape
+deep,depth,deep
+area code,area code
+abbey,abbey
+sport,athletics,sport
+location,place,location
+have music by,have music by,write the music for,compose the music for
+marry,marry,spouse,wife,husband
+spacecraft,spaceship,spacecraft
+musician,musician
+name,first describe,name
+baseball league,baseball league
+Christian,Christian
+game,game
+music genre,music genre
+track,song,track
+ICAO code,location indicator,ICAO code,ICAO identifier
+senator,senator
+American,American
+family,family,belong,contain,member
+album,LP,album
+density,density
+come,born,come,home country,home town
+NCAA athlete,National Collegiate Athletic Association athlete,NCAA athlete
+leader,command,commander,leader
+synagogue,synagogue
+reference number,NRHP reference number,National Register reference number,reference number
+wife,marry,spouse,wife,husband
+B-side,B-side
+magazine,magazine
+Australian rules football player,Australian rules football player
+decoration,decoration
+monastery,monastery
+postal code,post code,postal code
+cheese,cheese
+mixed martial arts league,MMA league,martial arts league,mixed martial arts league
+grandchild,grandson,granddaughter,grandchild,grandmother,grandfather
+organisation,organisation
+embryology,embryology
+running mate,running mate
+priest,priest
+establish,found,establish,founder
+given name,first name,given name
+lunar crater,lunar crater,moon crater
+group,group
+player,team,manager,play,manage,player,race
+first name,first name,given name
+home,home stadium,home,based,operate,home arena
+race horse,race horse
+station wagon,station wagon
+valley,valley
+speedway rider,speedway rider
+track,song,track
+town,town
+played for,played for
+election,election
+time zone offset,UTC offset,time zone offset
+human gene,human gene
+sculpture,sculpture
+vehicle,car,vehicle,automobile,auto
+digital camera,digital camera
+opened,opened
+operate,operate,home,part
+school,school
+attend,attend,graduate,play,go,study
+Christian patriarch,patriarch,Christian patriarch
+fungus,mushroom,fungus
+golf player,golf player
+endangered,endangered
+coupé,coupé
+design,architect,design,build,develop,create
+mountain pass,mountain pass
+musical work,piece of work,musical work
+based,based,located,home stadium,home
+quality wine,quality wine
+opening film,opening film
+deputy,deputy
+stream,stream
+grandfather,grandson,granddaughter,grandchild,grandmother,grandfather
+residence,reside,residence
+MMA event,Mixed Martial Arts event,MMA event
+reptile,reptile
+brain,brain
+grand prix,grand prix
+mushroom,mushroom,fungus
+cultivated variety,cultivar,cultivated variety
+thug,criminal,thug
+cardinal,cardinal
+synonym,be the same as,synonym
+place,place,location
+mean,stand,mean
+medicine,drug,pharmaceutical,medicament,medicine
+shoot,shoot
+completed,air,completed
+ride,ride
+member of the European parliament,member of the European parliament
+develop,precursor,precede,develop,create,product,produce,developer,design
+war,battle,military conflict,war
+Jewish,Jewish
+plant,plant
+eukaryote,eukaryote,eukaryotic
+sun,star,sun
+military person,military person,military personnel
+minister of foreign affairs,minister of foreign affairs
+status,status
+write,interpreter,write,record,author,writer,make,genre,compose,composer
+write,interpreter,write,record,author,writer,make,genre,compose,composer
+parent,daughter,child,parent,father,son,mother
+average speed,travel with an average speed of,average speed
+work,work,field,occupation,profession
+university,university,study
+sumo wrestler,sumo wrestler
+astronaut,astronaut
+lymph,lymph
+airline,airline
+sequel,follow-up,written,record,sequel
+year,year
+member,member,class,contain,belong,phylum,family,kingdom,order,genus
+suburb,part,suburb
+arena,arena
+star,star,sun,play,feature,have a role in
