@@ -36,6 +36,7 @@ import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import sapphire.dataStructures.AlternativeToken;
+import sapphire.dataStructures.Path;
 import sapphire.dataStructures.SPARQLQuery;
 import sapphire.utils.FileManager;
 import sapphire.utils.RandomIDGenerator;
@@ -68,7 +69,7 @@ public class AlternativeQueryGenerator {
 	
 	private double branchingFactor = 0;
 	
-	class CustomEdge {
+	public class CustomEdge {
 		 private double weight;
 		 private String label;
 		 int id;
@@ -314,11 +315,11 @@ public class AlternativeQueryGenerator {
 	 * @param g The graph
 	 * @return
 	 */
-	private ArrayList<List<CustomEdge>> findSteinerTree (ArrayList<String> seeds,
+	private ArrayList<Path> findSteinerTree (ArrayList<String> seeds,
 			HashMap<String, Set<String>> groups,
 			Graph<String, CustomEdge> g) {
 		
-		ArrayList<List<CustomEdge>> paths = new ArrayList<List<CustomEdge>>();
+		ArrayList<Path> paths = new ArrayList<Path>();
 		
 		Transformer<CustomEdge, Double> wtTransformer = new Transformer<CustomEdge,Double>() {
 			 public Double transform(CustomEdge edge) {
@@ -326,43 +327,44 @@ public class AlternativeQueryGenerator {
 			 }
 		};
 		
-		ArrayList<Set<String>> seedsSets = new ArrayList<Set<String>>();
-		for(int i = 0; i < seeds.size(); ++i) {
-			seedsSets.add(groups.get(seeds.get(i)));
-		}
-		
-		boolean notDone = true;
-		while(notDone){
-			MinimumSpanningForest2<String, CustomEdge> spanningTree = new MinimumSpanningForest2<String, CustomEdge>(g,
-					new DelegateForest<String, CustomEdge>(), DelegateTree.<String, CustomEdge>getFactory(),wtTransformer);
-			
-			Forest<String, CustomEdge> tree = spanningTree.getForest();
-			
-			ArrayList<CustomEdge> edges = new ArrayList<CustomEdge>(tree.getEdges());
-			
-			paths.add(edges);
-			
-		}
-		
-		
-		
-		
-//		DijkstraShortestPath<String, CustomEdge> alg = new DijkstraShortestPath<String, CustomEdge>(g,
-//				wtTransformer);
+//		ArrayList<Set<String>> seedsSets = new ArrayList<Set<String>>();
+//		for(int i = 0; i < seeds.size(); ++i) {
+//			seedsSets.add(groups.get(seeds.get(i)));
+//		}
 //		
-//		Set<String> firstSeedSet = groups.get(seeds.get(0));
-//		Set<String> secondSeedSet = groups.get(seeds.get(1));
-//		
-//		for(String firstSetLiteral : firstSeedSet) {
+//		boolean notDone = true;
+//		while(notDone){
+//			MinimumSpanningForest2<String, CustomEdge> spanningTree = new MinimumSpanningForest2<String, CustomEdge>(g,
+//					new DelegateForest<String, CustomEdge>(), DelegateTree.<String, CustomEdge>getFactory(),wtTransformer);
 //			
-//			for(String secondSetLiteral : secondSeedSet) {
-//				List<CustomEdge> l = alg.getPath(firstSetLiteral, secondSetLiteral);
-//				if(l.size() > 0) {
-//					paths.add(l);
-//				}
-//			}
+//			Forest<String, CustomEdge> tree = spanningTree.getForest();
+//			
+//			ArrayList<CustomEdge> edges = new ArrayList<CustomEdge>(tree.getEdges());
+//			
+//			paths.add(edges);
 //			
 //		}
+		
+		
+		
+		
+		DijkstraShortestPath<String, CustomEdge> alg = new DijkstraShortestPath<String, CustomEdge>(g,
+				wtTransformer);
+		
+		Set<String> firstSeedSet = groups.get(seeds.get(0));
+		Set<String> secondSeedSet = groups.get(seeds.get(1));
+		
+		for(String firstSetLiteral : firstSeedSet) {
+			
+			for(String secondSetLiteral : secondSeedSet) {
+				List<CustomEdge> l = alg.getPath(firstSetLiteral, secondSetLiteral);
+				if(l.size() > 0) {
+					double distance = (double) alg.getDistance(firstSetLiteral, secondSetLiteral);
+					paths.add(new Path(l, distance));
+				}
+			}
+			
+		}
 		return paths;
 	}
 	
@@ -423,7 +425,7 @@ public class AlternativeQueryGenerator {
 			}
 		}
 		// Do only 2 levels of expansions
-		ArrayList<List<CustomEdge>> paths = null;
+		ArrayList<Path> paths = null;
 		for(int i = 0; i < 2; ++i) {
 			expandNodes(q, g);
 		}
@@ -431,20 +433,15 @@ public class AlternativeQueryGenerator {
 		System.out.println("Number of edges: " + g.getEdgeCount());
 		paths = findSteinerTree(seeds, groups, g);
 		
-		Collections.sort(paths, new Comparator<List<CustomEdge>>(){
-		    public int compare(List<CustomEdge> a1, List<CustomEdge> a2) {
-		        return a1.size() - a2.size(); // shortest to longest
+		Collections.sort(paths, new Comparator<Path>(){
+		    public int compare(Path a1, Path a2) {
+		        return (int) (a1.getCost() - a2.getCost()); // shortest to longest
 		    }
 		});
 		
-		int minLength = paths.get(0).size();
-		int currentLength = minLength;
-		
 		for(int i = 0; i < paths.size(); ++i) {
-			currentLength = paths.get(i).size();
-//			if(currentLength > minLength) break;
 			System.out.println("Shortest path is: ");
-			for(CustomEdge edge : paths.get(i)) {
+			for(CustomEdge edge : paths.get(i).getPath()) {
 				Pair<String> pair = g.getEndpoints(edge);
 				System.out.println("(" + pair.getFirst() + ", " +
 				edge.getLabel() +
