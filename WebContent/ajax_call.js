@@ -433,7 +433,8 @@ function getSuggestions(){
     			var myExample = bodyTuples[i]['example'];
     			myExample = replaceAll(myExample, "<", "&lt;");
     			myExample = replaceAll(myExample, ">", "&gt;");
-    			myExample = replaceAll(myExample, ".", ".<br>");
+    			myExample = replaceAll(myExample, ">.", ".<br>");
+    			myExample = replaceAll(myExample, "--", " ");
     			record += "Try the structure in this example?<br><code>" + myExample + "</code>";
     			record += "</td></tr>";
         		body += record;
