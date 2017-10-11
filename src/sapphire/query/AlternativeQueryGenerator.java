@@ -440,20 +440,17 @@ public class AlternativeQueryGenerator {
 		});
 		
 		for(int i = 0; i < paths.size(); ++i) {
+			String example;
 			System.out.println("Shortest path is: ");
 			for(CustomEdge edge : paths.get(i).getPath()) {
 				Pair<String> pair = g.getEndpoints(edge);
-				System.out.println("(" + pair.getFirst() + ", " +
-				edge.getLabel() +
-				", " + pair.getSecond() + ")");
+				example = "(" + pair.getFirst() + ", " +
+						edge.getLabel() +
+						", " + pair.getSecond() + ")";
+				System.out.println(example);
+				alternativeTokens.add(new AlternativeToken(example, "X"));
 			}
 		}
-		
-		
-		
-		
-		// Generate alternative tokens
-		
 		
 		return alternativeTokens;
 	}

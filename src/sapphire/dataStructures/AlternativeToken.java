@@ -12,9 +12,8 @@ import java.util.ArrayList;
  */
 public class AlternativeToken {
 	
-	private String subject, predicate, object, newValue;
+	private String subject, predicate, object, newValue, example;
 	private String type;
-	private ArrayList<Integer> dependedntTokens;
 	
 	public String getType() {
 		return type;
@@ -39,9 +38,12 @@ public class AlternativeToken {
 		this.object = object;
 		this.newValue = newValue;
 		this.type = type;
-		dependedntTokens = new ArrayList<Integer>();
 	}
 	
+	public AlternativeToken(String example, String type) {
+		this.example = example;
+		this.type = type;
+	}
 
 	public String getSubject() {
 		return subject;
@@ -78,10 +80,6 @@ public class AlternativeToken {
 	}
 	public void setNumOfRows(int numOfRows) {
 		this.numOfRows = numOfRows;
-	}
-
-	public ArrayList<Integer> getDependedntTokens() {
-		return dependedntTokens;
 	}
 
 }
