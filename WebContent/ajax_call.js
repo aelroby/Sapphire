@@ -434,7 +434,7 @@ function getSuggestions(){
     			myExample = replaceAll(myExample, "<", "&lt;");
     			myExample = replaceAll(myExample, ">", "&gt;");
     			myExample = replaceAll(myExample, ".", ".<br>");
-    			record += "Try the structure in this example? <code>" + myExample + "</code>";
+    			record += "Try the structure in this example?<br><code>" + myExample + "</code>";
     			record += "</td></tr>";
         		body += record;
     		}
