@@ -15,6 +15,10 @@ public class AlternativeToken {
 	private String subject, predicate, object, newValue, example;
 	private String type;
 	
+	public String getExample() {
+		return example;
+	}
+	
 	public String getType() {
 		return type;
 	}

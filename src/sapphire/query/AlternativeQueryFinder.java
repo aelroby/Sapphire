@@ -60,11 +60,13 @@ public class AlternativeQueryFinder extends HttpServlet {
         }
         
         // Query relaxation too
-        // Disable this until the frontend supports the new type of alternatives
-        altQueryGenerator.relaxQuery(sparqlQuery);
+        Timer.start();
+        alternativeTokens.addAll(altQueryGenerator.relaxQuery(sparqlQuery));
+        Timer.stop();
+        System.out.println("Relaxed query in " + Timer.getTimeInSeconds() + " seconds");
         
     	// Literals first
-    	Timer.start();
+    	/*Timer.start();
     	alternativeTokens.addAll(altQueryGenerator.relaxStructure(sparqlQuery));
     	Timer.stop();
     	FileManager.appendToFileNoNewLine("AlternativeQueriesTimeStatsSeconds.dat",
@@ -77,19 +79,24 @@ public class AlternativeQueryFinder extends HttpServlet {
     	Timer.stop();
     	FileManager.appendToFileWithNewLine("AlternativeQueriesTimeStatsSeconds.dat",
 				Double.toString(Timer.getTimeInSeconds()));
-    	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");
+    	System.out.println("Relaxed literals in " + Timer.getTimeInSeconds() + " seconds");*/
     	
     	FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", "++++++++++++++++++++++++++++++++++++++");
 		
 		String result = "{ \"results\": { \"suggestions\": [ ";
 		for(int i = 0; i < alternativeTokens.size(); ++i){
 			AlternativeToken thisToken = alternativeTokens.get(i);
-			if(thisToken.getNumOfRows() > 0){
-				System.out.println("Type: " + thisToken.getType() + ", Old Subject: " + thisToken.getSubject() + ", Old Predicate: " + thisToken.getPredicate() + ", Old Object: " + thisToken.getObject() + ", New Value: " + thisToken.getNewValue() + ", Number of answers: " + thisToken.getNumOfRows());
-				result = result +"{\"type\": \"" + thisToken.getType() + "\", \"subject\":\"" + thisToken.getSubject().replace("\"","\\\"") + "\", \"predicate\":\"" + thisToken.getPredicate().replace("\"","\\\"") + "\", \"object\":\"" + thisToken.getObject().replace("\"","\\\"") + "\", \"newValue\":\"" + thisToken.getNewValue().replace("\"","\\\"") + "\", \"resultCount\":\"" + thisToken.getNumOfRows()+"\"} ,";
+			if(thisToken.getType().compareTo("X") == 0) {
+				result += "{\"type\": \"" + thisToken.getType() + "\", \"example\":\"" + thisToken.getExample().replace("\"","\\\"") + "\"} ,";
+			}
+			else {
+				if(thisToken.getNumOfRows() > 0){
+					System.out.println("Type: " + thisToken.getType() + ", Old Subject: " + thisToken.getSubject() + ", Old Predicate: " + thisToken.getPredicate() + ", Old Object: " + thisToken.getObject() + ", New Value: " + thisToken.getNewValue() + ", Number of answers: " + thisToken.getNumOfRows());
+					result += "{\"type\": \"" + thisToken.getType() + "\", \"subject\":\"" + thisToken.getSubject().replace("\"","\\\"") + "\", \"predicate\":\"" + thisToken.getPredicate().replace("\"","\\\"") + "\", \"object\":\"" + thisToken.getObject().replace("\"","\\\"") + "\", \"newValue\":\"" + thisToken.getNewValue().replace("\"","\\\"") + "\", \"resultCount\":\"" + thisToken.getNumOfRows()+"\"} ,";
+				}
 			}
 		}
-		result = result + "]}}";
+		result += "]}}";
 			
 		System.out.println(result);
 	    response.setContentType("text/plain");  // Set content type of the response so that jQuery knows what it can expect.

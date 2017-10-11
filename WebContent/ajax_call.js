@@ -397,7 +397,13 @@ function callQuery(){
 
 }
 
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
 
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
 
 function getSuggestions(){
 
@@ -423,35 +429,47 @@ function getSuggestions(){
     	for(var i = 0; i < bodyTuples.length; i++){
     		var record = "<tr><td>";
     		var myType = bodyTuples[i]['type'];
-    		var mySubject = bodyTuples[i]['subject'];
-    		var myPredicate = bodyTuples[i]['predicate'];
-    		var myObject = bodyTuples[i]['object'];
-    		var myNewValue = bodyTuples[i]['newValue'];
-    		var myCount = bodyTuples[i]['resultCount'];
-	
-    		record += "In triple: <code>"+mySubject+"&nbsp;&nbsp;"+
-    			myPredicate.replace("<","&lt;").replace(">","&gt;")+
-    			"&nbsp;&nbsp;"+myObject+"</code>:<br>"+
-    			"&nbsp;&nbsp;&nbsp;&nbsp;Did you mean <b>"+myNewValue.replace("<","&lt;").replace(">","&gt;")+"</b>, instead of <i>";
-    			if(myType=='O')
-    				record +=myObject;
-    			else if (myType=='P')
-    				record +=myPredicate.replace("<","&lt;").replace(">","&gt;");
-    			else 
-    				record +=mySubject;
+    		if(myType.localeCompare("X") == 0) {
+    			var myExample = bodyTuples[i]['example'];
+    			myExample = replaceAll(myExample, "<", "&lt;");
+    			myExample = replaceAll(myExample, ">", "&gt;");
+    			myExample = replaceAll(myExample, ".", ".<br>");
+    			record += "Try the structure in this example? <code>" + myExample + "</code>";
+    			record += "</td></tr>";
+        		body += record;
+    		}
+    		else {
+    			var mySubject = bodyTuples[i]['subject'];
+        		var myPredicate = bodyTuples[i]['predicate'];
+        		var myObject = bodyTuples[i]['object'];
+        		var myNewValue = bodyTuples[i]['newValue'];
+        		var myCount = bodyTuples[i]['resultCount'];
+    	
+        		record += "In triple: <code>"+mySubject+"&nbsp;&nbsp;"+
+        			myPredicate.replace("<","&lt;").replace(">","&gt;")+
+        			"&nbsp;&nbsp;"+myObject+"</code>:<br>"+
+        			"&nbsp;&nbsp;&nbsp;&nbsp;Did you mean <b>"+myNewValue.replace("<","&lt;").replace(">","&gt;")+"</b>, instead of <i>";
+        			if(myType=='O')
+        				record +=myObject;
+        			else if (myType=='P')
+        				record +=myPredicate.replace("<","&lt;").replace(">","&gt;");
+        			else 
+        				record +=mySubject;
 
-    			record +="</i>. There are <b><u>"+myCount+"</u></b> results available?&nbsp;&nbsp;&nbsp;&nbsp;";
+        			record +="</i>. There are <b><u>"+myCount+"</u></b> results available?&nbsp;&nbsp;&nbsp;&nbsp;";
+        		
+        		// The global replace trick was taken from the below URL, more complicated solutions are also available:
+        		// http://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript	
+        		
+        		// double qoutes cannot be escaped in onClick actions. The best way to write double qoutes in HTML is using &quot;
+        		// Reference: http://stackoverflow.com/questions/1081573/escaping-double-quotes-in-javascript-onclick-event-handler
+        		record += "<a class=\"updateLink\"  onclick=\"UpdateTriple(this.form,'"+myType+"','"+mySubject+"','"+myPredicate+"','"+
+        			myObject.replace(/\"/g, '&quot;')+"','"+myNewValue.replace(/\"/g, '&quot;')+"'); init_filter(); callQuery(); getSuggestions();\">Update Query</a>";
+        		
+        		record += "</td></tr>";
+        		body += record;
+    		}
     		
-    		// The global replace trick was taken from the below URL, more complicated solutions are also available:
-    		// http://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript	
-    		
-    		// double qoutes cannot be escaped in onClick actions. The best way to write double qoutes in HTML is using &quot;
-    		// Reference: http://stackoverflow.com/questions/1081573/escaping-double-quotes-in-javascript-onclick-event-handler
-    		record += "<a class=\"updateLink\"  onclick=\"UpdateTriple(this.form,'"+myType+"','"+mySubject+"','"+myPredicate+"','"+
-    			myObject.replace(/\"/g, '&quot;')+"','"+myNewValue.replace(/\"/g, '&quot;')+"'); init_filter(); callQuery(); getSuggestions();\">Update Query</a>";
-    		
-    		record += "</td></tr>";
-    		body += record;
     	}
     	body += "</tbody>";
     	
