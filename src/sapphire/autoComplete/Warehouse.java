@@ -46,7 +46,7 @@ public class Warehouse {
 	
 	private Map<String, ArrayList<String>> semanticRelationsMap;
 	
-	// Number of corse available in runtime
+	// Number of cores available in runtime
 	private int numOfCores;
 	
 	// Number of results to be found for typeahead

@@ -1,5 +1,5 @@
-TDBDirectory=/home/ahmed/work/workspace/Data/
-Labels=/home/ahmed/work/workspace/Data/Metadata/refinedLabels.dat
-Predicates=/home/ahmed/work/workspace/Data/Metadata/refinedPredicates.dat
-FrequentLiterals=/home/ahmed/work/workspace/Data/Metadata/MostFrequent/40000_refined.dat
-LemonSummary=/home/ahmed/work/workspace/Sapphire/Metadata/lemon_summary.txt
+TDBDirectory=/home/ahmed/work/Programs/Sapphire/Metadata
+Labels=/home/ahmed/work/Programs/Sapphire/Metadata/refinedLabels.dat
+Predicates=/home/ahmed/work/Programs/Sapphire/Metadata/refinedPredicates.dat
+FrequentLiterals=/home/ahmed/work/Programs/Sapphire/Metadata/MostFrequent/40000_refined.dat
+LemonSummary=/home/ahmed/work/Programs/Sapphire/Metadata/lemon_summary.txt

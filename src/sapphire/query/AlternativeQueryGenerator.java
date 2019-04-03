@@ -372,87 +372,13 @@ public class AlternativeQueryGenerator {
 	 * Relax the query. Important assumption: we assume that there are two literals
 	 * in the query. This is a design choice. More literals in the query will make 
 	 * query relaxation more complicated to present to the user as suggestions.
-	 * TODO: Develop a way to present suggestions to the user for more complex suggestions.
 	 * @param query The original SPARQL query
 	 * @return ArrayList of alternative tokens
 	 */
 	public ArrayList<AlternativeToken> relaxQuery (SPARQLQuery query) {
 		
-		expandedNodes = new HashSet<String>();
-		edgeCntr = 0;
-		
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
 		
-		Graph<String, CustomEdge> g = new UndirectedSparseMultigraph<String, CustomEdge>();
-		
-		// seeds in the query
-		ArrayList<String> seeds = new ArrayList<String>();
-		// predicates in the query
-		queryPredicates = new ArrayList<String>();
-		
-		similarPredicates = new HashSet<String>();
-		
-		// Groups for seeds
-		HashMap<String, Set<String>> groups = new HashMap<String, Set<String>>();
-		
-		// Expansion queue
-		Queue<String> q = new ArrayDeque<String>();
-		
-		// Find seeds
-		for(int i = 0; i < query.where.size(); ++i) {
-			// update predicates
-			queryPredicates.add(query.where.get(i).get(1));
-			
-			similarPredicates.addAll(
-					sapphire.autoComplete.AutoComplete.warehouse.findSimilarStringsPredicates(
-							query.where.get(i).get(1)));
-			
-			queryPredicates.addAll(similarPredicates);
-			
-			// If this triple contains a literal, that's a seed
-			if(query.where.get(i).get(2).contains("@en")) {
-				seeds.add(query.where.get(i).get(2));
-				Set<String> newGroupSet = new HashSet<String>();
-				newGroupSet.add(seeds.get(seeds.size()-1));
-				newGroupSet.addAll(sapphire.autoComplete.AutoComplete.
-						warehouse.findSimilarStringsLiterals(
-								seeds.get(seeds.size()-1), 0.8));
-				groups.put(seeds.get(seeds.size()-1), newGroupSet);
-				g.addVertex(seeds.get(seeds.size()-1));
-				q.add(seeds.get(seeds.size()-1));
-				for(String similarLiteral : newGroupSet) {
-					g.addVertex(similarLiteral);
-					q.add(similarLiteral);
-				}
-			}
-		}
-		// Do only 2 levels of expansions
-		ArrayList<Path> paths = null;
-		for(int i = 0; i < 2; ++i) {
-			expandNodes(q, g);
-		}
-		System.out.println("Number of vertices: " + g.getVertexCount());
-		System.out.println("Number of edges: " + g.getEdgeCount());
-		paths = findSteinerTree(seeds, groups, g);
-		
-		Collections.sort(paths, new Comparator<Path>(){
-		    public int compare(Path a1, Path a2) {
-		        return (int) (a1.getCost() - a2.getCost()); // shortest to longest
-		    }
-		});
-		
-		for(int i = 0; i < paths.size(); ++i) {
-			String example = "";
-			System.out.println("Shortest path is: ");
-			for(CustomEdge edge : paths.get(i).getPath()) {
-				Pair<String> pair = g.getEndpoints(edge);
-				example += pair.getFirst() + "--" +
-						edge.getLabel() +
-						"--" + pair.getSecond() + ".";
-				System.out.println(example);
-			}
-			alternativeTokens.add(new AlternativeToken(example, "X"));
-		}
 		
 		return alternativeTokens;
 	}
