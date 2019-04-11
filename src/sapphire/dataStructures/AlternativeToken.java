@@ -13,7 +13,10 @@ import java.util.ArrayList;
 public class AlternativeToken {
 	
 	private String subject, predicate, object, newValue, example;
-	private String type;
+	private String type;	// Possible values for type are "S" for subject,
+							// "P" for predicate, "O" for object, and "X" for example
+							// The newValue variable holds the alternative value
+							// for the modified type except for the case of an example
 	
 	public String getExample() {
 		return example;
