@@ -369,9 +369,7 @@ public class AlternativeQueryGenerator {
 	}
 	
 	/**
-	 * Relax the query. Important assumption: we assume that there are two literals
-	 * in the query. This is a design choice. More literals in the query will make 
-	 * query relaxation more complicated to present to the user as suggestions.
+	 * Relax the query. 
 	 * @param query The original SPARQL query
 	 * @return ArrayList of alternative tokens
 	 */

@@ -14,9 +14,9 @@ import java.util.Arrays;
  *
  */
 public class SPARQLQuery {
-	public ArrayList<String> select;
-	public ArrayList<ArrayList<String>> where;
-	public ArrayList<String> modifiers;
+	public ArrayList<String> select;	// SELECT variables
+	public ArrayList<ArrayList<String>> where;	// WHERE clause statements
+	public ArrayList<String> modifiers;	// The query modifiers
 	public boolean isValid;		// This query is valid and can be executed
 	public boolean hasModifiers;	// This query has modifiers
 	public String queryString;
