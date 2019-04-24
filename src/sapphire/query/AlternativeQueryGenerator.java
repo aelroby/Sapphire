@@ -14,6 +14,9 @@ import sapphire.utils.RandomIDGenerator;
 import sapphire.utils.SimpleTimestamp;
 import sapphire.utils.Timer;
 
+import java.util.LinkedHashSet;
+import java.util.Iterator;
+
 
 /**
  * This class suggests alternative queries to the one executed
@@ -69,6 +72,17 @@ public class AlternativeQueryGenerator {
 		
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
 		
+		RelaxerMain rm = new RelaxerMain(query.where);
+		LinkedHashSet<Triple> steinerTree  = rm.runIt();
+
+		String example = "";
+		Iterator<Triple> itr = steinerTree.iterator();
+		while(itr.hasNext()){
+			example += itr.next().toString() + "\n";
+		}
+
+		AlternativeToken at = new AlternativeToken(example,"X");
+		alternativeTokens.add(at);
 		
 		return alternativeTokens;
 	}
