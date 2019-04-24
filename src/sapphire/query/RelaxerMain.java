@@ -3,6 +3,7 @@ package sapphire.query;
 import java.util.Map;
 import java.util.LinkedHashMap;
 import java.util.HashMap;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -51,19 +52,23 @@ public class RelaxerMain {
 	public RelaxerMain(ArrayList<ArrayList<String>> where) {
 
 		for(ArrayList<String> manyTriples : where){ //is there where similar literals come in? Assuming so. If not logic will have to be modified TODO clarify
-			ArrayList<String> tmpLiterals = new ArrayList<String>();
-			for(String triple : manyTriples){
-				String [] splitStr = triple.trim().split("\\s+"); //trim excess white space & split by white space
-				tmpLiterals.add(splitStr[2]);
-				if(!PTFHelper.contains(splitStr[1])){
-					PTFHelper.add(splitStr[1]);
-					predicatesToFavour.add(splitStr[1]);
-				}
+			String object = manyTriples.get(2);
+			String predicate = manyTriples.get(1);
+			
+			ArrayList<String> objectsTmp = new ArrayList<String>();
+			ArrayList<String> alternatives = 
+					sapphire.autoComplete.AutoComplete.warehouse.findSimilarStringsLiterals(object, 0.7);
+			objectsTmp.add(object);
+			objectsTmp.addAll(alternatives);
+			
+			literalsToConnect.add(objectsTmp);
+			if(!PTFHelper.contains(predicate)) {
+				PTFHelper.add(predicate);
+				predicatesToFavour.add(predicate);
 			}
-			literalsToConnect.add(tmpLiterals);
 		}
 
-		numberOfSeeds = literalsToConnect.length;
+		numberOfSeeds = literalsToConnect.size();
 		positionInQueues = 0;
 		for(int i = 0; i < numberOfSeeds; i++) {
 			connectionSet.add(new HashSet<Integer>());
@@ -75,7 +80,12 @@ public class RelaxerMain {
 	public LinkedHashSet<Triple> runIt() {
 		long startTime = System.currentTimeMillis();
 
-		relaxQuery_v2();
+		try {
+			relaxQuery_v2();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//printResults();
 		//printExploredOnly();
 		createMST();
@@ -127,7 +137,7 @@ public class RelaxerMain {
 				}
 			}//end inner for
 			if(addedCounter == 0) {
-				System.err.println("!!!ERROR, literal(and like literals) of: " + subArray[0] + " not found in dataset!!!, RECCOMEND MISSION ABORT\n");
+				System.err.println("!!!ERROR, literal(and like literals) of: " + subArray.get(0) + " not found in dataset!!!, RECCOMEND MISSION ABORT\n");
 				//break; Should we hard break out of program here?
 			}else {
 				queues.add(pq);
@@ -510,7 +520,7 @@ public class RelaxerMain {
 	}
 	
 	public int costToAdd(Triple triple) { //Helps determine priority of a triple to expand based on if its predicates match the one in the initial query
-		int additionCost = 5;
+		int additionCost = 20;
 		for(String predicate : predicatesToFavour) {
 			//System.out.println("Predicate: " + predicate + "||" + triple.predicate);
 			if(triple.predicate.toLowerCase().contains(predicate.toLowerCase()) || predicate.toLowerCase().contains(triple.predicate.toLowerCase())) {
