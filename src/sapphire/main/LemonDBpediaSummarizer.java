@@ -11,7 +11,7 @@ import sapphire.utils.FileManager;
 public class LemonDBpediaSummarizer {
 
 	public static void main(String[] args) {
-		QueryManager queryManager = QueryManager.getInstance();
+		QueryManager queryManager = QueryManager.getEndpointQMInstance();
 		queryManager.setEndpointURL("http://localhost:3030/ds/");
 		ResultSet results = queryManager.executeQuery(0, "SELECT ?o WHERE {?s ?p ?o. FILTER isLiteral(?o) }");
 		ArrayList<String> allLiteralsList = new ArrayList<String>();

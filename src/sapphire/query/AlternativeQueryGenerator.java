@@ -95,7 +95,7 @@ public class AlternativeQueryGenerator {
 	 */
 	public ArrayList<AlternativeToken> relaxPredicates(SPARQLQuery query) {
 		ArrayList<AlternativeToken> alternativeTokens = new ArrayList<AlternativeToken>();
-		QueryManager queryManager = QueryManager.getInstance();
+		QueryManager queryManager = QueryManager.getEndpointQMInstance();
 		
 		// Find seeds and relax them
 		for(int i = 0; i < query.where.size(); ++i) {
@@ -135,7 +135,7 @@ public class AlternativeQueryGenerator {
 		ArrayList<AlternativeToken> alternativeTokens = 
 				new ArrayList<AlternativeToken>();
 		
-		QueryManager queryManager = QueryManager.getInstance();
+		QueryManager queryManager = QueryManager.getEndpointQMInstance();
 		
 		// Find seeds and relax them
 		for(int i = 0; i < query.where.size(); ++i) {
@@ -289,7 +289,7 @@ public class AlternativeQueryGenerator {
 		
 		System.out.println("Finding answers to " + alternativeQueries.size() + " alternative queries...");
 		Timer.start();
-		QueryManager queryManager = QueryManager.getInstance();
+		QueryManager queryManager = QueryManager.getEndpointQMInstance();
 		for(int i = 0; i < alternativeQueries.size(); ++i){
 			System.out.println("Query " + i + ": " + alternativeQueries.get(i));
 			FileManager.appendToFileWithNewLine("AlternativeQueriesLog.dat", 

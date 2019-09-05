@@ -29,7 +29,6 @@ public class QueryManager {
 	private QueryManager () {
 		resultSetMap = new HashMap<Integer, ResultSet>();
 		//default URL
-		// http://husky-big.cs.uwaterloo.ca:8890/sparql
 		endpointURL = "http://dbpedia.org/sparql";
 	}
 	
@@ -87,7 +86,7 @@ public class QueryManager {
 		resultSetMap.remove(id);
 	}
 
-	public static QueryManager getInstance() {
+	public static QueryManager getEndpointQMInstance() {
 		return singleton;
 	}
 

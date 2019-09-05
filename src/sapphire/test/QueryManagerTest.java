@@ -7,7 +7,7 @@ import sapphire.query.QueryManager;
 public class QueryManagerTest {
 
 	public static void main(String[] args) {
-		QueryManager manager = QueryManager.getInstance();
+		QueryManager manager = QueryManager.getEndpointQMInstance();
 		System.out.println("Answering query: SELECT ?s ?p WHERE {?s ?p \"Barack Obama\"@en }");
 		ResultSet results = manager.executeQuery(15, "SELECT ?s ?p WHERE {?s ?p \"Barack Obama\"@en }");
 		while(results.hasNext()) {

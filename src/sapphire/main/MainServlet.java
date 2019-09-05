@@ -35,7 +35,7 @@ public class MainServlet extends HttpServlet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        queryManager = QueryManager.getInstance();
+        queryManager = QueryManager.getEndpointQMInstance();
     }
     /**
      * Default constructor. 
