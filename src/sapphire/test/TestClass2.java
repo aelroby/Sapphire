@@ -16,9 +16,16 @@ import java.util.TreeSet;
 
 public class TestClass2 {
 
+	//Test purpose:
+	private static int secondQueryCount = 0;
+	
 	//Costs For Matching and non-Matching Predicates
 	private static int matchingCost = 5;
 	private static int nonMatchingCost = 20;
+	
+	//Filter Strings
+	private static String[] filterStringsPredicates = {"wikiPageWikiLink", "wikiPageRedirects","wikiPageDisambiguates"};
+	private static String[] filterStringSubjects = {"entity", "Category", "wikidata"};
 	
 	//Weight from Exact Method before reduction test
 	private static int weightBeforeRT;
@@ -113,10 +120,10 @@ public class TestClass2 {
             
             long queryExpandMethodTotal1 = System.currentTimeMillis();
             
-            countNeighbors(queryTriples.get(0),dataset);
-            System.out.println("*************************************************");
+            //countNeighbors(queryTriples.get(0),dataset);
+            //System.out.println("*************************************************");
             queryTriples.set(0, expand(queryTriples.get(0), dataset));
-            System.out.println("*************************************************");
+            //System.out.println("*************************************************");
             long queryExpandMethodTotal2 = System.currentTimeMillis();
             queryExpandMethodTotal += (queryExpandMethodTotal2 - queryExpandMethodTotal1);
             
@@ -287,7 +294,7 @@ public class TestClass2 {
                     connectedLiterals.add(fromSeed_i);
                     connectedLiterals.add(fromSeed_j);
  
-                    //添加到connected triples中
+                    //add to connectedTriples
                     ArrayList<Triple> tmp = new ArrayList<>();
                     tmp.add(di.get(i));
                     tmp.add(di.get(j));
@@ -356,10 +363,7 @@ public class TestClass2 {
         
         for(Triple queryObject : queryTriples) {
             
-            String queryString = makeQueryString(literalsToConnect, queryObject.object);
-            //String countQueryString = countQueryString(literalsToConnect, queryObject.object);
-            
-            
+            String queryString = makeQueryString(literalsToConnect, queryObject.object);      
             
             //adding the queryString to usedQuery, if it's already in, then skip the query
             System.out.println("------current query: " + queryString + " -------");
@@ -369,22 +373,12 @@ public class TestClass2 {
                 usedQuery.add(queryString);
             }
             Query query = QueryFactory.create(queryString);
-            //Query query2 = QueryFactory.create(countQueryString);
-            
-            //QueryExecution qexec = QueryExecutionFactory.sparqlService("http://dbpedia.org/sparql", query);
+
             QueryExecution qexec = QueryExecutionFactory.create(query, model);
-            //QueryExecution qexec2 = QueryExecutionFactory.create(query2, model);
             
             try{                
                 ResultSet results = qexec.execSelect();   
-                /*
-                ResultSet results2 = qexec2.execSelect(); 
-                while(results2.hasNext()){
-                	QuerySolution solution2 = results2.nextSolution();
-                	String solutionNumber = solution2.get("?c").toString();
-                	System.out.println("this query has " + solutionNumber + "results");
-                }
-                */
+                
                 numberOfQueriesProcessed++;
 
                 long resultsHasNextTime1 = System.currentTimeMillis();
@@ -396,16 +390,14 @@ public class TestClass2 {
                 	resultsSize++;
                 	
                     QuerySolution solution = results.nextSolution();
-                    String solutionSubject = solution.get("?s").toString();
-                    String solutionPredicate = solution.get("?p").toString();
+                    String solutionSubject = "";
+                    String solutionPredicate = "";
+                    String solutionObject = "";
                     
-                    //Predicates Filter:
-                    //wikipageWikiLink & wikiPageRedirects & wikiPageDisambiguates
-                    //Subjects Filter:
-                    //entity, Category,wikidata
-             
-                    if(!solutionPredicate.contains("wikiPageWikiLink") && !solutionSubject.contains("entity") && !solutionSubject.contains("Category") &&
-                            !solutionPredicate.contains("wikiPageRedirects") && !solutionPredicate.contains("wikiPageDisambiguates") && !solutionSubject.contains("wikidata")){
+                    //process incoming edges of the entity
+                    if(solution.get("?s") != null){
+                    	solutionSubject = solution.get("?s").toString();
+                    	solutionPredicate = solution.get("?p").toString();
 
                         int cost = nonMatchingCost;
                         for(String predicate : predicatesToFavour) {
@@ -435,11 +427,45 @@ public class TestClass2 {
                             } else {
                                 otherTriples.add(newTriple);
                             }
+                        }	                                      
+                    }else{
+                    	secondQueryCount++;
+                    	//process outgoing edges of the entity
+                    	solutionPredicate = solution.get("?j").toString();
+                    	solutionObject = solution.get("?k").toString();
+                    	//System.out.println(solutionPredicate + "   " + solutionObject);
+                    	int cost = nonMatchingCost;
+                        for(String predicate : predicatesToFavour) {
+                            if(solutionPredicate.toLowerCase().contains(predicate.toLowerCase()) || predicate.toLowerCase().contains(solutionPredicate.toLowerCase())) {
+                                cost = matchingCost;
+                                break;
+                            }
                         }
-
-                    }
+                        
+                        Triple newTriple = new Triple(solutionObject, solutionPredicate, queryObject, cost);
+                                              
+                        if(!expandedGraph.contains(newTriple)){
+                            expandedGraph.add(newTriple);
+                        }
+                        
+                        //adding connected nodes in to duplicatedItems
+                        //During the expansion, only the outermost triples can be connected, thus we check tmp for duplicated triples.
+                        if(tmp.contains(solutionSubject)){
+                        	//find triples that have same object from expandedGraph and add to duplicatedItems.
+                            addDuplicatedItems(duplicatedItems, expandedGraph, newTriple);
+                        }else if (!visitedNodes.contains(solutionSubject)){
+                            tmp.add(solutionSubject);
+                            visitedNodes.add(solutionSubject);
+                            if (newTriple.cost == matchingCost) {
+                                matchedTriples.add(newTriple);
+                            } else {
+                                otherTriples.add(newTriple);
+                            }
+                        }
+                    }     
                     resultsHasNextTime1 = System.currentTimeMillis();
                 }
+                System.out.println("Outgoing nodes Count: " + secondQueryCount);
                 resultsHasNextTime += currentQueryHasNextTotal;
                System.out.println("       --Time Spent On This Query: " + currentQueryHasNextTotal + " ms -- Results Size : " + resultsSize);
             }catch(Exception e){
@@ -693,13 +719,44 @@ public class TestClass2 {
         }
 
         if(found){
-            return "SELECT distinct ?s ?p WHERE { " +
-                    "	 ?s ?p " + obj + " . " +
-                    "}";
+            String result = "SELECT distinct ?s ?p WHERE { " +
+                    "	 {?s ?p " + obj + " . " +
+                    "} FILTER (";
+            
+            for(String s: filterStringsPredicates){
+            	String fsp = "!regex(str(?p), '" + s + "' , 'i') && ";
+            	result = result + fsp;
+            }
+            
+            result = result.substring(0, result.lastIndexOf("&&"));
+           
+            return result + ")}";
         }else{
-            return "SELECT distinct ?s ?p WHERE { " +
-                    "	 ?s ?p <" + obj + "> . " +
-                    "}";
+            String result = "SELECT distinct ?s ?p ?j ?k WHERE { ";
+            
+            String incomingQuery = "{?s ?p <" + obj + "> . FILTER (";
+            
+            String outgoingQuery =  "{<" + obj + "> ?j ?k. FILTER (";
+            
+            for(String s: filterStringsPredicates){
+            	String fsp = "!regex(str(?p), '" + s + "' , 'i') && ";
+            	incomingQuery += fsp;
+            	String fsj = "!regex(str(?j), '" + s + "' , 'i') && ";
+            	outgoingQuery += fsj;
+            }
+            
+            for(String s: filterStringSubjects){
+            	String fss = "!regex(str(?s), '" + s + "' , 'i') && ";
+            	incomingQuery += fss;
+            }
+            
+            outgoingQuery = outgoingQuery.substring(0, outgoingQuery.lastIndexOf("&&")) + ")} ";
+            incomingQuery = incomingQuery.substring(0, incomingQuery.lastIndexOf("&&")) + ")} ";
+           
+            result = result + incomingQuery + " UNION " + outgoingQuery + "}";
+            
+            System.out.println(result);
+            return result;
         }
     }
     
