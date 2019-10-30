@@ -49,6 +49,17 @@ public class Triple {
 		this.previousTriple = tp;
 		this.addConnectedSeeds();
 	}
+	
+	public Triple(String subject, String predicate, Triple tp, Integer cost) {
+		this.subject = tp.object;
+		this.predicate = predicate;
+		this.object = subject;
+		this.cost = cost;
+		this.fromSeed = tp.fromSeed;
+		this.previousTriple = tp;
+		this.addConnectedSeeds();
+	}
+	
 
 	
 	public void addConnectedSeeds(){
